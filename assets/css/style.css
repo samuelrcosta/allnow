@@ -107,6 +107,9 @@ label span{
 .home_category_container ul li input{
 	margin-top: 15px;
 }
+.home_category_container .active{
+	border-color: blue;
+}
 
 /* Facebook */
 .loginBtn--facebook {

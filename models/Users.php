@@ -114,6 +114,9 @@ class Users extends Model{
      * Function used to logoff the user in the session.
      */
     public function logOff(){
+        if(isset($_COOKIE['idLogin'])){
+            unset($_COOKIE['idLogin']);
+        }
         unset($_SESSION['idLogin']);
     }
 

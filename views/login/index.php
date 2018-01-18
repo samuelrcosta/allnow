@@ -18,6 +18,9 @@
                     <label for="login[password]" style="display: none">Senha</label>
                     <input data-validation="required" data-validation-error-msg="Digite sua senha" type="password" name="login[password]" id="password"  placeholder="Senha" class="form-control">
                 </div>
+                <div class="form-group">
+                    <input type="checkbox" name="login[keepLogged]" > Manter conectado
+                </div>
                 <a href="<?php echo BASE_URL?>login/recoverPassword" style="display: block;margin-bottom: 15px">Esqueci minha senha</a>
                 <?php if(!empty($login['notice'])):?>
                     <?php echo $login['notice'] ?>

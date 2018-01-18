@@ -19,8 +19,11 @@ class homeController extends Controller {
      * Index page
      */
     public function index() {
+        $c = new Categories();
         $data = array();
-        $data['title'] = 'Home';
+
+        $data['title'] = 'Allnow - Home';
+        $data['categoryData'] = $c->getList();
         $this->loadTemplate('home/index', $data);
     }
 

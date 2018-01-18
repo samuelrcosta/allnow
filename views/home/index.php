@@ -7,18 +7,14 @@
 <div class="container">
     <div class="home_category_container">
         <ul class="nav justify-content-center">
-            <li class="nav-item">
-                <a class="nav-link active" href="#">Home</a>
+            <li class="nav-item active">
+                <a class="nav-link" href="#">Home</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Produtos Digitais</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Serviços (C/E)</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Cursos Presenciais(C/E)</a>
-            </li>
+            <?php foreach ($categoryData as $category): ?>
+                <li class="nav-item">
+                    <a class="nav-link" href="<?php echo BASE_URL."category/".$category['slug']; ?>"><?php echo $category['name'] ?></a>
+                </li>
+            <?php endforeach; ?>
             <li class="nav-item" style="padding-left: 10px;padding-right: 10px">
                 <input class="form-control" placeholder="Pesquisar">
             </li>

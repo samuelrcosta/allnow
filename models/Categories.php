@@ -130,7 +130,7 @@ class Categories extends model {
      *
      * @return  boolean     boolean false for email already registered, or instead True.
      */
-    public function register($name, $id_principal = 0){
+    public function register($name, $id_principal = Null){
         $s = new Store();
         $slug = $s->createSlug($name);
         $sql = "SELECT * FROM categories WHERE slug = ?";
@@ -140,9 +140,6 @@ class Categories extends model {
         if($sql && count($sql)){
             return false;
         }else{
-            if($id_principal == 0){
-                $id_principal = Null;
-            }
             $sql = "INSERT INTO categories (name, id_principal, slug) VALUES (?, ?, ?)";
             $sql = $this->db->prepare($sql);
             $sql->execute(array($name, $id_principal, $slug));

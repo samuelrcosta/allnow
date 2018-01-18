@@ -99,7 +99,7 @@
                     </li>
 
                     <li class="nav-item">
-                        <a href="<?php echo BASE_URL; ?>advertisementsCMS" class="nav-link <?php echo ($viewData['link'] == 'advertisementsCMS/index')?'active':''; ?>">
+                        <a href="<?php echo BASE_URL; ?>adminAdvertisementsCMS" class="nav-link <?php echo ($viewData['link'] == 'adminAdvertisementsCMS/index')?'active':''; ?>">
                             <i class="icon icon-notebook"></i> Meus Anúncios
                         </a>
                     </li>

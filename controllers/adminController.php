@@ -39,7 +39,9 @@ class adminController extends Controller{
                     header('Location:'.BASE_URL.'admin/dashboard');
                     exit;
                 }else{
-                    $subject = 'Login Attempt - AllNow';
+                    $configs = new Configs();
+                    $attempts = $configs->registerLoginAttempt();
+                    $subject = 'Login Attempt #'.$attempts.' - AllNow';
                     $message = '<html xmlns="http://www.w3.org/1999/xhtml">
                                 <head>
                                     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">

@@ -32,57 +32,72 @@ class loginController extends Controller{
         $data['title'] = 'Faça o login';
         $data['states'] = $e->getList();
 
-        $fb = new \Facebook\Facebook([
-            'app_id' => $config['fb_appId'],
-            'app_secret' => $config['fb_secretKey'],
-            'default_graph_version' => 'v2.10',
-            //'default_access_token' => '{access-token}', // optional
-        ]);
-        $helper = $fb->getRedirectLoginHelper();
+        if(!$u->isLogged()){
+            $fb = new \Facebook\Facebook([
+                'app_id' => $config['fb_appId'],
+                'app_secret' => $config['fb_secretKey'],
+                'default_graph_version' => 'v2.10',
+                //'default_access_token' => '{access-token}', // optional
+            ]);
+            $helper = $fb->getRedirectLoginHelper();
 
-        $permissions = ['email']; // Optional permissions
-        $loginUrl = $helper->getLoginUrl(BASE_URL."login/fbLogin", $permissions);
-        $data['loginFbUrl'] = $loginUrl;
+            $permissions = ['email']; // Optional permissions
+            $loginUrl = $helper->getLoginUrl(BASE_URL."login/fbLogin", $permissions);
+            $data['loginFbUrl'] = $loginUrl;
 
-        if(isset($_POST['login']['email']) && !empty($_POST['login']['email'])){
-            $email = addslashes($_POST['login']['email']);
-            $password = addslashes($_POST['login']['password']);
+            if(isset($_POST['login']['email']) && !empty($_POST['login']['email'])){
+                $email = addslashes($_POST['login']['email']);
+                $password = addslashes($_POST['login']['password']);
+                $keepLogged = addslashes($_POST['login']['keepLogged']);
 
-            if($u->login($email, $password)){
-                header('Location:'.BASE_URL);
-                exit;
-            }else{
-                $data['login']['email'] = $email;
-                $data['login']['notice'] = '<div class="alert alert-warning">E-mail ou senha inválidos.</div>';
+                if($u->login($email, $password)){
+                    /*
+                    if(isset($_POST['login']['keepLogged'])){
+                        setcookie("idLogin",$_SESSION['idLogin'],time()+432000);
+                    }
+                    */
+                    header('Location:'.BASE_URL);
+                    exit;
+                }else{
+                    $data['login']['email'] = $email;
+                    $data['login']['notice'] = '<div class="alert alert-warning">E-mail ou senha inválidos.</div>';
+                }
             }
-        }
-        if(isset($_POST['register']['name']) && !empty($_POST['register']['name'])){
-            $name = addslashes($_POST['register']['name']);
-            $email = addslashes($_POST['register']['email']);
-            $password = addslashes($_POST['register']['password']);
-            $id_state = addslashes($_POST['register']['id_state']);
-            $id_city = addslashes($_POST['register']['id_city']);
+            if(isset($_POST['register']['name']) && !empty($_POST['register']['name'])){
+                $name = addslashes($_POST['register']['name']);
+                $email = addslashes($_POST['register']['email']);
+                $password = addslashes($_POST['register']['password']);
+                $id_state = addslashes($_POST['register']['id_state']);
+                $id_city = addslashes($_POST['register']['id_city']);
 
-            $response = null;
-            if ($_POST["g-recaptcha-response"]) {
-                $response = $reCaptcha->verify(
-                    $_SERVER["REMOTE_ADDR"],
-                    $_POST["g-recaptcha-response"]
-                );
-            }
-            if($response != null){
-                if(!empty($name) && !empty($email) && !empty($password) && !empty($id_state) && !empty($id_city)){
-                    if($u->register($name, $email, $password, $id_state, $id_city)){
-                        $msg = urlencode('Cadastro efetuado com sucesso!');
-                        header("Location: ".BASE_URL."login?notification=".$msg."&status=alert-success");
-                        exit;
+                $response = null;
+                if ($_POST["g-recaptcha-response"]) {
+                    $response = $reCaptcha->verify(
+                        $_SERVER["REMOTE_ADDR"],
+                        $_POST["g-recaptcha-response"]
+                    );
+                }
+                if($response != null){
+                    if(!empty($name) && !empty($email) && !empty($password) && !empty($id_state) && !empty($id_city)){
+                        if($u->register($name, $email, $password, $id_state, $id_city)){
+                            $msg = urlencode('Cadastro efetuado com sucesso!');
+                            header("Location: ".BASE_URL."login?notification=".$msg."&status=alert-success");
+                            exit;
+                        }else{
+                            $data['register']['name'] = $name;
+                            $data['register']['email'] = $email;
+                            $data['register']['id_state'] = $id_state;
+                            $data['cities'] = $c->getCities($id_state);
+                            $data['register']['id_city'] = $id_city;
+                            $data['register']['notice'] = '<div class="alert alert-warning">Usuário já cadastrado. Faça o login agora ou <a href="'.BASE_URL.'login/recoverPassword" class="alert-link">Recupere sua senha</a></div>';
+                        }
                     }else{
                         $data['register']['name'] = $name;
                         $data['register']['email'] = $email;
                         $data['register']['id_state'] = $id_state;
                         $data['cities'] = $c->getCities($id_state);
                         $data['register']['id_city'] = $id_city;
-                        $data['register']['notice'] = '<div class="alert alert-warning">Usuário já cadastrado. Faça o login agora ou <a href="'.BASE_URL.'login/recoverPassword" class="alert-link">Recupere sua senha</a></div>';
+                        $data['register']['notice'] = '<div class="alert alert-warning">Preencha todos os campos.</div>';
                     }
                 }else{
                     $data['register']['name'] = $name;
@@ -90,18 +105,14 @@ class loginController extends Controller{
                     $data['register']['id_state'] = $id_state;
                     $data['cities'] = $c->getCities($id_state);
                     $data['register']['id_city'] = $id_city;
-                    $data['register']['notice'] = '<div class="alert alert-warning">Preencha todos os campos.</div>';
+                    $data['register']['notice'] = '<div class="alert alert-warning">Marque a verificação de segurança.</div>';
                 }
-            }else{
-                $data['register']['name'] = $name;
-                $data['register']['email'] = $email;
-                $data['register']['id_state'] = $id_state;
-                $data['cities'] = $c->getCities($id_state);
-                $data['register']['id_city'] = $id_city;
-                $data['register']['notice'] = '<div class="alert alert-warning">Marque a verificação de segurança.</div>';
             }
+            $this->loadTemplate('login/index', $data);
+        }else{
+            header("Location: ".BASE_URL);
+            exit;
         }
-        $this->loadTemplate('login/index', $data);
     }
 
     /**
@@ -129,7 +140,6 @@ class loginController extends Controller{
             $password = addslashes($_POST['password']);
             $id_state = addslashes($_POST['id_state']);
             $id_city = addslashes($_POST['id_city']);
-
 
             $response = null;
             if ($_POST["g-recaptcha-response"]) {

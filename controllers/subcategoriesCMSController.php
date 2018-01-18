@@ -153,4 +153,30 @@ class subcategoriesCMSController extends Controller{
             exit;
         }
     }
+
+    /**
+     * This function receive a sub-category id on Base64 (2x),
+     * get all subcategory data and echo in json
+     */
+    public function getSubcategories($id){
+        $u = new Administrators();
+        $c = new Categories();
+
+        $id = addslashes(base64_decode(base64_decode($id)));
+
+        $subcategoryData = array();
+
+        if($u->isLogged()){
+            $data = $c->getList();
+            foreach ($data as $category){
+                if($category['id'] == $id){
+                    foreach ($category['subs'] as $subcategory){
+                        $subcategoryData[] = $subcategory;
+                    }
+                }
+            }
+        }
+
+        echo json_encode($subcategoryData);
+    }
 }
