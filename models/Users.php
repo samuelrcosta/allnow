@@ -100,11 +100,13 @@ class Users extends Model{
     }
 
     /**
-     * This function delete a user in database.
+     * This function delete a user in database and his advertisements.
      *
      * @param   $id       int for the user's ID number saved in the database.
      */
     public function delete($id){
+        $a = new Advertisements();
+        $a->deleteUserAds($id);
         $sql = "DELETE FROM users WHERE id = ?";
         $sql = $this->db->prepare($sql);
         $sql->execute(array($id));

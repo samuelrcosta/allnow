@@ -206,4 +206,15 @@ class Advertisements extends Model{
         $sql = $this->db->prepare($sql);
         $sql->execute(array($id));
     }
+
+    /**
+     * This function delete all user's advertisements.
+     *
+     * @param   $id_user    int for the user ID.
+     */
+    public function deleteUserAds($id_user){
+        $sql = 'DELETE FROM advertisements WHERE id_user = ? AND type = 1';
+        $sql = $this->db->prepare($sql);
+        $sql->execute(array($id_user));
+    }
 }

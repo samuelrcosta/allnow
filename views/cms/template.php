@@ -17,6 +17,8 @@
     <script src="<?php echo BASE_URL; ?>vendor/popper.js/popper.min.js"></script>
     <!--!>Bootstrap 4</!-->
     <script type="text/javascript" src="<?php echo BASE_URL; ?>vendor/twbs/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!--!>Jquery Mask</!-->
+    <script type="text/javascript" src="<?php echo BASE_URL; ?>vendor/igorescobar/jquery-mask-plugin/src/jquery.mask.js"></script>
     <!--!>FormValidator</!-->
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/jquery.form-validator.min.js"></script>
     <link href="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/theme-default.min.css" rel="stylesheet" type="text/css" />
