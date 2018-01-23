@@ -51,19 +51,29 @@ class subcategoriesCMSController extends Controller{
             if(isset($_POST['name']) && !empty($_POST['name'])){
                 $name = addslashes($_POST['name']);
                 $id_principal = addslashes($_POST['id_principal']);
+                if(isset($_POST['presential'])){
+                    $presential = 1;
+                }else{
+                    $presential = 0;
+                }
+
                 if((!empty($name)) && !empty($id_principal)){
-                    if($c->register($name, $id_principal)){
+                    $principalCategory = array_reverse($c->getCategoryTree($id_principal));
+                    $for_user = $data['subcategoryData'] = $principalCategory['0']['for_user'];
+                    if($c->register($name, $presential, $for_user, $id_principal)){
                         $msg = urlencode('Sub-Categoria cadastrada com sucesso!');
                         header("Location: ".BASE_URL."subcategoriesCMS?notification=".$msg."&status=alert-info");
                         exit;
                     }else{
                         $data['name'] = $name;
                         $data['id_principal'] = $id_principal;
+                        $data['presential'] = $presential;
                         $data['notice'] = '<div class="alert alert-warning">Essa sub-categoria já está cadastrada.</div>';
                     }
                 }else{
                     $data['name'] = $name;
                     $data['id_principal'] = $id_principal;
+                    $data['presential'] = $presential;
                     $data['notice'] = '<div class="alert alert-warning">Preencha todos os campos.</div>';
                 }
             }
@@ -100,27 +110,35 @@ class subcategoriesCMSController extends Controller{
             if(isset($_POST['name']) && !empty($_POST['name'])){
                 $name = addslashes($_POST['name']);
                 $id_principal = addslashes($_POST['id_principal']);
+                if(isset($_POST['presential'])){
+                    $presential = 1;
+                }else{
+                    $presential = 0;
+                }
 
                 if((!empty($name)) && !empty($id_principal)){
-                    if($c->edit($id, $name, $id_principal)){
+                    $principalCategory = array_reverse($c->getCategoryTree($id_principal));
+                    $for_user = $data['subcategoryData'] = $principalCategory['0']['for_user'];
+                    if($c->edit($id, $name, $presential, $for_user, $id_principal)){
                         $msg = urlencode('Sub-Categoria editada com sucesso!');
                         header("Location: ".BASE_URL."subcategoriesCMS?notification=".$msg."&status=alert-info");
                         exit;
                     }else{
-                        $data['name'] = $name;
-                        $data['id_principal'] = $id_principal;
+                        $data['subcategoryData']['name'] = $name;
+                        $data['subcategoryData']['id_principal'] = $id_principal;
+                        $data['subcategoryData']['presential'] = $presential;
                         $data['notice'] = '<div class="alert alert-warning">Já existe Sub-categoria com esse mesmo nome.</div>';
                     }
                 }else{
-                    $data['name'] = $name;
-                    $data['id_principal'] = $id_principal;
+                    $data['subcategoryData']['name'] = $name;
+                    $data['subcategoryData']['id_principal'] = $id_principal;
+                    $data['subcategoryData']['presential'] = $presential;
                     $data['notice'] = '<div class="alert alert-warning">Preencha todos os campos.</div>';
                 }
             }else{
                 //If not, render editPage
                 $categoryList = array_reverse($c->getCategoryTree($id));
-                $data['name'] = $categoryList['0']['name'];
-                $data['id_principal'] = $categoryList['0']['id_principal'];
+                $data['subcategoryData'] = $categoryList['0'];
             }
 
             $data['title'] = 'ADM - Editar Sub-Categoria';
@@ -159,20 +177,17 @@ class subcategoriesCMSController extends Controller{
      * get all subcategory data and echo in json
      */
     public function getSubcategories($id){
-        $u = new Administrators();
         $c = new Categories();
 
         $id = addslashes(base64_decode(base64_decode($id)));
 
         $subcategoryData = array();
 
-        if($u->isLogged()){
-            $data = $c->getList();
-            foreach ($data as $category){
-                if($category['id'] == $id){
-                    foreach ($category['subs'] as $subcategory){
-                        $subcategoryData[] = $subcategory;
-                    }
+        $data = $c->getList();
+        foreach ($data as $category){
+            if($category['id'] == $id){
+                foreach ($category['subs'] as $subcategory){
+                    $subcategoryData[] = $subcategory;
                 }
             }
         }

@@ -50,18 +50,32 @@ class categoriesCMSController extends Controller{
 
             if(isset($_POST['name']) && !empty($_POST['name'])){
                 $name = addslashes($_POST['name']);
+                if(isset($_POST['presential'])){
+                    $presential = 1;
+                }else{
+                    $presential = Null;
+                }
+                if(isset($_POST['for_user'])){
+                    $for_user = 1;
+                }else{
+                    $for_user = 0;
+                }
 
                 if(!empty($name)){
-                    if($c->register($name)){
+                    if($c->register($name, $presential, $for_user)){
                         $msg = urlencode('Categoria registrada com sucesso!');
                         header("Location: ".BASE_URL."categoriesCMS?notification=".$msg."&status=alert-info");
                         exit;
                     }else{
                         $data['name'] = $name;
+                        $data['presential'] = $presential;
+                        $data['for_user'] = $for_user;
                         $data['notice'] = '<div class="alert alert-warning">Essa categoria já está cadastrada.</div>';
                     }
                 }else{
                     $data['name'] = $name;
+                    $data['presential'] = $presential;
+                    $data['for_user'] = $for_user;
                     $data['notice'] = '<div class="alert alert-warning">Preencha todos os campos.</div>';
                 }
             }
@@ -96,24 +110,37 @@ class categoriesCMSController extends Controller{
 
             if(isset($_POST['name']) && !empty($_POST['name'])){
                 $name = addslashes($_POST['name']);
+                if(isset($_POST['presential'])){
+                    $presential = 1;
+                }else{
+                    $presential = Null;
+                }
+                if(isset($_POST['for_user'])){
+                    $for_user = 1;
+                }else{
+                    $for_user = 0;
+                }
 
                 if(!empty($name)){
-                    if($c->edit($id, $name)){
+                    if($c->edit($id, $name, $presential, $for_user)){
                         $msg = urlencode('Categoria editada com sucesso!');
                         header("Location: ".BASE_URL."categoriesCMS?notification=".$msg."&status=alert-info");
                         exit;
                     }else{
-                        $data['name'] = $name;
+                        $data['categoryData']['name'] = $name;
+                        $data['categoryData']['presential'] = $presential;
+                        $data['categoryData']['for_user'] = $for_user;
                         $data['notice'] = '<div class="alert alert-warning">Já existe categoria com esse mesmo nome.</div>';
                     }
                 }else{
-                    $data['name'] = $name;
+                    $data['categoryData']['name'] = $name;
+                    $data['categoryData']['presential'] = $presential;
+                    $data['categoryData']['for_user'] = $for_user;
                     $data['notice'] = '<div class="alert alert-warning">Preencha todos os campos.</div>';
                 }
             }else{
                 //If not, render editPage
-                $data['categoryData'] = $c->getCategoryTree($id);
-                $data['name'] = $data['categoryData']['0']['name'];
+                $data['categoryData'] = $c->getCategoryTree($id)['0'];
             }
 
             $data['title'] = 'ADM - Editar Categoria';

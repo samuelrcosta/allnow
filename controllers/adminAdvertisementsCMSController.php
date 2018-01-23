@@ -45,6 +45,7 @@ class adminAdvertisementsCMSController extends Controller{
         $u = new Administrators();
         $a = new Advertisements();
         $c = new Categories();
+        $s = new Store();
         $data = array();
 
         if($u->isLogged()){
@@ -66,9 +67,15 @@ class adminAdvertisementsCMSController extends Controller{
                     }
                 }
                 $data['abstract'] = addslashes($_POST['abstract']);
-                $data['media'] = addslashes($_POST['media']);
+                $data['media_type'] = addslashes($_POST['media_type']);
+                $data['media_link'] = addslashes($_POST['media_link']);
                 $data['description'] = addslashes($_POST['description']);
                 $data['rating'] = addslashes($_POST['rating']);
+                if(isset($_POST['highlight'])){
+                    $data['highlight'] = 1;
+                }else{
+                    $data['highlight'] = Null;
+                }
                 if(isset($_POST['new'])){
                     $data['new'] = 1;
                 }else{
@@ -84,13 +91,57 @@ class adminAdvertisementsCMSController extends Controller{
                 }else{
                     $data['sale'] = Null;
                 }
-                if((!empty($data['adtitle'])) && (!empty($data['id_category'])) && (!empty($data['id_subcategory'])) && (!empty($data['abstract'])) && (!empty($data['media'])) && (!empty($data['description']))){
-                    if($a->register($_SESSION['adminLogin'], $data['id_category'], $data['id_subcategory'], $data['adtitle'], $data['abstract'], $data['media'], $data['description'], 1, 2, $data['rating'], $data['new'], $data['bestseller'], $data['sale'])){
-                        $msg = urlencode('Anúncio cadastrado com sucesso!');
-                        header("Location: ".BASE_URL."adminAdvertisementsCMS?notification=".$msg."&status=alert-info");
-                        exit;
+                if((!empty($data['adtitle'])) && (!empty($data['id_category'])) && (!empty($data['id_subcategory'])) && (!empty($data['abstract'])) && (!empty($data['media_link'])) && (!empty($data['description'])) && (!empty($data['media_type']))){
+
+                    if($data['media_type'] == 1){
+                        $embed_link = $s->getYoutubeEmbedUrl($data['media_link']);
+                        if(!empty($embed_link)){
+                            $data['media'] = "<iframe width='640' height='315' src=".$embed_link." frameborder='0' allow='autoplay; encrypted-media' allowfullscreen></iframe>";
+                        }else{
+                            $data['media'] = '';
+                        }
+                    }elseif($data['media_type'] == 2){
+                        $oembed_endpoint = 'http://vimeo.com/api/oembed';
+                        // Grab the video url from the url, or use default
+                        $video_url = $data['media_link'];
+                        // Create the URLs
+                        $xml_url = $oembed_endpoint . '.xml?url=' . rawurlencode($video_url);
+                        // Curl helper function
+                        function curl_get($url) {
+                            $curl = curl_init($url);
+                            curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+                            curl_setopt($curl, CURLOPT_TIMEOUT, 30);
+                            curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
+                            $return = curl_exec($curl);
+                            curl_close($curl);
+                            return $return;
+                        }
+                        if(curl_get($xml_url) == '404 Not Found'){
+                            $data['media'] = '';
+                        }else{
+                            $oembed = simplexml_load_string(curl_get($xml_url));
+                            $data['media'] = $oembed->html;
+                        }
+                    }elseif($data['media_type'] == 3){
+                        if($s->url_exists($data['media_link'])){
+                            $data['media'] = "<img width='100%' src=".$data['media_link'].">";
+                        }else{
+                            $data['media'] = '';
+                        }
                     }else{
-                        $data['notice'] = '<div class="alert alert-warning">Anúncio já cadastrado.</div>';
+                        $data['media'] = $data['media_link'];
+                    }
+
+                    if(!empty($data['media'])){
+                        if($a->register($_SESSION['adminLogin'], $data['id_category'], $data['id_subcategory'], $data['adtitle'], $data['abstract'], $data['media_type'], $data['media_link'],$data['media'], $data['description'], 1, 2, $data['rating'], $data['highlight'], $data['new'], $data['bestseller'], $data['sale'])){
+                            $msg = urlencode('Anúncio cadastrado com sucesso!');
+                            header("Location: ".BASE_URL."adminAdvertisementsCMS?notification=".$msg."&status=alert-info");
+                            exit;
+                        }else{
+                            $data['notice'] = '<div class="alert alert-warning">Anúncio já cadastrado.</div>';
+                        }
+                    }else{
+                        $data['notice'] = '<div class="alert alert-warning">Preencha todos os campos.</div>';
                     }
                 }else{
                     $data['notice'] = '<div class="alert alert-warning">Preencha todos os campos.</div>';
@@ -111,6 +162,7 @@ class adminAdvertisementsCMSController extends Controller{
         $u = new Administrators();
         $a = new Advertisements();
         $c = new Categories();
+        $s = new Store();
         $data = array();
 
         $id = addslashes(base64_decode(base64_decode($id)));
@@ -135,9 +187,15 @@ class adminAdvertisementsCMSController extends Controller{
                 $data['advertisementData']['id_category'] = addslashes($_POST['id_category']);
                 $data['advertisementData']['id_subcategory'] = addslashes($_POST['id_subcategory']);
                 $data['advertisementData']['abstract'] = addslashes($_POST['abstract']);
-                $data['advertisementData']['media'] = addslashes($_POST['media']);
+                $data['advertisementData']['media_type'] = addslashes($_POST['media_type']);
+                $data['advertisementData']['media_link'] = addslashes($_POST['media_link']);
                 $data['advertisementData']['description'] = addslashes($_POST['description']);
                 $data['advertisementData']['rating'] = addslashes($_POST['rating']);
+                if(isset($_POST['highlight'])){
+                    $data['advertisementData']['highlight'] = 1;
+                }else{
+                    $data['advertisementData']['highlight'] = Null;
+                }
                 if(isset($_POST['new'])){
                     $data['advertisementData']['new'] = 1;
                 }else{
@@ -153,14 +211,57 @@ class adminAdvertisementsCMSController extends Controller{
                 }else{
                     $data['advertisementData']['sale'] = Null;
                 }
-                if((!empty($data['advertisementData']['title'])) && (!empty($data['advertisementData']['id_category'])) && (!empty($data['advertisementData']['id_subcategory'])) && (!empty($data['advertisementData']['abstract'])) && (!empty($data['advertisementData']['media'])) && (!empty($data['advertisementData']['description']))){
+                if((!empty($data['advertisementData']['title'])) && (!empty($data['advertisementData']['id_category'])) && (!empty($data['advertisementData']['id_subcategory'])) && (!empty($data['advertisementData']['abstract'])) && (!empty($data['advertisementData']['media_type'])) && (!empty($data['advertisementData']['media_link'])) && (!empty($data['advertisementData']['description']))){
 
-                    if($a->edit($id, $data['advertisementData']['id_category'], $data['advertisementData']['id_subcategory'], $data['advertisementData']['title'], $data['advertisementData']['abstract'], $data['advertisementData']['media'], $data['advertisementData']['description'], 1, 2, $data['advertisementData']['rating'], $data['advertisementData']['new'], $data['advertisementData']['bestseller'], $data['advertisementData']['sale'])){
-                        $msg = urlencode('Anúncio editado com sucesso!');
-                        header("Location: ".BASE_URL."adminAdvertisementsCMS?notification=".$msg."&status=alert-info");
-                        exit;
+                    if($data['advertisementData']['media_type'] == 1){
+                        $embed_link = $s->getYoutubeEmbedUrl($data['advertisementData']['media_link']);
+                        if(!empty($embed_link)){
+                            $data['advertisementData']['media'] = "<iframe width='640' height='315' src=".$embed_link." frameborder='0' allow='autoplay; encrypted-media' allowfullscreen></iframe>";
+                        }else{
+                            $data['advertisementData']['media'] = '';
+                        }
+                    }elseif($data['advertisementData']['media_type'] == 2){
+                        $oembed_endpoint = 'http://vimeo.com/api/oembed';
+                        // Grab the video url from the url, or use default
+                        $video_url = $data['advertisementData']['media_link'];
+                        // Create the URLs
+                        $xml_url = $oembed_endpoint . '.xml?url=' . rawurlencode($video_url);
+                        // Curl helper function
+                        function curl_get($url) {
+                            $curl = curl_init($url);
+                            curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+                            curl_setopt($curl, CURLOPT_TIMEOUT, 30);
+                            curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
+                            $return = curl_exec($curl);
+                            curl_close($curl);
+                            return $return;
+                        }
+                        if(curl_get($xml_url) == '404 Not Found'){
+                            $data['advertisementData']['media'] = '';
+                        }else{
+                            $oembed = simplexml_load_string(curl_get($xml_url));
+                            $data['advertisementData']['media'] = $oembed->html;
+                        }
+                    }elseif($data['advertisementData']['media_type'] == 3){
+                        if($s->url_exists($data['advertisementData']['media_link'])){
+                            $data['advertisementData']['media'] = "<img width='100%' src=".$data['advertisementData']['media_link'].">";
+                        }else{
+                            $data['advertisementData']['media'] = '';
+                        }
                     }else{
-                        $data['notice'] = '<div class="alert alert-warning">Anúncio já cadastrado.</div>';
+                        $data['advertisementData']['media'] = $data['advertisementData']['media_type'];
+                    }
+
+                    if(!empty($data['advertisementData']['media'])){
+                        if($a->edit($id, $data['advertisementData']['id_category'], $data['advertisementData']['id_subcategory'], $data['advertisementData']['title'], $data['advertisementData']['abstract'], $data['advertisementData']['media_type'], $data['advertisementData']['media_link'], $data['advertisementData']['media'], $data['advertisementData']['description'], 1, 2, $data['advertisementData']['rating'], $data['advertisementData']['highlight'], $data['advertisementData']['new'], $data['advertisementData']['bestseller'], $data['advertisementData']['sale'])){
+                            $msg = urlencode('Anúncio editado com sucesso!');
+                            header("Location: ".BASE_URL."adminAdvertisementsCMS?notification=".$msg."&status=alert-info");
+                            exit;
+                        }else{
+                            $data['notice'] = '<div class="alert alert-warning">Anúncio já cadastrado.</div>';
+                        }
+                    }else{
+                        $data['notice'] = '<div class="alert alert-warning">Link da mídia inválido.</div>';
                     }
                 }else{
                     $data['notice'] = '<div class="alert alert-warning">Preencha todos os campos.</div>';

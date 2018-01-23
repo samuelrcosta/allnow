@@ -104,6 +104,12 @@
                         </a>
                     </li>
 
+                    <li class="nav-item">
+                        <a href="<?php echo BASE_URL; ?>usersCMS" class="nav-link <?php echo ($viewData['link'] == 'usersCMS/index')?'active':''; ?>">
+                            <i class="icon icon-people"></i> Usuários
+                        </a>
+                    </li>
+
                     <li class="nav-item nav-dropdown">
                         <a href="#" class="nav-link nav-dropdown-toggle">
                             <i class="icon icon-settings"></i> Configurações <i class="fa fa-caret-left"></i>

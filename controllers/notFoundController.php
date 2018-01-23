@@ -23,7 +23,7 @@ class notFoundController extends Controller {
 
         $data['title'] = 'Página não encontrada';
 
-        $this->loadTemplate('404', $data);
+        $this->loadView('404', $data);
     }
 
 }

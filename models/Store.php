@@ -81,4 +81,40 @@ class Store extends Model{
         return rtrim($str, '-');
     }
 
+    /**
+     * This function create a embed URL for youtube watch link.
+     *
+     * @param   $url    string for youtube URL watch.
+     *
+     * @return  string with embed link.
+     */
+    function getYoutubeEmbedUrl($url){
+        if (strpos($url, 'youtu') !== false) {
+            preg_match('/[\\?\\&]v=([^\\?\\&]+)/', $url, $matches);
+            $id = $matches[1];
+
+            return 'https://www.youtube.com/embed/' . $id ;
+        }else{
+            return '';
+        }
+    }
+
+    /**
+     * This function verify if a URL exists.
+     *
+     * @param $url  string for the url.
+     *
+     * @return boolean
+     */
+    function url_exists($url) {
+
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_NOBODY, true);
+        curl_exec($ch);
+        $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+
+        return ($code == 200);
+    }
+
 }

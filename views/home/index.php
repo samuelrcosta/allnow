@@ -12,7 +12,7 @@
             </li>
             <?php foreach ($categoryData as $category): ?>
                 <li class="nav-item">
-                    <a class="nav-link" href="<?php echo BASE_URL."category/".$category['slug']; ?>"><?php echo $category['name'] ?></a>
+                    <a class="nav-link" href="<?php echo BASE_URL."categories/open/".$category['slug']; ?>"><?php echo $category['name'] ?></a>
                 </li>
             <?php endforeach; ?>
             <li class="nav-item" style="padding-left: 10px;padding-right: 10px">
@@ -29,7 +29,21 @@
                 <div class="destaques">
                     <h3>Destaques</h3>
                     <div class="destaques_container">
-                        Este local irá receber videos
+                        <?php foreach ($advertisementsData as $ad): ?>
+                        <div class="advertisement-container" style="padding-bottom: 20px">
+                            <div class="row">
+                                <div class="col-sm-5">
+                                    <div <?php if($ad['media_type'] != 3) echo 'class="embed-container"';?> >
+                                        <?php echo $ad['media'] ?>
+                                    </div>
+                                </div>
+                                <div class="col-sm-7">
+                                    <h5><?php echo $ad['title'] ?></h5>
+                                    <p style="white-space: pre;"><?php echo $ad['abstract'] ?></p>
+                                </div>
+                            </div>
+                        </div>
+                        <?php endforeach; ?>
                     </div>
                 </div>
                 <div class="destaques">

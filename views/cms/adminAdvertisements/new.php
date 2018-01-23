@@ -36,8 +36,17 @@
                 <textarea class="form-control" name="abstract" id="abstract" data-validation="required" data-validation-error-msg="Digite um resumo para o anúncio"><?php echo(isset($abstract))?$abstract:''; ?></textarea>
             </div>
             <div class="form-group">
-                <label for="media" class="form-control-label">Mídia (Youtube,Vimeo, Imagem)</label>
-                <input class="form-control" name="media" id="media" style="max-width: 400px" data-validation="url" data-validation-error-msg="Insira o link de uma mídia" value="<?php echo(isset($media))?$media:''; ?>"/>
+                <label for="media_type" class="form-control-label">Tipo de Mídia</label>
+                <select class="form-control" name="media_type" id="media_type" style="max-width: 400px" data-validation="required" data-validation-error-msg="Selecione o tipo da mídia">
+                    <option value=""></option>
+                    <option value="1" <?php echo(isset($media_type) && $media_type == 1)?'selected="selected"':''; ?>>Youtube</option>
+                    <option value="2" <?php echo(isset($media_type) && $media_type == 2)?'selected="selected"':''; ?>>Vimeo</option>
+                    <option value="3" <?php echo(isset($media_type) && $media_type == 3)?'selected="selected"':''; ?>>Imagem</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="media" class="form-control-label">Link da Mídia</label>
+                <input class="form-control" name="media_link" id="media_link" style="max-width: 400px" data-validation="url" data-validation-error-msg="Insira o link de uma mídia" value="<?php echo(isset($media_link))?$media_link:''; ?>"/>
             </div>
             <div class="form-group">
                 <label for="description" class="form-control-label">Descrição</label>
@@ -53,6 +62,9 @@
                     <option value="4" <?php echo(isset($rating) && $rating == 4)?'selected="selected"':''; ?>>4 Estrelas</option>
                     <option value="5" <?php echo(isset($rating) && $rating == 5)?'selected="selected"':''; ?>>5 Estrelas</option>
                 </select>
+            </div>
+            <div class="form-group" style="margin-bottom: 0">
+                <input type="checkbox" name="highlight" id="highlight" class="filter_brand" style="margin-right: 5px" <?php echo(isset($highlight) && $highlight == 1)?'checked':''; ?>> <label for="highlight">Irá aparecer nos destaques?</label>
             </div>
             <div class="form-group" style="margin-bottom: 0">
                 <input type="checkbox" name="new" id="new" class="filter_brand" style="margin-right: 5px" <?php echo(isset($new) && $new == 1)?'checked':''; ?>> <label for="new">Novo</label>

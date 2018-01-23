@@ -21,6 +21,8 @@
                 <thead>
                     <tr>
                         <th>Nome</th>
+                        <th>Presencial</th>
+                        <th>Visível</th>
                         <th>Editar</th>
                         <th>Excluir</th>
                     </tr>
@@ -61,9 +63,21 @@
 
     function insertCategories(){
         for(var id in categoryList){
+            if(categoryList[id].presential == '1'){
+                var presential = 'Sim';
+            }else{
+                var presential = 'Não';
+            }
+            if(categoryList[id].for_user == '1'){
+                var for_user = 'Sim';
+            }else{
+                var for_user = 'Não';
+            }
             $("#categories_result").append(
                 "<tr>" +
                     "<td>" + categoryList[id].name +"</td>" +
+                    "<td>" + presential +"</td>" +
+                    "<td>" + for_user +"</td>" +
                     "<td><a href='" + BASE_URL + "categoriesCMS/editCategory/" +  btoa(btoa(categoryList[id].id)) + "' class='btn btn-info'><i class='icon icon-pencil'></i></a></td>" +
                     "<td><button class='btn btn-danger' onclick=" + 'deleteCategory("' + btoa(btoa(categoryList[id].id)) + '")' + "><i class='icon icon-trash'></i></button></td>" +
                 "</tr>"
@@ -80,9 +94,21 @@
             var word = $("#search").val().toLowerCase();
             for(var id in categoryList){
                 if(categoryList[id].name.toLowerCase().search(word) !== -1){
+                    if(categoryList[id].presential == '1'){
+                        var presential = 'Sim';
+                    }else{
+                        var presential = 'Não';
+                    }
+                    if(categoryList[id].for_user == '1'){
+                        var for_user = 'Sim';
+                    }else{
+                        var for_user = 'Não';
+                    }
                     $("#categories_result").append(
                         "<tr>" +
                             "<td>" + categoryList[id].name +"</td>" +
+                            "<td>" + presential +"</td>" +
+                            "<td>" + for_user +"</td>" +
                             "<td><a href='" + BASE_URL + "categoriesCMS/editCategory/" +  btoa(btoa(categoryList[id].id)) + "' class='btn btn-info'><i class='icon icon-pencil'></i></a></td>" +
                             "<td><button class='btn btn-danger' onclick=" + 'deleteCategory("' + btoa(btoa(categoryList[id].id)) + '")' + "><i class='icon icon-trash'></i></button></td>" +
                         "</tr>"

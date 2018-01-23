@@ -196,6 +196,28 @@ class Users extends Model{
     }
 
     /**
+     * This function retrieves all data from all users.
+     *
+     * @return  array containing all data retrieved.
+     */
+    public function getList(){
+        $a = new Advertisements();
+        $array = array();
+
+        $sql = 'SELECT * FROM users ORDER BY date_register DESC';
+        $sql = $this->db->prepare($sql);
+        $sql->execute();
+        if($sql->rowCount() > 0){
+            $array = $sql->fetchAll();
+            foreach ($array as $key => $value){
+                $array[$key]['count_ads'] = count($a->getUserAds($value['id']));
+            }
+        }
+
+        return $array;
+    }
+
+    /**
      * This function changes the recuperation code of the user's password using his ID
      *
      * @param   $id                 int for the user's ID.

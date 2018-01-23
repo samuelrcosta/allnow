@@ -35,6 +35,68 @@ class Categories extends model {
     }
 
     /**
+     * This function takes all data from the categories where is visible for user
+     * (for_user = 1) and rearranges each category with its subcategories.
+     *
+     * @return  array containing all returned and rearranges data.
+     */
+    public function getUserList(){
+        $array = array();
+
+        $sql = "SELECT * FROM categories WHERE for_user = 1 ORDER BY id_principal DESC";
+        $sql = $this->db->query($sql);
+
+        if($sql->rowCount() > 0){
+            foreach ($sql->fetchAll() as $item){
+                $item['subs'] = array();
+                $array[$item['id']] = $item;
+            }
+
+            while($this->stillNeed($array)){
+                $this->organizeCategory($array);
+            }
+        }
+
+        return $array;
+    }
+
+    /**
+     * This function takes all data from the categories database
+     * if the category have ads and rearranges each category with its subcategories.
+     *
+     * @return  array containing all returned and rearranges data.
+     */
+    public function getActiveList(){
+        $a = new Advertisements();
+        $array = array();
+
+        $sql = "SELECT * FROM categories ORDER BY id_principal DESC";
+        $sql = $this->db->query($sql);
+
+        if($sql->rowCount() > 0){
+            foreach ($sql->fetchAll() as $item){
+                if(empty($item['id_principal'])){
+                    $ads = $a->getList(array('id_category' => $item['id']));
+                }else{
+                    $ads = $a->getList(array('id_subcategory' => $item['id']));
+                }
+
+                if(!empty($ads)){
+                    $item['count_ads'] = count($ads);
+                    $item['subs'] = array();
+                    $array[$item['id']] = $item;
+                }
+            }
+
+            while($this->stillNeed($array)){
+                $this->organizeCategory($array);
+            }
+        }
+
+        return $array;
+    }
+
+    /**
      * This function takes all data from a category in database and rearranges with its subcategories.
      *
      * @param   $id     int for the category id.
@@ -64,6 +126,49 @@ class Categories extends model {
         }
 
         $array = array_reverse($array);
+
+        return $array;
+    }
+
+    /**
+     * This function takes all data from a category in database and rearranges with its subcategories.
+     *
+     * @param   $slug     string for the category slug.
+     *
+     * @return  array containing all returned data.
+     */
+    public function getCategoryTreeBySlug($slug){
+        $array = array();
+
+        $haveChild = True;
+
+        $sql = 'SELECT * FROM categories WHERE slug = :slug';
+        $sql = $this->db->prepare($sql);
+        $sql->bindValue(':slug', $slug);
+        $sql->execute();
+        if($sql->rowCount() > 0){
+            $id = $sql->fetch()['id'];
+
+            while($haveChild){
+                $sql = 'SELECT * FROM categories WHERE id = :id';
+                $sql = $this->db->prepare($sql);
+                $sql->bindValue(':id', $id);
+                $sql->execute();
+                if($sql->rowCount() > 0){
+                    $sql = $sql->fetch();
+                    $array[] = $sql;
+
+                    if(!empty($sql['id_principal'])){
+                        $id = $sql['id_principal'];
+                    }else{
+                        $haveChild = False;
+                    }
+                }
+            }
+
+            $array = array_reverse($array);
+
+        }
 
         return $array;
     }
@@ -127,10 +232,12 @@ class Categories extends model {
      *
      * @param   $name           string for the category name.
      * @param   $id_principal   int for the principal category if exists.
+     * @param   $presential     int if this category is presential or nor.
+     * @param   $for_user       int if this category is visible for users.
      *
      * @return  boolean     boolean false for email already registered, or instead True.
      */
-    public function register($name, $id_principal = Null){
+    public function register($name, $presential = Null, $for_user = 0, $id_principal = Null){
         $s = new Store();
         $slug = $s->createSlug($name);
         $sql = "SELECT * FROM categories WHERE slug = ?";
@@ -140,9 +247,9 @@ class Categories extends model {
         if($sql && count($sql)){
             return false;
         }else{
-            $sql = "INSERT INTO categories (name, id_principal, slug) VALUES (?, ?, ?)";
+            $sql = "INSERT INTO categories (name, presential, for_user, id_principal, slug) VALUES (?, ?, ?, ?, ?)";
             $sql = $this->db->prepare($sql);
-            $sql->execute(array($name, $id_principal, $slug));
+            $sql->execute(array($name, $presential, $for_user, $id_principal, $slug));
             return true;
         }
     }
@@ -153,10 +260,12 @@ class Categories extends model {
      *
      * @param   $name           string for the category name.
      * @param   $id_principal   int for the principal category if exists.
+     * @param   $presential     int if this category is presential or nor.
+     * @param   $for_user       int if this category is visible for users.
      *
      * @return  boolean     boolean false for email already registered, or instead True.
      */
-    public function edit($id, $name, $id_pricipal = Null){
+    public function edit($id, $name, $presential = Null, $for_user = 0, $id_principal = Null){
         $s = new Store();
         $slug = $s->createSlug($name);
         $sql = "SELECT * FROM categories WHERE slug = ? AND id != ?";
@@ -166,9 +275,9 @@ class Categories extends model {
         if($sql && count($sql)){
             return false;
         }else{
-            $sql = "UPDATE categories SET name = ?, id_principal = ?, slug = ? WHERE id = ?";
+            $sql = "UPDATE categories SET name = ?, presential = ?, for_user = ?, id_principal = ?, slug = ? WHERE id = ?";
             $sql = $this->db->prepare($sql);
-            $sql->execute(array($name, $id_pricipal, $slug, $id));
+            $sql->execute(array($name, $presential, $for_user, $id_principal, $slug, $id));
             return true;
         }
     }

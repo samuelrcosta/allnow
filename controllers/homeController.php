@@ -20,10 +20,12 @@ class homeController extends Controller {
      */
     public function index() {
         $c = new Categories();
+        $a = new Advertisements();
         $data = array();
 
         $data['title'] = 'Allnow - Home';
         $data['categoryData'] = $c->getList();
+        $data['advertisementsData'] = $a->getHighlightsAds();
         $this->loadTemplate('home/index', $data);
     }
 

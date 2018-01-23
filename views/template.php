@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<html>
 	<head>
 		<meta charset="utf-8" />
 		<title><?php echo $viewData['title']; ?></title>
@@ -142,7 +141,9 @@
 	    		</div>
 	    	</div>
 	    </footer>
+        <!--!>
         <script type="text/javascript" src="<?php echo BASE_URL; ?>assets/js/jquery-ui.min.js"></script>
+        </!-->
 		<script type="text/javascript" src="<?php echo BASE_URL; ?>assets/js/script.js"></script>
 	</body>
 </html>
