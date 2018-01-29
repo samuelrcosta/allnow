@@ -2,6 +2,13 @@ $(function(){
     setTimeout(function(){
         $(".notification").slideUp();
     }, 8000);
+
+    $('.filterarea').find('input').on('change', function () {
+        $('.filterarea form').submit();
+    });
+    $('.filterarea').find('select').on('change', function () {
+        $('.filterarea form').submit();
+    });
 });
 
 function limpar() {

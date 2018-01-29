@@ -217,4 +217,49 @@ class Advertisements extends Model{
         $sql = $this->db->prepare($sql);
         $sql->execute(array($id_user));
     }
+
+    /**
+     * This function build a where part of sql query for filters in Category List.
+     *
+     * @param   $filters     array for filters.
+     *
+     * @return array for where clause.
+     */
+    private function buildWhere($filters){
+        $where = array('1=1');
+
+        if(!empty($filters['category'])){
+            $where[] = 'id_category = :id_category';
+        }
+
+        if(!empty($filters['subcategory'])){
+            $where[] = 'id_subcategory = :id_subcategory';
+        }
+
+        if(!empty($filters['searchTerm'])){
+            $where[] = "title LIKE :searchTerm";
+        }
+
+        return $where;
+    }
+
+    /**
+     * This function bind values in query for filters in Category List.
+     *
+     * @param   $filters     array for filters.
+     * @param   $sql    string for the sql query.
+     */
+    private function bindWhere($filters, &$sql){
+        if(!empty($filters['category'])){
+            $sql->bindValue(':id_category', $filters['category']);
+        }
+
+        if(!empty($filters['subcategory'])){
+            $sql->bindValue(':id_subcategory', $filters['id_subcategory']);
+        }
+
+        if(!empty($filters['searchTerm'])){
+            $sql->bindValue(':searchTerm', '%'.$filters['searchTerm'].'%');
+        }
+    }
 }

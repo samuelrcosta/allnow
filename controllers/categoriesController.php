@@ -30,35 +30,53 @@ class categoriesController extends Controller{
         $c = new Categories();
         $a = new Advertisements();
         $data = array();
+        $filters = array();
 
         $slug = addslashes($slug);
+
+        $filters['category'] = $slug;
 
         $data['categoryData'] = array();
         $data['categoriesData'] = $c->getActiveList();
 
+        if(isset($_GET['filters'])){
+            $filters = $_GET['filters'];
+            if(isset($filters['subcategory']) && !empty($filters['subcategory'])){
+                header('Location: '.BASE_URL.'categories/open/'.$filters['subcategory']);
+            }
+            elseif(isset($filters['category']) && !empty($filters['category'])){
+                header('Location: '.BASE_URL.'categories/open/'.$filters['category']);
+            }
+        }
+
         foreach ($data['categoriesData'] as $item){
             if($item['slug'] == $slug){
                 $data['categoryData'] = $item;
+                $data['subcategoriesData'] = $item['subs'];
+                $data['activeCategory'] = $item;
                 break;
             }
             foreach ($item['subs'] as $sub){
                 if($sub['slug'] == $slug){
-                    $data['categoryData'] = $sub;
+                    $data['categoryData'] = $item;
+                    $data['subcategoryData'] = $sub;
+                    $data['activeCategory'] = $sub;
+                    $data['subcategoriesData'] = $item['subs'];
                     break;
                 }
             }
         }
 
         $categories = array();
-        if(empty($data['categoryData']['id_principal'])){
-            $categories['id_category'] = $data['categoryData']['id'];
+        if(isset($data['subcategoryData'])){
+            $categories['id_subcategory'] = $data['subcategoryData']['id'];
         }else{
-            $categories['id_subcategory'] = $data['categoryData']['id'];
+            $categories['id_category'] = $data['categoryData']['id'];
         }
 
+        $data['title'] = 'Allnow - '.$data['activeCategory']['name'];
         $data['advertisementsData'] = $a->getList($categories);
-        $data['title'] = 'Allnow - '.$data['categoryData']['name'];
-
+        $data['filters'] = $filters;
 
         $this->loadTemplate('categories/open', $data);
     }

@@ -12,6 +12,8 @@ class Categories extends model {
     /**
      * This function takes all data from the categories database and rearranges each category with its subcategories.
      *
+     * @param   $filters    array for filters in list
+     *
      * @return  array containing all returned and rearranges data.
      */
     public function getList(){

@@ -16,11 +16,13 @@ class advertisementsController extends Controller{
     }
 
     /**
-     * This page not exists, redirect to home page.
+     * This page shows all advertisements in database.
      */
     public function index(){
-        header("Location: ".BASE_URL);
-        exit;
+        $filters = array();
+        if(isset($_GET['filters'])){
+            $filters = $_GET['filters'];
+        }
     }
 
     /**

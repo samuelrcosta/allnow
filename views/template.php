@@ -18,9 +18,14 @@
 			  rel="stylesheet" type="text/css" />
 		<!--!>Jquery Mask</!-->
         <script type="text/javascript" src="<?php echo BASE_URL; ?>vendor/igorescobar/jquery-mask-plugin/src/jquery.mask.js"></script>
+        <!--!>Popper.js</!-->
+        <script type="text/javascript" src="<?php echo BASE_URL; ?>vendor/popper.js/popper.min.js"></script>
 		<!--!>Bootstrap 4</!-->
 		<link rel="stylesheet" href="<?php echo BASE_URL; ?>vendor/twbs/bootstrap/dist/css/bootstrap.min.css" type="text/css" />
 		<script type="text/javascript" src="<?php echo BASE_URL; ?>vendor/twbs/bootstrap/dist/js/bootstrap.min.js"></script>
+        <!--!>Bootstrap Select</!-->
+        <link rel="stylesheet" href="<?php echo BASE_URL; ?>vendor/bootstrap-select/dist/css/bootstrap-select.css" type="text/css" />
+        <script type="text/javascript" src="<?php echo BASE_URL; ?>vendor/bootstrap-select/dist/js/bootstrap-select.js"></script>
 		<!--!>Google Ads</!-->
 		<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
         <script>
