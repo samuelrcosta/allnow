@@ -7,7 +7,7 @@
  * @since   1.0.0, 01/15/2017
  */
 
-class Categories extends model {
+class Categories extends Model {
 
     /**
      * This function takes all data from the categories database and rearranges each category with its subcategories.
