@@ -30,7 +30,7 @@
                     <h3>Destaques</h3>
                     <div class="destaques_container">
                         <?php foreach ($advertisementsData as $ad): ?>
-                        <div class="advertisement-container" style="padding-bottom: 20px">
+                        <div style="padding-bottom: 20px">
                             <div class="row">
                                 <div class="col-sm-5">
                                     <div <?php if($ad['media_type'] != 3) echo 'class="embed-container"';?> >

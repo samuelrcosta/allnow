@@ -44,7 +44,7 @@
         </div>
         <div class="col-sm-8">
             <?php foreach ($advertisementsData as $ad): ?>
-                <div class="advertisement-container" style="padding-bottom: 20px">
+                <div style="padding-bottom: 20px">
                     <a href="<?php echo BASE_URL."advertisements/open/".base64_encode(base64_encode($ad['id'])) ?>" style="display: block;color: black">
                         <div class="row">
                             <div class="col-sm-5">
