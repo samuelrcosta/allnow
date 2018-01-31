@@ -1,25 +1,5 @@
-<div class="top_img_back">
-    <div class="top_frase_img">
-        IMAGEM + FRASE
-    </div>
-</div>
 <div style="clear: both"></div>
 <div class="container">
-    <div class="home_category_container">
-        <ul class="nav justify-content-center">
-            <li class="nav-item active">
-                <a class="nav-link" href="#">Home</a>
-            </li>
-            <?php foreach ($categoryData as $category): ?>
-                <li class="nav-item">
-                    <a class="nav-link" href="<?php echo BASE_URL."categories/open/".$category['slug']; ?>"><?php echo $category['name'] ?></a>
-                </li>
-            <?php endforeach; ?>
-            <li class="nav-item" style="padding-left: 10px;padding-right: 10px">
-                <input class="form-control" placeholder="Pesquisar">
-            </li>
-        </ul>
-    </div>
     <div class="instructions">
         <a href="#">Como Anunciar</a>
     </div>

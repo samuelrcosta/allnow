@@ -28,9 +28,12 @@ class userController extends Controller{
      */
     public function account(){
         $u = new Users();
+        $cats = new Categories();
+
         $data = array();
         if($u->isLogged()){
             $userData = $u->getData(1, $_SESSION['idLogin']);
+            $data['categoryMenuData'] = $cats->getList();
             $data['title'] = 'Minha Conta';
             $data['userData'] = $userData;
             $this->loadTemplate('user/account', $data);
@@ -48,9 +51,11 @@ class userController extends Controller{
         $u = new Users();
         $e = new States();
         $c = new Cities();
+        $cats = new Categories();
         $data = array();
         if($u->isLogged()) {
             $userData = $u->getData(1, $_SESSION['idLogin']);
+            $data['categoryMenuData'] = $cats->getList();
             $data['title'] = 'Minha Conta';
             $data['userData'] = $userData;
             $data['states'] = $e->getList();
@@ -125,9 +130,11 @@ class userController extends Controller{
     public function advertisements(){
         $u = new Users();
         $a = new Advertisements();
+        $cats = new Categories();
         $data = array();
 
         if($u->isLogged()) {
+            $data['categoryMenuData'] = $cats->getList();
             $data['title'] = "Meus Anúncios";
             $data['adsData'] = $a->getUserAds($_SESSION['idLogin']);
             $this->loadTemplate('user/advertisements', $data);
@@ -149,6 +156,7 @@ class userController extends Controller{
 
         if($u->isLogged()) {
             $data['title'] = "Novo Anúncio";
+            $data['categoryMenuData'] = $c->getList();
             $data['categoryData'] = $c->getUserList();
 
             if (isset($_POST['title'])) {
@@ -244,6 +252,7 @@ class userController extends Controller{
 
         if($u->isLogged()){
             $data['title'] = 'Editar Anúncio';
+            $data['categoryMenuData'] = $c->getList();
             $data['advertisementData'] = $a->getDataById($id);
             $data['categoryData'] = $c->getUserList();
             $data['subcategoryData'] = array();

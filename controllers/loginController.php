@@ -26,10 +26,12 @@ class loginController extends Controller{
         $u = new Users();
         $e = new States();
         $c = new Cities();
+        $cats = new Categories();
         global $config;
         $reCaptcha = new ReCaptcha($config['google_captch_secret']);
         $data = array();
         $data['title'] = 'Faça o login';
+        $data['categoryMenuData'] = $cats->getActiveList();
         $data['states'] = $e->getList();
 
         if(!$u->isLogged()){
@@ -122,10 +124,12 @@ class loginController extends Controller{
         $u = new Users();
         $e = new States();
         $c = new Cities();
+        $cats = new Categories();
         global $config;
         $reCaptcha = new ReCaptcha($config['google_captch_secret']);
         $data = array();
         $data['states'] = $e->getList();
+        $data['categoryMenuData'] = $cats->getActiveList();
         $data['title'] = 'Faça seu cadastro';
         //FACEBOOK
         $fb = new \Facebook\Facebook([
@@ -226,10 +230,12 @@ class loginController extends Controller{
         $u = new Users();
         $e = new States();
         $c = new Cities();
+        $cats = new Categories();
         global $config;
         $reCaptcha = new ReCaptcha($config['google_captch_secret']);
         $data = array();
 
+        $data['categoryMenuData'] = $cats->getActiveList();
         $data['title'] = 'Faça seu cadastro';
         $data['states'] = $e->getList();
 
@@ -311,7 +317,9 @@ class loginController extends Controller{
      */
     public function recoverPassword($hashRecover = ''){
         $u = new Users();
+        $cats = new Categories();
         $data = array();
+        $data['categoryMenuData'] = $cats->getActiveList();
         $data['title'] = 'Recupere sua senha';
         if(!empty($hashRecover)){
             $hashRecover = addslashes($hashRecover);

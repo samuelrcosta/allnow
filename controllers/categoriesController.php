@@ -36,44 +36,27 @@ class categoriesController extends Controller{
 
         $filters['category'] = $slug;
 
-        $data['categoryData'] = array();
         $data['categoriesData'] = $c->getActiveList();
-
-        if(isset($_GET['filters'])){
-            $filters = $_GET['filters'];
-            if(isset($filters['subcategory']) && !empty($filters['subcategory'])){
-                header('Location: '.BASE_URL.'categories/open/'.$filters['subcategory']);
-            }
-            elseif(isset($filters['category']) && !empty($filters['category'])){
-                header('Location: '.BASE_URL.'categories/open/'.$filters['category']);
-            }
-        }
 
         foreach ($data['categoriesData'] as $item){
             if($item['slug'] == $slug){
-                $data['categoryData'] = $item;
-                $data['subcategoriesData'] = $item['subs'];
+                $data['activeCategory_type'] = 'id_category';
                 $data['activeCategory'] = $item;
                 break;
             }
             foreach ($item['subs'] as $sub){
                 if($sub['slug'] == $slug){
-                    $data['categoryData'] = $item;
-                    $data['subcategoryData'] = $sub;
+                    $data['activeCategory_type'] = 'id_subcategory';
                     $data['activeCategory'] = $sub;
-                    $data['subcategoriesData'] = $item['subs'];
                     break;
                 }
             }
         }
 
         $categories = array();
-        if(isset($data['subcategoryData'])){
-            $categories['id_subcategory'] = $data['subcategoryData']['id'];
-        }else{
-            $categories['id_category'] = $data['categoryData']['id'];
-        }
+        $categories[$data['activeCategory_type']] = $data['activeCategory']['id'];
 
+        $data['categoryMenuData'] = $c->getActiveList();
         $data['title'] = 'Allnow - '.$data['activeCategory']['name'];
         $data['advertisementsData'] = $a->getList($categories);
         $data['filters'] = $filters;

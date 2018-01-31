@@ -9,7 +9,6 @@
         <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/jquery-ui.structure.min.css" type="text/css" />
         <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/jquery-ui.theme.min.css" type="text/css" />
         </!-->
-		<link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/style.css" type="text/css" />
 		<!--!>Jquery</!-->
         <script type="text/javascript" src="<?php echo BASE_URL; ?>vendor/components/jquery/jquery.min.js"></script>
 		<!--!>FormValidator</!-->
@@ -26,6 +25,11 @@
         <!--!>Bootstrap Select</!-->
         <link rel="stylesheet" href="<?php echo BASE_URL; ?>vendor/bootstrap-select/dist/css/bootstrap-select.css" type="text/css" />
         <script type="text/javascript" src="<?php echo BASE_URL; ?>vendor/bootstrap-select/dist/js/bootstrap-select.js"></script>
+        <!--!>Menu Maker</!-->
+        <script type="text/javascript" src="https://s3.amazonaws.com/menumaker/menumaker.min.js"></script>
+        <!--!>Styles</!-->
+        <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/style.css" type="text/css" />
+        <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/style_menu.css" type="text/css" />
 		<!--!>Google Ads</!-->
 		<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
         <script>
@@ -58,8 +62,26 @@
 			</div>
 		</nav>
 		<header>
-			<div class="container">
-			</div>
+            <div class="container">
+                <div id='cssmenu'>
+                    <ul>
+                        <li class='active'><a href='#'>Home</a></li>
+                        <?php foreach ($viewData['categoryMenuData'] as $category): ?>
+                            <?php if(empty($category['subs'])): ?>
+                                <li><a href='<?php echo BASE_URL."categories/open/".$category['slug']; ?>'><?php echo $category['name'] ?></a></li>
+                            <?php else: ?>
+                                <li class='has-sub'><a href='<?php echo BASE_URL."categories/open/".$category['slug']; ?>'><?php echo $category['name'] ?></a>
+                                    <ul>
+                                    <?php foreach ($category['subs'] as $sub): ?>
+                                        <li><a href='<?php echo BASE_URL."categories/open/".$sub['slug']; ?>'><?php echo $sub['name'] ?></a></li>
+                                    <?php endforeach; ?>
+                                    </ul>
+                                </li>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+                    </ul>
+                </div>
+            </div>
 		</header>
 		<section>
             <?php $this->loadViewInTemplate($viewName, $viewData); ?>
@@ -149,6 +171,7 @@
         <!--!>
         <script type="text/javascript" src="<?php echo BASE_URL; ?>assets/js/jquery-ui.min.js"></script>
         </!-->
+        <script type="text/javascript" src="<?php echo BASE_URL; ?>assets/js/script_menu.js"></script>
 		<script type="text/javascript" src="<?php echo BASE_URL; ?>assets/js/script.js"></script>
 	</body>
 </html>
