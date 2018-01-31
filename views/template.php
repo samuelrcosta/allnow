@@ -65,7 +65,7 @@
             <div class="container">
                 <div id='cssmenu'>
                     <ul>
-                        <li class='active'><a href='#'>Home</a></li>
+                        <li class='active'><a href='<?php echo BASE_URL; ?>'>Home</a></li>
                         <?php foreach ($viewData['categoryMenuData'] as $category): ?>
                             <?php if(empty($category['subs'])): ?>
                                 <li><a href='<?php echo BASE_URL."categories/open/".$category['slug']; ?>'><?php echo $category['name'] ?></a></li>
