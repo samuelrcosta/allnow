@@ -65,12 +65,12 @@
             <div class="container">
                 <div id='cssmenu'>
                     <ul>
-                        <li class='active'><a href='<?php echo BASE_URL; ?>'>Home</a></li>
+                        <li <?php if(isset($viewData['menuOptions']['url']) && $viewData['menuOptions']['url'] == 'home') echo "class='active'" ?> ><a href='<?php echo BASE_URL; ?>'>Home</a></li>
                         <?php foreach ($viewData['categoryMenuData'] as $category): ?>
                             <?php if(empty($category['subs'])): ?>
-                                <li><a href='<?php echo BASE_URL."categories/open/".$category['slug']; ?>'><?php echo $category['name'] ?></a></li>
+                                <li <?php if(isset($viewData['menuOptions']['url']) && $viewData['menuOptions']['url'] == $category['slug']) echo "class='active'" ?> ><a href='<?php echo BASE_URL."categories/open/".$category['slug']; ?>'><?php echo $category['name'] ?></a></li>
                             <?php else: ?>
-                                <li class='has-sub'><a href='<?php echo BASE_URL."categories/open/".$category['slug']; ?>'><?php echo $category['name'] ?></a>
+                                <li class='has-sub <?php if(isset($viewData['menuOptions']['url']) && $viewData['menuOptions']['url'] == $category['slug']) echo "active" ?>'><a href='<?php echo BASE_URL."categories/open/".$category['slug']; ?>'><?php echo $category['name'] ?></a>
                                     <ul>
                                     <?php foreach ($category['subs'] as $sub): ?>
                                         <li><a href='<?php echo BASE_URL."categories/open/".$sub['slug']; ?>'><?php echo $sub['name'] ?></a></li>

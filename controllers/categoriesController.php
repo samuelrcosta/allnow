@@ -28,13 +28,20 @@ class categoriesController extends Controller{
      */
     public function open($slug){
         $c = new Categories();
+        $s = new States();
+        $cities = new Cities();
         $a = new Advertisements();
         $data = array();
         $filters = array();
 
         $slug = addslashes($slug);
 
-        $filters['category'] = $slug;
+        if(isset($_GET['filters']) && !empty($_GET['filters'])){
+            $filters = $_GET['filters'];
+            if(isset($filters['id_state'])){
+                $data['citiesData'] = $cities->getCities($filters['id_state']);
+            }
+        }
 
         $data['categoriesData'] = $c->getActiveList();
 
@@ -42,11 +49,13 @@ class categoriesController extends Controller{
             if($item['slug'] == $slug){
                 $data['activeCategory_type'] = 'id_category';
                 $data['activeCategory'] = $item;
+                $data['activePrincipalCategory'] = $item;
                 break;
             }
             foreach ($item['subs'] as $sub){
                 if($sub['slug'] == $slug){
                     $data['activeCategory_type'] = 'id_subcategory';
+                    $data['activePrincipalCategory'] = $item;
                     $data['activeCategory'] = $sub;
                     break;
                 }
@@ -55,8 +64,16 @@ class categoriesController extends Controller{
 
         $categories = array();
         $categories[$data['activeCategory_type']] = $data['activeCategory']['id'];
+        if($data['activeCategory_type'] == 'id_category'){
+            $data['site_map'] = "<a href='".BASE_URL."'>Optium.com.br</a> <span> > </span> <a href='".BASE_URL."categories/open/".$data['activeCategory']['slug']."'>".$data['activeCategory']['name']."</a>";
+        }else{
+            $data['site_map'] = "<a href='".BASE_URL."'>Optium.com.br</a> <span> > </span> <a href='".BASE_URL."categories/open/".$data['activePrincipalCategory']['slug']."'>".$data['activePrincipalCategory']['name']."</a> <span> > </span> <a href='".BASE_URL."categories/open/".$data['activeCategory']['slug']."'>".$data['activeCategory']['name']."</a>";
+        }
+
 
         $data['categoryMenuData'] = $c->getActiveList();
+        $data['menuOptions']['url'] = $data['activePrincipalCategory']['slug'];
+        $data['statesData'] = $s->getList();
         $data['title'] = 'Allnow - '.$data['activeCategory']['name'];
         $data['advertisementsData'] = $a->getList($categories);
         $data['filters'] = $filters;

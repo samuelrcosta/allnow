@@ -25,6 +25,7 @@ class homeController extends Controller {
 
         $data['title'] = 'Optium - Home';
         $data['categoryMenuData'] = $c->getActiveList();
+        $data['menuOptions']['url'] = 'home';
         $data['advertisementsData'] = $a->getHighlightsAds();
         $this->loadTemplate('home/index', $data);
     }
