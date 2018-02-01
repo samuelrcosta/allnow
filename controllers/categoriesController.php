@@ -74,7 +74,7 @@ class categoriesController extends Controller{
         $data['categoryMenuData'] = $c->getActiveList();
         $data['menuOptions']['url'] = $data['activePrincipalCategory']['slug'];
         $data['statesData'] = $s->getList();
-        $data['title'] = 'Allnow - '.$data['activeCategory']['name'];
+        $data['title'] = 'Optium - '.$data['activeCategory']['name'];
         $data['advertisementsData'] = $a->getList($categories);
         $data['filters'] = $filters;
 

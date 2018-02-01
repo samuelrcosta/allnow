@@ -50,7 +50,7 @@ class advertisementsController extends Controller{
         }
 
         $data['categoryMenuData'] = $c->getActiveList();
-        $data['title'] = 'Allnow - '.$data['advertisementData']['title'];
+        $data['title'] = 'Optium - '.$data['advertisementData']['title'];
 
         $this->loadTemplate('advertisements/open', $data);
     }
