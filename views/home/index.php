@@ -18,8 +18,10 @@
                                     </div>
                                 </div>
                                 <div class="col-sm-7">
-                                    <h5><?php echo $ad['title'] ?></h5>
-                                    <p style="white-space: pre;"><?php echo $ad['abstract'] ?></p>
+                                    <a href="<?php echo BASE_URL; ?>advertisements/open/<?php echo base64_encode(base64_encode($ad['id'])); ?>" style="display: block">
+                                        <h5><?php echo $ad['title'] ?></h5>
+                                        <p style="white-space: pre;"><?php echo $ad['abstract'] ?></p>
+                                    </a>
                                 </div>
                             </div>
                         </div>
