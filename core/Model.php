@@ -22,6 +22,8 @@ class Model{
     protected $MailUsername;
     protected $MailPassword;
     protected $MailName;
+    protected $MAILCHIMP_API_KEY;
+    protected $MAILCHIMP_LIST_ID;
 
     /**
      * The constructor for models.
@@ -34,6 +36,8 @@ class Model{
         global $MailUsername;
         global $MailPassword;
         global $MailName;
+        global $MAILCHIMP_API_KEY;
+        global $MAILCHIMP_LIST_ID;
 
         $this->db = $db;
         $this->MailHost = $MailHost;
@@ -42,5 +46,7 @@ class Model{
         $this->MailUsername = $MailUsername;
         $this->MailPassword = $MailPassword;
         $this->MailName = $MailName;
+        $this->MAILCHIMP_API_KEY = $MAILCHIMP_API_KEY;
+        $this->MAILCHIMP_LIST_ID = $MAILCHIMP_LIST_ID;
     }
 }

@@ -22,6 +22,11 @@
     <!--!>FormValidator</!-->
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/jquery.form-validator.min.js"></script>
     <link href="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/theme-default.min.css" rel="stylesheet" type="text/css" />
+    <!--!>Jquery DataTable</!-->
+    <link rel="stylesheet" href="//cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="//cdn.datatables.net/1.10.16/css/dataTables.bootstrap4.min.css">
+    <script type="text/javascript" src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="//cdn.datatables.net/1.10.16/js/dataTables.bootstrap4.min.js"></script>
 </head>
 <body class="sidebar-fixed header-fixed">
 <div class="page-wrapper">
@@ -103,6 +108,12 @@
                     <li class="nav-item">
                         <a href="<?php echo BASE_URL; ?>adminAdvertisementsCMS" class="nav-link <?php echo ($viewData['link'] == 'adminAdvertisementsCMS/index')?'active':''; ?>">
                             <i class="icon icon-notebook"></i> Meus Anúncios
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="<?php echo BASE_URL; ?>advertisementsCMS" class="nav-link <?php echo ($viewData['link'] == 'advertisementsCMS/index')?'active':''; ?>">
+                            <i class="icon icon-notebook"></i> Anúncios
                         </a>
                     </li>
 

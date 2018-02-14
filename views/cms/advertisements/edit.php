@@ -4,8 +4,8 @@
     </div>
 
     <div class="card-body">
-        <a href="<?php echo BASE_URL; ?>adminAdvertisementsCMS" class="btn btn-primary" style="margin-bottom: 20px;"><i class="icon icon-arrow-left-circle"></i>&nbsp;Voltar</a>
-        <form method="POST" id="register">
+        <a href="<?php echo BASE_URL; ?>advertisementsCMS" class="btn btn-primary" style="margin-bottom: 20px;"><i class="icon icon-arrow-left-circle"></i>&nbsp;Voltar</a>
+        <form method="POST" id="edit">
             <div class="form-group">
                 <label for="title" class="form-control-label">Título do Anúncio</label>
                 <input class="form-control" name="title" id="title" style="max-width: 400px" data-validation="required" data-validation-error-msg="Digite um título" value="<?php echo(isset($advertisementData['title']))?$advertisementData['title']:''; ?>"/>
@@ -42,7 +42,7 @@
                     <option value="1" <?php echo(isset($advertisementData['media_type']) && $advertisementData['media_type'] == 1)?'selected="selected"':''; ?>>Youtube</option>
                     <option value="2" <?php echo(isset($advertisementData['media_type']) && $advertisementData['media_type'] == 2)?'selected="selected"':''; ?>>Vimeo</option>
                     <option value="3" <?php echo(isset($advertisementData['media_type']) && $advertisementData['media_type'] == 3)?'selected="selected"':''; ?>>Arquivo de Imagem</option>
-                    <option value="4" <?php echo(isset($advertisementData['media_type']) && $advertisementData['media_type'] == 4)?'selected="selected"':''; ?>>Link Imagem</option>
+                    <option value="4" <?php echo(isset($advertisementData['media_type']) && $advertisementData['media_type'] == 4)?'selected="selected"':''; ?>>Link de Imagem</option>
                 </select>
             </div>
             <div class="form-group <?php echo(isset($advertisementData['media_type']) && $advertisementData['media_type'] != 3)?'div-invisible':''; ?>" id="div-image">
@@ -101,7 +101,7 @@
 <script src="<?php echo BASE_URL ?>assets/js/resize_image.js"></script>
 <script>
     $.validate({
-        form : '#register'
+        form : '#edit'
     });
 
     //CKEDITOR
@@ -220,5 +220,4 @@
             }
         }
     });
-
 </script>

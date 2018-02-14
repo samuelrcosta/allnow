@@ -50,8 +50,10 @@ class Advertisements extends Model{
         return $array;
     }
 
-    public function getList($categories = array()){
+    public function getList($categories = array(), $filters = array()){
         $c = new Categories();
+        $u = new Users();
+        $a = new Administrators();
         $array = array();
 
         $where = 'WHERE status = 1';
@@ -62,13 +64,41 @@ class Advertisements extends Model{
         if(isset($categories['id_category'])){
             $where = 'WHERE id_category = '.$categories['id_category'].' AND status = 1';
         }
+        if(isset($filters['id_state']) && !empty($filters['id_state'])){
+            $where = $where.' AND id_state = '.$filters['id_state'];
+        }
+        if(isset($filters['id_city']) && !empty($filters['id_city'])){
+            $where = $where.' AND id_city = '.$filters['id_city'];
+        }
 
-        $sql = 'SELECT * FROM advertisements '.$where;
+        $sql = 'SELECT *, advertisements.id as id_ad FROM advertisements 
+                LEFT JOIN users 
+                ON users.id = advertisements.id_user '.$where;
         $sql = $this->db->query($sql);
 
         if($sql->rowCount() > 0){
             $array = $sql->fetchAll();
+            foreach ($array as $key => $item){
+                $array[$key]['category_name'] = $c->getNameById($item['id_category']);
+                $array[$key]['subcategory_name'] = $c->getNameById($item['id_subcategory']);
+                if($item['type'] == 1){
+                    $array[$key]['user'] = $u->getData(1, $item['id_user'])['email'];
+                    $array[$key]['type_name'] = "Usuário";
+                }else{
+                    $array[$key]['user'] = $a->getData(1, $item['id_user'])['email'];
+                    $array[$key]['type_name'] = "Administrador";
+                }
+            }
         }
+
+
+        /*
+        if($array[$key]['type'] == 1){
+            $array[$key]['user'] = $u->getData(1, $item['id_user']);
+        }else{
+            $array[$key]['user'] = $a->getData(1, $item['id_user']);
+        }
+        */
 
         return $array;
     }

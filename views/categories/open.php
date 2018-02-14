@@ -40,7 +40,7 @@
             <h1 style="margin-bottom: 30px"><?php echo $activeCategory['name'] ?></h1>
             <?php foreach ($advertisementsData as $ad): ?>
                 <div style="padding-bottom: 20px">
-                    <a href="<?php echo BASE_URL."advertisements/open/".base64_encode(base64_encode($ad['id'])) ?>" style="display: block;color: black">
+                    <a href="<?php echo BASE_URL."advertisements/open/".base64_encode(base64_encode($ad['id_ad'])) ?>" style="display: block;color: black">
                         <div class="row">
                             <div class="col-sm-5">
                                 <div <?php if($ad['media_type'] != 3) echo 'class="embed-container"';?> >

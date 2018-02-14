@@ -41,12 +41,26 @@
                     <option value=""></option>
                     <option value="1" <?php echo(isset($media_type) && $media_type == 1)?'selected="selected"':''; ?>>Youtube</option>
                     <option value="2" <?php echo(isset($media_type) && $media_type == 2)?'selected="selected"':''; ?>>Vimeo</option>
-                    <option value="3" <?php echo(isset($media_type) && $media_type == 3)?'selected="selected"':''; ?>>Imagem</option>
+                    <option value="3" <?php echo(isset($media_type) && $media_type == 3)?'selected="selected"':''; ?>>Arquivo de Imagem</option>
+                    <option value="4" <?php echo(isset($media_type) && $media_type == 4)?'selected="selected"':''; ?>>Link de Imagem</option>
                 </select>
             </div>
-            <div class="form-group">
+            <div class="form-group <?php echo(!isset($image))?'div-invisible':''; ?>" id="div-image">
+                <div class="progress">
+                    <div id="progresso" class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 100%;"> Nenhum arquivo enviado
+                    </div>
+                </div>
+
+                <label for="image" class="form-control-label">Arquivo da Imagem</label>
+                <input type="file" class="form-control" name="image" id="image" style="max-width: 400px" data-validation-allowing="jpg, png, jpeg" data-validation-max-size="2M" data-validation-error-msg="Insira um arquivo de imagem válido de até 2Mb" value="<?php echo(isset($image))?$image:''; ?>"/>
+
+                <div class="image-area">
+
+                </div>
+            </div>
+            <div class="form-group <?php echo(isset($image))?'div-invisible':''; ?>" id="div-link">
                 <label for="media" class="form-control-label">Link da Mídia</label>
-                <input class="form-control" name="media_link" id="media_link" style="max-width: 400px" data-validation="url" data-validation-error-msg="Insira o link de uma mídia" value="<?php echo(isset($media_link))?$media_link:''; ?>"/>
+                <input class="form-control" name="media_link" id="media_link" style="max-width: 400px" data-validation-error-msg="Insira o link de uma mídia" value="<?php echo(isset($media_link))?$media_link:''; ?>"/>
             </div>
             <div class="form-group">
                 <label for="description" class="form-control-label">Descrição</label>
@@ -85,15 +99,114 @@
     </div>
 </div>
 <script src="<?php echo BASE_URL ?>vendor/ckeditor/ckeditor.js"></script>
+<script src="<?php echo BASE_URL ?>assets/js/resize_image.js"></script>
 <script>
     $.validate({
-        form : '#register'
+        form : '#register',
+        modules : 'file'
     });
 
     //CKEDITOR
     CKEDITOR.replace( 'description' );
 
     $(function(){
+        $('#media_type').change(function(){
+            if( $(this).val() == "3" ) {
+                $("#div-image").slideDown();
+                $('#image').attr("data-validation", "required mime size");
+                $(".image-area").html("");
+                $.validate({
+                    form : '#register',
+                    modules : 'file'
+                });
+                $("#div-link").slideUp();
+            }else{
+                $("#div-image").slideUp();
+                $('#image').removeAttr("data-validation");
+                $('#media_link').attr("data-validation", "url").val("");
+                $.validate({
+                    form : '#register',
+                    modules : 'file'
+                });
+                $("#div-link").slideDown();
+            }
+        });
+
+        // -------------------------------------- Image rendering -------------------------------------- //
+        // Initializing resize library
+        var resize = new window.resize();
+        resize.init();
+
+        // When choose a image
+        $('#image').on('change', function () {
+            renderizeImage();
+        });
+
+        // Renderiza a imagem
+        function renderizeImage() {
+            // Verify if the navegator have capacity
+            if (!window.File || !window.FileReader || !window.FileList || !window.Blob) {
+                alert('O navegador não suporta os recursos utilizados pelo aplicativo');
+                return;
+            }
+
+            // Saving the image
+            var image = $('#image')[0].files;
+
+            // If send at least one image
+            if (image.length > 0) {
+                // Set 0% in progress bar
+                $('#progresso').attr('aria-valuenow', 0).css('width', '0%');
+
+                // Hinding image input
+                $('#image').hide();
+
+                // Start the image resizing
+                if(resizeImage(image)){
+                    // Shows the finish image
+                    $('#progresso').append('Imagen(s) enviada(s) com sucesso');
+
+                    // Showing the image input
+                    $('#image').show();
+                }else{
+                    // Refresh the progress bar
+                    var progress = 100;
+                    $('#progresso').text(Math.round(progress) + '%').attr('aria-valuenow', progress).css('width', progress + '%');
+
+                    // Shows the error
+                    $('#progresso').append('Arquivo de imagem inválido');
+                }
+            }
+        }
+
+        function resizeImage(image) {
+            // If is not a valid image
+            if ((typeof image[0] !== 'object') || (image[0] == null)) {
+                // Returns error
+                return false;
+            }else{
+                // Resizing the image
+                resize.photo(image[0], 800, 'dataURL', function (imagem) {
+                    // Creating the image tag
+                    var mediaInput = "<h5>Pré-visulização da imagem:</h5><img width='100%' src='" + imagem + "' >";
+
+                    // Triggering the media_link input
+                    $("#media_link").val(imagem);
+
+                    // Show the selected image
+                    $(".image-area").html(mediaInput);
+
+                    // Refresh the progress bar
+                    var progress = 100;
+                    $('#progresso').text(Math.round(progress) + '%').attr('aria-valuenow', progress).css('width', progress + '%');
+                });
+
+                // Return success
+                return true;
+            }
+        }
+
+
         $('#id_category').change(function(){
             if( $(this).val() ) {
                 $('#id_subcategory').html('<option value="">Carregando</option>');

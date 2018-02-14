@@ -14,6 +14,12 @@
         </div>
         <div class="col-sm-8">
             <h1 style="margin-bottom: 30px"><?php echo $advertisementData['title'] ?></h1>
+            <div <?php if($advertisementData['media_type'] != 3) echo 'class="embed-container"';?> >
+                <?php echo $advertisementData['media'] ?>
+            </div>
+
+            <br>
+
             <?php echo $advertisementData['description'] ?>
 
             <?php if(isset($advertisementData['userData'])): ?>

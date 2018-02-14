@@ -27,6 +27,7 @@ class loginController extends Controller{
         $e = new States();
         $c = new Cities();
         $cats = new Categories();
+        $store = new Store();
         global $config;
         $reCaptcha = new ReCaptcha($config['google_captch_secret']);
         $data = array();
@@ -50,7 +51,7 @@ class loginController extends Controller{
             if(isset($_POST['login']['email']) && !empty($_POST['login']['email'])){
                 $email = addslashes($_POST['login']['email']);
                 $password = addslashes($_POST['login']['password']);
-                $keepLogged = addslashes($_POST['login']['keepLogged']);
+                //$keepLogged = addslashes($_POST['login']['keepLogged']);
 
                 if($u->login($email, $password)){
                     /*
@@ -82,6 +83,7 @@ class loginController extends Controller{
                 if($response != null){
                     if(!empty($name) && !empty($email) && !empty($password) && !empty($id_state) && !empty($id_city)){
                         if($u->register($name, $email, $password, $id_state, $id_city)){
+                            $store->subscribeMailChimp($email, $name);
                             $msg = urlencode('Cadastro efetuado com sucesso!');
                             header("Location: ".BASE_URL."login?notification=".$msg."&status=alert-success");
                             exit;
@@ -125,6 +127,7 @@ class loginController extends Controller{
         $e = new States();
         $c = new Cities();
         $cats = new Categories();
+        $store =  new Store();
         global $config;
         $reCaptcha = new ReCaptcha($config['google_captch_secret']);
         $data = array();
@@ -155,6 +158,7 @@ class loginController extends Controller{
             if($response != null){
                 if(!empty($name) && !empty($email) && !empty($password) && !empty($id_state) && !empty($id_city)){
                     if($u->register($name, $email, $password, $id_state, $id_city)){
+                        $store->subscribeMailChimp($email, $name);
                         $msg = urlencode('Cadastro efetuado com sucesso!');
                         header("Location: ".BASE_URL."login?notification=".$msg."&status=alert-success");
                         exit;
@@ -231,6 +235,7 @@ class loginController extends Controller{
         $e = new States();
         $c = new Cities();
         $cats = new Categories();
+        $store = new Store();
         global $config;
         $reCaptcha = new ReCaptcha($config['google_captch_secret']);
         $data = array();
@@ -256,6 +261,7 @@ class loginController extends Controller{
             if($response != null){
                 if(!empty($name) && !empty($email) && !empty($password) && !empty($id_state) && !empty($id_city)){
                     if($u->register($name, $email, $password, $id_state, $id_city)){
+                        $store->subscribeMailChimp($email, $name);
                         $msg = urlencode('Cadastro efetuado com sucesso!');
                         header("Location: ".BASE_URL."login?notification=".$msg."&status=alert-success");
                         exit;

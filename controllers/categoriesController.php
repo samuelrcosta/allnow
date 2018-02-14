@@ -75,7 +75,7 @@ class categoriesController extends Controller{
         $data['menuOptions']['url'] = $data['activePrincipalCategory']['slug'];
         $data['statesData'] = $s->getList();
         $data['title'] = 'Optium - '.$data['activeCategory']['name'];
-        $data['advertisementsData'] = $a->getList($categories);
+        $data['advertisementsData'] = $a->getList($categories, $filters);
         $data['filters'] = $filters;
 
         $this->loadTemplate('categories/open', $data);

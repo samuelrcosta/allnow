@@ -117,4 +117,38 @@ class Store extends Model{
         return ($code == 200);
     }
 
+    /**
+     * This function register user in MailChimplist.
+     *
+     * @param $email  string for the user email.
+     * @param $name  string for the user name.
+     */
+    public function subscribeMailChimp($email, $name){
+        $memberID = md5(strtolower($email));
+        $dataCenter = substr($this->MAILCHIMP_API_KEY,strpos($this->MAILCHIMP_API_KEY,'-')+1);
+        $url = 'https://'.$dataCenter.'.api.mailchimp.com/3.0/lists/'.$this->MAILCHIMP_LIST_ID.'/members/'.$memberID;
+
+        //Member Info
+        $json = json_encode([
+            'email_address' => $email,
+            'status'        => 'subscribed',
+            'merge_fields' => [
+                'NAME' => $name,
+            ]
+        ]);
+
+        // send a HTTP POST request with curl
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_USERPWD, 'user:' . $this->MAILCHIMP_API_KEY);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $json);
+        $result = curl_exec($ch);
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+    }
+
 }

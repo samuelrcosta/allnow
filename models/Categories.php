@@ -239,7 +239,7 @@ class Categories extends Model {
      *
      * @return  boolean     boolean false for email already registered, or instead True.
      */
-    public function register($name, $presential = Null, $for_user = 0, $id_principal = Null){
+    public function register($name, $presential = 0, $for_user = 0, $id_principal = Null){
         $s = new Store();
         $slug = $s->createSlug($name);
         $sql = "SELECT * FROM categories WHERE slug = ?";

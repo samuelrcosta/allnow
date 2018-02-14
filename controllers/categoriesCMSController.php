@@ -53,7 +53,7 @@ class categoriesCMSController extends Controller{
                 if(isset($_POST['presential'])){
                     $presential = 1;
                 }else{
-                    $presential = Null;
+                    $presential = 0;
                 }
                 if(isset($_POST['for_user'])){
                     $for_user = 1;
@@ -113,7 +113,7 @@ class categoriesCMSController extends Controller{
                 if(isset($_POST['presential'])){
                     $presential = 1;
                 }else{
-                    $presential = Null;
+                    $presential = 0;
                 }
                 if(isset($_POST['for_user'])){
                     $for_user = 1;

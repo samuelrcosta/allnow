@@ -209,6 +209,8 @@ class userController extends Controller{
                             $data['media'] = $oembed->html;
                         }
                     } elseif ($data['media_type'] == 3) {
+                        $data['media'] = "<img width='100%' src=" . $data['media_link'] . ">";
+                    } elseif ($data['media_type'] == 4) {
                         if ($s->url_exists($data['media_link'])) {
                             $data['media'] = "<img width='100%' src=" . $data['media_link'] . ">";
                         } else {
@@ -303,7 +305,9 @@ class userController extends Controller{
                             $oembed = simplexml_load_string(curl_get($xml_url));
                             $data['advertisementData']['media'] = $oembed->html;
                         }
-                    }elseif($data['advertisementData']['media_type'] == 3){
+                    } elseif($data['advertisementData']['media_type'] == 3){
+                        $data['advertisementData']['media'] = "<img width='100%' src=".$data['advertisementData']['media_link'].">";
+                    } elseif($data['advertisementData']['media_type'] == 4){
                         if($s->url_exists($data['advertisementData']['media_link'])){
                             $data['advertisementData']['media'] = "<img width='100%' src=".$data['advertisementData']['media_link'].">";
                         }else{

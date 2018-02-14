@@ -10314,3 +10314,33 @@ h6 {
   transform: translate(-50%, -50%);
   z-index: 11;
 }
+
+#table-advertisements tbody tr td a{
+  float: left;
+  margin: 5px;
+}
+#table-advertisements tbody tr td button{
+  float: left;
+  margin: 5px;
+}
+#table-advertisements_wrapper .col-md-6{
+  flex: 0 0 100%;
+  max-width: 100%;
+  text-align: left;
+  padding-left: 0px;
+}
+#table-advertisements_filter{
+  float: left;
+  text-align: left;
+}
+
+.div-invisible{
+  display: none;
+}
+
+.image-area{
+  padding: 10px;
+  border: 1px solid #bbb;
+  margin-top: 15px;
+  max-width: 400px;
+}
