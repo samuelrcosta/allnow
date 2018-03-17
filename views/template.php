@@ -4,11 +4,6 @@
 		<title><?php echo $viewData['title']; ?></title>
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<link href="//fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel="stylesheet" type="text/css">
-		<!--!>
-        <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/jquery-ui.min.css" type="text/css" />
-        <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/jquery-ui.structure.min.css" type="text/css" />
-        <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/jquery-ui.theme.min.css" type="text/css" />
-        </!-->
 		<!--!>Jquery</!-->
         <script type="text/javascript" src="<?php echo BASE_URL; ?>vendor/components/jquery/jquery.min.js"></script>
 		<!--!>FormValidator</!-->
@@ -31,10 +26,10 @@
         <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/style.css" type="text/css" />
         <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/style_menu.css" type="text/css" />
 		<!--!>Google Ads</!-->
-		<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
         <script>
             (adsbygoogle = window.adsbygoogle || []).push({
-                google_ad_client: "ca-pub-1497286694536743",
+                google_ad_client: "ca-pub-6611541867419246",
                 enable_page_level_ads: true
             });
         </script>
@@ -42,46 +37,43 @@
 		<script src='https://www.google.com/recaptcha/api.js?hl=pt-BR'></script>
 	</head>
 	<body>
-		<nav class="navbar-top">
-			<div class="container">
-				<div class="navbar-top-logo">
-					<a href="<?php echo BASE_URL; ?>"><img src="<?php echo BASE_URL; ?>assets/images/logo.jpg"></a>
-				</div>
-				<div class="navbar-top-icons">
-					<ul>
-						<li><a href="<?php echo BASE_URL; ?>info/empresa">A empresa</a></li>
-						<?php if(isset($_SESSION['idLogin'])): ?>
-							<li><a href="<?php echo BASE_URL; ?>user/account">Minha Conta</a></li>
-							<li><a href="<?php echo BASE_URL; ?>user/advertisements">Meus Anúncios</a></li>
-							<li><a href="<?php echo BASE_URL; ?>login/logoff">Sair</a></li>
-						<?php else: ?>
-							<li><a href="<?php echo BASE_URL; ?>login">Login/Cadastro</a></li>
-						<?php endif; ?>
-					</ul>
-				</div>
-			</div>
-		</nav>
 		<header>
-            <div class="container">
-                <div id='cssmenu'>
-                    <ul>
-                        <li <?php if(isset($viewData['menuOptions']['url']) && $viewData['menuOptions']['url'] == 'home') echo "class='active'" ?> ><a href='<?php echo BASE_URL; ?>'>Home</a></li>
-                        <?php foreach ($viewData['categoryMenuData'] as $category): ?>
-                            <?php if(empty($category['subs'])): ?>
-                                <li <?php if(isset($viewData['menuOptions']['url']) && $viewData['menuOptions']['url'] == $category['slug']) echo "class='active'" ?> ><a href='<?php echo BASE_URL."categories/open/".$category['slug']; ?>'><?php echo $category['name'] ?></a></li>
-                            <?php else: ?>
-                                <li class='has-sub <?php if(isset($viewData['menuOptions']['url']) && $viewData['menuOptions']['url'] == $category['slug']) echo "active" ?>'><a href='<?php echo BASE_URL."categories/open/".$category['slug']; ?>'><?php echo $category['name'] ?></a>
+            <nav class="navbar-top">
+                <div class="container">
+                    <div style="display: flex">
+                        <div style="flex: 1">
+                            <a href="<?php echo BASE_URL; ?>"><img style="width: 120px" src="<?php echo BASE_URL; ?>assets/images/logo.png"></a>
+                            <div class="navbar-top-icons">
+                                <ul style="list-style: none">
+                                    <li><a href="<?php echo BASE_URL; ?>info/empresa">A empresa</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div style="flex: 7; align-self: center;">
+                            <div class="container">
+                                <div id='cssmenu'>
                                     <ul>
-                                    <?php foreach ($category['subs'] as $sub): ?>
-                                        <li><a href='<?php echo BASE_URL."categories/open/".$sub['slug']; ?>'><?php echo $sub['name'] ?></a></li>
-                                    <?php endforeach; ?>
+                                        <li <?php if(isset($viewData['menuOptions']['url']) && $viewData['menuOptions']['url'] == 'home') echo "class='active'" ?> ><a href='<?php echo BASE_URL; ?>'>Home</a></li>
+                                        <?php foreach ($viewData['categoryMenuData'] as $category): ?>
+                                            <?php if(empty($category['subs'])): ?>
+                                                <li <?php if(isset($viewData['menuOptions']['url']) && $viewData['menuOptions']['url'] == $category['slug']) echo "class='active'" ?> ><a href='<?php echo BASE_URL."categories/open/".$category['slug']; ?>'><?php echo $category['name'] ?></a></li>
+                                            <?php else: ?>
+                                                <li class='has-sub <?php if(isset($viewData['menuOptions']['url']) && $viewData['menuOptions']['url'] == $category['slug']) echo "active" ?>'><a href='<?php echo BASE_URL."categories/open/".$category['slug']; ?>'><?php echo $category['name'] ?></a>
+                                                    <ul>
+                                                        <?php foreach ($category['subs'] as $sub): ?>
+                                                            <li><a href='<?php echo BASE_URL."categories/open/".$sub['slug']; ?>'><?php echo $sub['name'] ?></a></li>
+                                                        <?php endforeach; ?>
+                                                    </ul>
+                                                </li>
+                                            <?php endif; ?>
+                                        <?php endforeach; ?>
                                     </ul>
-                                </li>
-                            <?php endif; ?>
-                        <?php endforeach; ?>
-                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
+            </nav>
 		</header>
 		<section>
             <?php $this->loadViewInTemplate($viewName, $viewData); ?>

@@ -11,30 +11,6 @@
                     <li><a href="<?php echo BASE_URL; ?>categories/open/<?php echo $sub['slug']; ?>"><?php echo $sub['name']; ?></a></li>
                 <?php endforeach; ?>
             </ul>
-            <?php if($activePrincipalCategory['presential'] == '1'): ?>
-                <form method="GET">
-                    <div class="form-group">
-                        <label for="filters[id_state]">Filtre por Estado</label>
-                        <select class="form-control" name="filters[id_state]" id="id_state">
-                            <option value="">Escolha uma opção</option>
-                            <?php foreach ($statesData as $state): ?>
-                                <option <?php if(isset($filters['id_state']) && $filters['id_state'] == $state['id']) echo "selected='selected'" ?> value="<?php echo $state['id']; ?>"><?php echo $state['name']; ?></option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div>
-                    <?php if(isset($filters['id_state'])): ?>
-                        <div class="form-group">
-                            <label for="filters[id_city]">Filtre por Cidade</label>
-                            <select class="form-control" name="filters[id_city]" id="id_city">
-                                <option value="">Escolha uma opção</option>
-                                <?php foreach ($citiesData as $city): ?>
-                                    <option <?php if(isset($filters['id_city']) && $filters['id_city'] == $city['id']) echo "selected='selected'" ?> value="<?php echo $city['id']; ?>"><?php echo $city['name']; ?></option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-                    <?php endif; ?>
-                </form>
-            <?php endif; ?>
         </div>
         <div class="col-sm-8">
             <h1 style="margin-bottom: 30px"><?php echo $activeCategory['name'] ?></h1>

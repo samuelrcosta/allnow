@@ -28,8 +28,6 @@ class categoriesController extends Controller{
      */
     public function open($slug){
         $c = new Categories();
-        $s = new States();
-        $cities = new Cities();
         $a = new Advertisements();
         $data = array();
         $filters = array();
@@ -38,9 +36,6 @@ class categoriesController extends Controller{
 
         if(isset($_GET['filters']) && !empty($_GET['filters'])){
             $filters = $_GET['filters'];
-            if(isset($filters['id_state'])){
-                $data['citiesData'] = $cities->getCities($filters['id_state']);
-            }
         }
 
         $data['categoriesData'] = $c->getActiveList();
@@ -73,7 +68,6 @@ class categoriesController extends Controller{
 
         $data['categoryMenuData'] = $c->getActiveList();
         $data['menuOptions']['url'] = $data['activePrincipalCategory']['slug'];
-        $data['statesData'] = $s->getList();
         $data['title'] = 'Optium - '.$data['activeCategory']['name'];
         $data['advertisementsData'] = $a->getList($categories, $filters);
         $data['filters'] = $filters;
