@@ -4,6 +4,11 @@ body {
     font-size:14px;
 }
 
+.navbar-top{
+	margin-top: 15px;
+	margin-bottom: 20px;
+}
+
 .navbar-top-icons ul li a{
 	color: #1e1e1e;
 }
@@ -170,6 +175,7 @@ footer {
 .subarea form {
 	margin:0;
 	padding:0;
+	display: flex;
 }
 .subarea:before {
     content: "";
@@ -183,7 +189,7 @@ footer {
 }
 .subarea .subemail {
 	margin:0;
-	width:80%;
+	flex: 3;
 	height:60px;
 	display:inline-block;
 	border:0;
@@ -193,9 +199,10 @@ footer {
 	outline:0;
 	padding-left:15px;
 }
-.subarea input[type=submit] {
+.subarea button {
+	flex: 1;
+	cursor: pointer;
 	margin:0;
-	width:20%;
 	height:60px;
 	display:inline-block;
 	border:0;
@@ -204,10 +211,10 @@ footer {
 	border-radius:0 5px 5px 0;
 	margin-left: -5px;
 	color:#FFF;
-	background-color:#59b210;
+	background-color:#F79321;
 }
-.subarea input[type=submit]:hover {
-	background-color:#60c011;
+.subarea button:hover {
+	background-color:#F79321;
 }
 footer h3 {
 	margin-top:0;
@@ -223,7 +230,7 @@ footer h3 {
 	text-decoration: none;
 }
 .linkgroups a:hover {
-	color:#59b210;
+	color:#F79321;
 }
 .linkgroups ul,
 .linkgroups li {
@@ -283,7 +290,7 @@ footer h3 {
 	text-transform: uppercase;
 }
 .product_tag_green{
-    background-color: #59B210;
+    background-color: #F79321;
 	text-transform: uppercase;
 }
 .product_tag_blue{
@@ -326,7 +333,7 @@ footer h3 {
     display: inline-block;
 }
 .paginationItem:hover{
-    border: 1px solid #59B210;
+    border: 1px solid #F79321;
 }
 .paginationItem a{
     display: block;
@@ -334,14 +341,14 @@ footer h3 {
 }
 .paginationItem a:hover{
     text-decoration: none;
-    color: #59B210;
+    color: #F79321;
 }
 .pag_active{
-    border: 1px solid #59B210;
-    color: #59B210;
+    border: 1px solid #F79321;
+    color: #F79321;
 }
 .pag_active a{
-    color: #59B210;
+    color: #F79321;
 }
 
 .price_original{
@@ -377,8 +384,8 @@ footer h3 {
 	height: 35px;
 	float: left;
 	margin-left: 10px;
-	background-color: #59b210;
-	border: 1px solid #59b210;
+	background-color: #F79321;
+	border: 1px solid #F79321;
 	border-radius: 3px;
 	color: #FFF;
 	font-weight: bold;
@@ -470,4 +477,22 @@ footer h3 {
 	border: 1px solid #bbb;
 	margin-top: 15px;
 	max-width: 400px;
+}
+.btn-orange{
+	background-color: #F79321;
+	border-color: #F79321;
+	color: #FFFFFF;
+}
+.slick-prev:before, .slick-next:before {
+	color: black;
+}
+.slick-prev {
+	left: -10px;
+}
+.slick-next {
+	right: -10px;
+}
+.destaques_container{
+	padding-left: 15px;
+	padding-right: 15px;
 }

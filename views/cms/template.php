@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title><?php echo $viewData['title']; ?></title>
+    <link rel="shortcut icon" href="<?php echo BASE_URL;?>/assets/images/favicon.png" type="image/png" />
     <link rel="stylesheet" href="<?php echo BASE_URL; ?>vendor/simple-line-icons/css/simple-line-icons.css">
     <link rel="stylesheet" href="<?php echo BASE_URL; ?>vendor/font-awesome/css/fontawesome-all.min.css">
     <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/styleCMS.css">
@@ -36,7 +37,7 @@
         </a>
 
         <a class="navbar-brand" href="#">
-            <img src="<?php echo BASE_URL; ?>assets/images/logo.jpg" alt="logo">
+            <img src="<?php echo BASE_URL; ?>assets/images/small_logo.png" alt="logo">
         </a>
 
         <a href="#" class="btn btn-link sidebar-toggle d-md-down-none">
@@ -108,12 +109,6 @@
                     <li class="nav-item">
                         <a href="<?php echo BASE_URL; ?>adminAdvertisementsCMS" class="nav-link <?php echo ($viewData['link'] == 'adminAdvertisementsCMS/index')?'active':''; ?>">
                             <i class="icon icon-notebook"></i> Meus Anúncios
-                        </a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a href="<?php echo BASE_URL; ?>advertisementsCMS" class="nav-link <?php echo ($viewData['link'] == 'advertisementsCMS/index')?'active':''; ?>">
-                            <i class="icon icon-notebook"></i> Anúncios
                         </a>
                     </li>
 

@@ -2,14 +2,18 @@
 	<head>
 		<meta charset="utf-8" />
 		<title><?php echo $viewData['title']; ?></title>
+        <link rel="shortcut icon" href="<?php echo BASE_URL;?>/assets/images/favicon.png" type="image/png" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<link href="//fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel="stylesheet" type="text/css">
 		<!--!>Jquery</!-->
         <script type="text/javascript" src="<?php echo BASE_URL; ?>vendor/components/jquery/jquery.min.js"></script>
 		<!--!>FormValidator</!-->
 		<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/jquery.form-validator.min.js"></script>
-		<link href="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/theme-default.min.css"
-			  rel="stylesheet" type="text/css" />
+		<link href="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/theme-default.min.css" rel="stylesheet" type="text/css" />
+        <!--!>Slick</!-->
+        <link rel="stylesheet" type="text/css" href="<?php echo BASE_URL; ?>vendor/slick-1.8.0/slick/slick.css"/>
+        <link rel="stylesheet" type="text/css" href="<?php echo BASE_URL; ?>vendor/slick-1.8.0/slick/slick-theme.css"/>
+        <script type="text/javascript" src="<?php echo BASE_URL; ?>vendor/slick-1.8.0/slick/slick.min.js"></script>
 		<!--!>Jquery Mask</!-->
         <script type="text/javascript" src="<?php echo BASE_URL; ?>vendor/igorescobar/jquery-mask-plugin/src/jquery.mask.js"></script>
         <!--!>Popper.js</!-->
@@ -42,12 +46,7 @@
                 <div class="container">
                     <div style="display: flex">
                         <div style="flex: 1">
-                            <a href="<?php echo BASE_URL; ?>"><img style="width: 120px" src="<?php echo BASE_URL; ?>assets/images/logo.png"></a>
-                            <div class="navbar-top-icons">
-                                <ul style="list-style: none">
-                                    <li><a href="<?php echo BASE_URL; ?>info/empresa">A empresa</a></li>
-                                </ul>
-                            </div>
+                            <a href="<?php echo BASE_URL; ?>"><img src="<?php echo BASE_URL; ?>assets/images/medium_logo.png"></a>
                         </div>
                         <div style="flex: 7; align-self: center;">
                             <div class="container">
@@ -84,13 +83,10 @@
 	    			<div class="row">
 						<div class="col-sm-2"></div>
 						<div class="col-sm-8">
-							<!-- Begin MailChimp Signup Form -->
-							<form action="https://halfpet.us17.list-manage.com/subscribe/post?u=22576ceff542c54404ea407e4&amp;id=2d4c2b41dc" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
-								<input type="email" value="" placeholder="Digite seu E-mail" name="EMAIL" class="required email subemail" id="mce-EMAIL">
-								<input type="hidden" name="b_22576ceff542c54404ea407e4_2d4c2b41dc" tabindex="-1" value="">
-								<input type="submit" value="Inscrever-se" name="subscribe" id="mc-embedded-subscribe" class="button">
+							<form>
+								<input type="text" id="inscribe-email" placeholder="Registre no nosso Newsletter" class="email subemail">
+                                <button type="button" id="inscribe-button" class="button">Inscrever-se</button>
 							</form>
-							<!--End mc_embed_signup-->
 						</div>
 						<div class="col-sm-2"></div>
 					</div>
@@ -100,43 +96,26 @@
 	    		<div class="container">
 	    			<div class="row">
 						<div class="col-sm-4">
-							<a href="<?php echo BASE_URL; ?>"><img width="150" src="<?php echo BASE_URL; ?>assets/images/logo.jpg"></a><br/><br/>
-							<strong>Slogan da Loja Virtual</strong><br/><br/>
-							Endereço da Loja Virtual
+							<a href="<?php echo BASE_URL; ?>"><img width="150" src="<?php echo BASE_URL; ?>assets/images/logo2.png"></a><br/><br/>
+							<strong>Slogan da empresa</strong><br/><br/>
+							Endereço da Empresa
 						</div>
 						<div class="col-sm-8 linkgroups">
 							<div class="row">
 								<div class="col-sm-4">
 									<h3>Categorias</h3>
 									<ul>
-										<li><a href="#">Categoria X</a></li>
-										<li><a href="#">Categoria X</a></li>
-										<li><a href="#">Categoria X</a></li>
-										<li><a href="#">Categoria X</a></li>
-										<li><a href="#">Categoria X</a></li>
-										<li><a href="#">Categoria X</a></li>
+                                        <?php foreach ($viewData['categoryMenuData'] as $category): ?>
+                                            <li><a href="<?php echo BASE_URL."categories/open/".$category['slug']; ?>"><?php echo $category['name'] ?></a></li>
+                                        <?php endforeach; ?>
 									</ul>
 								</div>
 								<div class="col-sm-4">
 									<h3>Informações</h3>
 									<ul>
-										<li><a href="#">Menu 1</a></li>
-										<li><a href="#">Menu 2</a></li>
-										<li><a href="#">Menu 3</a></li>
-										<li><a href="#">Menu 4</a></li>
-										<li><a href="#">Menu 5</a></li>
-										<li><a href="#">Menu 6</a></li>
-									</ul>
-								</div>
-								<div class="col-sm-4">
-									<h3>Informações</h3>
-									<ul>
-										<li><a href="#">Menu 1</a></li>
-										<li><a href="#">Menu 2</a></li>
-										<li><a href="#">Menu 3</a></li>
-										<li><a href="#">Menu 4</a></li>
-										<li><a href="#">Menu 5</a></li>
-										<li><a href="#">Menu 6</a></li>
+										<li><a href="#">Sobre a empresa</a></li>
+                                        <li><a href="#">Facebook</a></li>
+                                        <li><a href="#">Sobre a empresa</a></li>
 									</ul>
 								</div>
 							</div>
@@ -147,14 +126,8 @@
 	    	<div class="copyright">
 	    		<div class="container">
 	    			<div class="row">
-						<div class="col-sm-6">© <span>Loja 2.0</span> - Todos os Direitos Reservados.</div>
+						<div class="col-sm-6">© <span>Optium</span> - Todos os Direitos Reservados.</div>
 						<div class="col-sm-6">
-							<div class="payments">
-								<img src="<?php echo BASE_URL; ?>assets/images/visa.png" />
-								<img src="<?php echo BASE_URL; ?>assets/images/visa.png" />
-								<img src="<?php echo BASE_URL; ?>assets/images/visa.png" />
-								<img src="<?php echo BASE_URL; ?>assets/images/visa.png" />
-							</div>
 						</div>
 					</div>
 	    		</div>
@@ -163,6 +136,43 @@
         <!--!>
         <script type="text/javascript" src="<?php echo BASE_URL; ?>assets/js/jquery-ui.min.js"></script>
         </!-->
+        <!--ALERT MODAL -->
+        <div class="modal alert-modal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Sucesso</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Seu e-mail foi cadastrado em nossa lista. Em breve receberá atualizações</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-orange" data-dismiss="modal">Fechar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            $("#inscribe-button").click(function(){
+                var email = $('#inscribe-email').val();
+                if(email != ''){
+                    $.ajax({
+                        url: '<?php echo BASE_URL; ?>home/inscribeRegister',
+                        type: 'POST',
+                        data: {'email': email},
+                        success: function(result){
+                            if(result == 'true'){
+                                $('#inscribe-email').val('');
+                                $('.alert-modal').modal('show');
+                            }
+                        }
+                    });
+                }
+            });
+        </script>
         <script type="text/javascript" src="<?php echo BASE_URL; ?>assets/js/script_menu.js"></script>
 		<script type="text/javascript" src="<?php echo BASE_URL; ?>assets/js/script.js"></script>
 	</body>

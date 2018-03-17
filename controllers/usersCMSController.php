@@ -29,7 +29,7 @@ class usersCMSController extends Controller{
             $data['title'] = 'ADM - Usuários';
             $data['link'] = 'usersCMS/index';
             $data['userData'] = $u->getData(1, $_SESSION['adminLogin']);
-            $data['usersData'] = $users->getList();
+            $data['usersData'] = $u->getList();
 
             $this->loadTemplateCMS('cms/users/index', $data);
         }else{
@@ -46,9 +46,6 @@ class usersCMSController extends Controller{
      */
     public function editUser($id){
         $u = new Administrators();
-        $c = new Cities();
-        $e = new States();
-        $user = new Users();
         $data = array();
 
         $id = addslashes(base64_decode(base64_decode($id)));
@@ -59,61 +56,29 @@ class usersCMSController extends Controller{
 
             if(isset($_POST['name']) && !empty($_POST['name'])){
                 $name = addslashes($_POST['name']);
-                $cpf = addslashes($_POST['cpf']);
                 $email = addslashes($_POST['email']);
-                $telephone = addslashes($_POST['telephone']);
-                $cellphone = addslashes($_POST['cellphone']);
-                $street = addslashes($_POST['street']);
-                $number = addslashes($_POST['number']);
-                $complement = addslashes($_POST['complement']);
-                $neighborhood = addslashes($_POST['neighborhood']);
-                $zip_code = addslashes($_POST['zip_code']);
-                $id_state = addslashes($_POST['id_state']);
-                $id_city = addslashes($_POST['id_city']);
 
-                if(!empty($name) && !empty($email) && !empty($id_state) && !empty($id_city)){
-                    if($user->edit($id, $name, $cpf, $email, '', $telephone, $cellphone, $street, $number, $complement, $neighborhood, $zip_code, $id_state, $id_city)){
+                if(!empty($name) && !empty($email)){
+                    if($u->edit($id, $name, $email, '')){
                         $msg = urlencode('Dados editados com sucesso.');
                         header("Location: " . BASE_URL . "usersCMS?notification=".$msg."&status=alert-success");
                     }else{
                         $data['usData']['name'] = $name;
-                        $data['usData']['cpf'] = $cpf;
                         $data['usData']['email'] = $email;
-                        $data['usData']['telephone'] = $telephone;
-                        $data['usData']['cellphone'] = $cellphone;
-                        $data['usData']['street'] = $street;
-                        $data['usData']['number'] = $number;
-                        $data['usData']['complement'] = $complement;
-                        $data['usData']['neighborhood'] = $neighborhood;
-                        $data['usData']['zip_code'] = $zip_code;
-                        $data['usData']['id_state'] = $id_state;
-                        $data['usData']['id_city'] = $id_city;
                         $data['notice'] = '<div class="alert alert-warning">O email digitado já está cadastrado em outra conta.</div>';
                     }
                 }else{
                     $data['usData']['name'] = $name;
-                    $data['usData']['cpf'] = $cpf;
                     $data['usData']['email'] = $email;
-                    $data['usData']['telephone'] = $telephone;
-                    $data['usData']['cellphone'] = $cellphone;
-                    $data['usData']['street'] = $street;
-                    $data['usData']['number'] = $number;
-                    $data['usData']['complement'] = $complement;
-                    $data['usData']['neighborhood'] = $neighborhood;
-                    $data['usData']['zip_code'] = $zip_code;
-                    $data['usData']['id_state'] = $id_state;
-                    $data['usData']['id_city'] = $id_city;
                     $data['notice'] = '<div class="alert alert-warning">Preencha todos os campos.</div>';
                 }
             }else{
                 //If not, render editPage
-                $data['usData'] = $user->getData(1, $id);
+                $data['usData'] = $u->getData(1, $id);
             }
 
             $data['title'] = 'ADM - Editar Usuário';
             $data['link'] = 'usersCMS/index';
-            $data['states'] = $e->getList();
-            $data['cities'] = $c->getCities($data['usData']['id_state']);
             $data['userData'] = $u->getData(1, $_SESSION['adminLogin']);
 
             $this->loadTemplateCMS('cms/users/editUser', $data);

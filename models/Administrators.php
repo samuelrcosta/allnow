@@ -150,5 +150,23 @@ class Administrators extends Model{
         return $array;
     }
 
+    /**
+     * This function retrieves all data from all users.
+     *
+     * @return  array containing all data retrieved.
+     */
+    public function getList(){
+        $array = array();
+
+        $sql = 'SELECT * FROM administrators ORDER BY name DESC';
+        $sql = $this->db->prepare($sql);
+        $sql->execute();
+        if($sql->rowCount() > 0){
+            $array = $sql->fetchAll();
+        }
+
+        return $array;
+    }
+
 }
 ?>

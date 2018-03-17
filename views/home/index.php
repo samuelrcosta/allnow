@@ -1,8 +1,5 @@
 <div style="clear: both"></div>
 <div class="container">
-    <div class="instructions">
-        <a href="#">Como Anunciar</a>
-    </div>
     <section>
         <div class="row">
             <div class="col-10">
@@ -28,18 +25,17 @@
                         <?php endforeach; ?>
                     </div>
                 </div>
-                <div class="destaques">
-                    <h3>Testemunhos</h3>
-                    <div class="destaques_container">
-                        Este local irá receber videos
-                    </div>
-                </div>
             </div>
             <div class="col-2">Anúncios</div>
         </div>
     </section>
-    <div>
-        Redes sociais
-    </div>
 </div>
+<script>
+    $(document).ready(function(){
+        $('.destaques_container').slick({
+            autoplay: true,
+            autoplaySpeed: 15000,
+        });
+    });
+</script>
 <?php if(isset($_SESSION['idLogin'])) echo $_SESSION['idLogin']; ?>

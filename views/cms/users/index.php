@@ -21,7 +21,6 @@
                 <tr>
                     <th>Nome</th>
                     <th>E-mail</th>
-                    <th>Anúncios</th>
                     <th>Editar</th>
                     <th>Excluir</th>
                 </tr>
@@ -66,7 +65,6 @@
                 "<tr>" +
                     "<td>" + usersList[id].name +"</td>" +
                     "<td>" + usersList[id].email +"</td>" +
-                    "<td>" + usersList[id].count_ads +"</td>" +
                     "<td><a href='" + BASE_URL + "usersCMS/editUser/" +  btoa(btoa(usersList[id].id)) + "' class='btn btn-info'><i class='icon icon-pencil'></i></a></td>" +
                     "<td><button class='btn btn-danger' onclick=" + 'deleteUser("' + btoa(btoa(usersList[id].id)) + '")' + "><i class='icon icon-trash'></i></button></td>" +
                 "</tr>"
@@ -87,7 +85,6 @@
                         "<tr>" +
                             "<td>" + usersList[id].name +"</td>" +
                             "<td>" + usersList[id].email +"</td>" +
-                            "<td>" + usersList[id].count_ads +"</td>" +
                             "<td><a href='" + BASE_URL + "usersCMS/editUser/" +  btoa(btoa(usersList[id].id)) + "' class='btn btn-info'><i class='icon icon-pencil'></i></a></td>" +
                             "<td><button class='btn btn-danger' onclick=" + 'deleteUser("' + btoa(btoa(usersList[id].id)) + '")' + "><i class='icon icon-trash'></i></button></td>" +
                         "</tr>"

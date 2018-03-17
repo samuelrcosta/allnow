@@ -123,7 +123,7 @@ class Store extends Model{
      * @param $email  string for the user email.
      * @param $name  string for the user name.
      */
-    public function subscribeMailChimp($email, $name){
+    public function subscribeMailChimp($email, $name = ''){
         $memberID = md5(strtolower($email));
         $dataCenter = substr($this->MAILCHIMP_API_KEY,strpos($this->MAILCHIMP_API_KEY,'-')+1);
         $url = 'https://'.$dataCenter.'.api.mailchimp.com/3.0/lists/'.$this->MAILCHIMP_LIST_ID.'/members/'.$memberID;

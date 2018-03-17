@@ -30,4 +30,15 @@ class homeController extends Controller {
         $this->loadTemplate('home/index', $data);
     }
 
+    public function inscribeRegister(){
+        $store = new Store();
+        if(isset($_POST['email']) && !empty($_POST['email'])){
+            $email = $_POST['email'];
+            $store->subscribeMailChimp($email);
+            echo 'true';
+        }else{
+            echo 'false';
+        }
+    }
+
 }
