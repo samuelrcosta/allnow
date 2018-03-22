@@ -37,7 +37,15 @@
                 enable_page_level_ads: true
             });
         </script>
-		<!--!>Google Re-captcha</!-->
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-116306177-1"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'UA-116306177-1');
+        </script>
+        <!--!>Google Re-captcha</!-->
 		<script src='https://www.google.com/recaptcha/api.js?hl=pt-BR'></script>
 	</head>
 	<body>
