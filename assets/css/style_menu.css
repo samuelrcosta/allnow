@@ -1,4 +1,16 @@
 @import url(http://fonts.googleapis.com/css?family=Open+Sans);
+.menu-container{
+    display: flex;
+}
+.img-top-logo-small{
+    display: none;
+    text-align: center;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #e3e3e3;
+}
+.img-top-logo-small img{
+    width: 140px;
+}
 #cssmenu,
 #cssmenu ul,
 #cssmenu ul li,
@@ -186,6 +198,15 @@
     border-color: #ffffff;
 }
 @media all and (max-width: 768px), only screen and (-webkit-min-device-pixel-ratio: 2) and (max-width: 1024px), only screen and (min--moz-device-pixel-ratio: 2) and (max-width: 1024px), only screen and (-o-min-device-pixel-ratio: 2/1) and (max-width: 1024px), only screen and (min-device-pixel-ratio: 2) and (max-width: 1024px), only screen and (min-resolution: 192dpi) and (max-width: 1024px), only screen and (min-resolution: 2dppx) and (max-width: 1024px) {
+    .menu-container{
+        display: block;
+    }
+    .img-top-logo-big{
+        display: none
+    }
+    .img-top-logo-small{
+        display: block;
+    }
     #cssmenu {
         width: 100%;
     }

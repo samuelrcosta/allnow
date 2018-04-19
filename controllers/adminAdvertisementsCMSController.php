@@ -41,11 +41,9 @@ class adminAdvertisementsCMSController extends Controller{
     /**
      * This function shows the Admin Advertisement register page.
      */
-    public function newAdvertisement(){
+    public function newAdvertisementPage(){
         $u = new Administrators();
-        $a = new Advertisements();
         $c = new Categories();
-        $s = new Store();
         $data = array();
 
         if($u->isLogged()){
@@ -53,102 +51,6 @@ class adminAdvertisementsCMSController extends Controller{
             $data['link'] = 'adminAdvertisementsCMS/index';
             $data['userData'] = $u->getData(1, $_SESSION['adminLogin']);
             $data['categoryData'] = $c->getList();
-
-            if(isset($_POST['title'])){
-                $data['adtitle'] = addslashes($_POST['title']);
-                $data['id_category'] = addslashes($_POST['id_category']);
-                $data['id_subcategory'] = addslashes($_POST['id_subcategory']);
-                $data['subcategories'] = array();
-                foreach ($data['categoryData'] as $category){
-                    if($category['id'] == $data['id_category']){
-                        foreach ($category['subs'] as $subcategory){
-                            $data['subcategories'][] = $subcategory;
-                        }
-                    }
-                }
-                $data['abstract'] = addslashes($_POST['abstract']);
-                $data['media_type'] = addslashes($_POST['media_type']);
-                $data['media_link'] = addslashes($_POST['media_link']);
-                $data['description'] = addslashes($_POST['description']);
-                $data['rating'] = addslashes($_POST['rating']);
-                if(isset($_POST['highlight'])){
-                    $data['highlight'] = 1;
-                }else{
-                    $data['highlight'] = Null;
-                }
-                if(isset($_POST['new'])){
-                    $data['new'] = 1;
-                }else{
-                    $data['new'] = Null;
-                }
-                if(isset($_POST['bestseller'])){
-                    $data['bestseller'] = 1;
-                }else{
-                    $data['bestseller'] = Null;
-                }
-                if(isset($_POST['sale'])){
-                    $data['sale'] = 1;
-                }else{
-                    $data['sale'] = Null;
-                }
-                if((!empty($data['adtitle'])) && (!empty($data['id_category'])) && (!empty($data['id_subcategory'])) && (!empty($data['abstract'])) && (!empty($data['media_link'])) && (!empty($data['description'])) && (!empty($data['media_type']))){
-
-                    if($data['media_type'] == 1){
-                        $embed_link = $s->getYoutubeEmbedUrl($data['media_link']);
-                        if(!empty($embed_link)){
-                            $data['media'] = "<iframe width='640' height='315' src=".$embed_link." frameborder='0' allow='autoplay; encrypted-media' allowfullscreen></iframe>";
-                        }else{
-                            $data['media'] = '';
-                        }
-                    }elseif($data['media_type'] == 2){
-                        $oembed_endpoint = 'http://vimeo.com/api/oembed';
-                        // Grab the video url from the url, or use default
-                        $video_url = $data['media_link'];
-                        // Create the URLs
-                        $xml_url = $oembed_endpoint . '.xml?url=' . rawurlencode($video_url);
-                        // Curl helper function
-                        function curl_get($url) {
-                            $curl = curl_init($url);
-                            curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-                            curl_setopt($curl, CURLOPT_TIMEOUT, 30);
-                            curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
-                            $return = curl_exec($curl);
-                            curl_close($curl);
-                            return $return;
-                        }
-                        if(curl_get($xml_url) == '404 Not Found'){
-                            $data['media'] = '';
-                        }else{
-                            $oembed = simplexml_load_string(curl_get($xml_url));
-                            $data['media'] = $oembed->html;
-                        }
-                    }elseif($data['media_type'] == 3){
-                        $data['media'] = "<img width='100%' src=".$data['media_link'].">";
-                    }elseif($data['media_type'] == 4){
-                        if($s->url_exists($data['media_link'])){
-                            $data['media'] = "<img width='100%' src=".$data['media_link'].">";
-                        }else{
-                            $data['media'] = '';
-                        }
-                    }else{
-                        $data['media'] = $data['media_link'];
-                    }
-
-                    if(!empty($data['media'])){
-                        if($a->register($_SESSION['adminLogin'], $data['id_category'], $data['id_subcategory'], $data['adtitle'], $data['abstract'], $data['media_type'], $data['media_link'],$data['media'], $data['description'], 1, 2, $data['rating'], $data['highlight'], $data['new'], $data['bestseller'], $data['sale'])){
-                            $msg = urlencode('Anúncio cadastrado com sucesso!');
-                            header("Location: ".BASE_URL."adminAdvertisementsCMS?notification=".$msg."&status=alert-info");
-                            exit;
-                        }else{
-                            $data['notice'] = '<div class="alert alert-warning">Anúncio já cadastrado.</div>';
-                        }
-                    }else{
-                        $data['notice'] = '<div class="alert alert-warning">Preencha todos os campos.</div>';
-                    }
-                }else{
-                    $data['notice'] = '<div class="alert alert-warning">Preencha todos os campos.</div>';
-                }
-            }
 
             $this->loadTemplateCMS('cms/adminAdvertisements/new', $data);
         }else{
@@ -158,122 +60,278 @@ class adminAdvertisementsCMSController extends Controller{
     }
 
     /**
+     * This function receive POST data to save a new Advertisement.
+     */
+    public function saveNewAdvertisement(){
+        $a = new Advertisements();
+        $u = new Administrators();
+        $medias_ads = new Medias_ads();
+        $s = new Store();
+        // Check if user is logged
+        if($u->isLogged()) {
+            // Array for check the keys
+            $keys = array('title', 'id_category', 'id_subcategory', 'abstract', 'description', 'rating', 'highlight', 'new', 'bestseller', 'sale', 'medias');
+            if ($s->array_keys_check($keys, $_POST)) {
+                // Check if the array is completed
+                if ($s->array_check_completed_keys($keys, $_POST)) {
+                    $title = addslashes($_POST['title']);
+                    $id_category = intval($_POST['id_category']);
+                    $id_subcategory = intval($_POST['id_subcategory']);
+                    $abstract = addslashes($_POST['abstract']);
+                    $description = $_POST['description'];
+                    $rating = addslashes($_POST['rating']);
+                    $highlight = ($_POST['highlight'] == 'true') ? 1 : null;
+                    $new = ($_POST['new'] == 'true') ? 1 : null;
+                    $bestseller = ($_POST['bestseller'] == 'true') ? 1 : null;
+                    $sale = ($_POST['sale'] == 'true') ? 1 : null;
+                    // For medias
+                    $keys = array('media_type', 'media_link');
+                    $medias = json_decode($_POST['medias'], true);
+                    // Check medias
+                    $check = false;
+                    if (count($medias) > 0) {
+                        for ($i = 0; $i < count($medias); $i++) {
+                            if ($s->array_keys_check($keys, $medias[$i])) {
+                                if ($s->array_check_completed_keys($keys, $medias[$i])) {
+                                    $check = true;
+                                    if ($medias[$i]['media_type'] == 1) {
+                                        $embed_link = $s->getYoutubeEmbedUrl($medias[$i]['media_link']);
+                                        if (!empty($embed_link)) {
+                                            $medias[$i]['media'] = "<iframe width='640' height='315' src=" . $embed_link . " frameborder='0' allow='autoplay; encrypted-media' allowfullscreen></iframe>";
+                                        } else {
+                                            echo "Link do Youtube inválido.";
+                                            exit;
+                                        }
+                                    } elseif ($medias[$i]['media_type'] == 2) {
+                                        $oembed_endpoint = 'http://vimeo.com/api/oembed';
+                                        // Grab the video url from the url, or use default
+                                        $video_url = $medias[$i]['media_link'];
+                                        // Create the URLs
+                                        $xml_url = $oembed_endpoint . '.xml?url=' . rawurlencode($video_url);
+                                        // Curl helper function
+                                        function curl_get($url)
+                                        {
+                                            $curl = curl_init($url);
+                                            curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+                                            curl_setopt($curl, CURLOPT_TIMEOUT, 30);
+                                            curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
+                                            $return = curl_exec($curl);
+                                            curl_close($curl);
+                                            return $return;
+                                        }
+
+                                        if (curl_get($xml_url) == '404 Not Found') {
+                                            echo "Link do Vimeo inválido.";
+                                            exit;
+                                        } else {
+                                            $oembed = simplexml_load_string(curl_get($xml_url));
+                                            $medias[$i]['media'] = $oembed->html;
+                                        }
+                                    } elseif ($medias[$i]['media_type'] == 3) {
+                                        $medias[$i]['media'] = "<img width='100%' src=" . $medias[$i]['media_link'] . ">";
+                                    } else {
+                                        echo "Tipo de Mídia inválido.";
+                                        exit;
+                                    }
+                                } else {
+                                    echo 'Preencha todos os campos obrigatórios.';
+                                    exit;
+                                }
+                            } else {
+                                echo 'Preencha todos os campos obrigatórios.';
+                                exit;
+                            }
+                        }
+                        if ($check == true) {
+                            // First: Save the Ad
+                            $idAdvertisement = $a->register($_SESSION['adminLogin'], $id_category, $id_subcategory, $title, $abstract, $description, 1, $rating, $highlight, $new, $bestseller, $sale);
+                            if ($idAdvertisement != false) {
+                                for ($i = 0; $i < count($medias); $i++) {
+                                    $medias_ads->register($idAdvertisement, $medias[$i]['media'], $medias[$i]['media_type'], $medias[$i]['media_link']);
+                                }
+                                // Returns true
+                                echo 'true';
+                                exit;
+                            } else {
+                                echo 'Anúncio já cadastrado.';
+                                exit;
+                            }
+                        }
+                    } else {
+                        echo 'Preencha todos os campos obrigatórios.';
+                        exit;
+                    }
+                } else {
+                    echo 'Preencha todos os campos obrigatórios.';
+                    exit;
+                }
+            } else {
+                echo 'Preencha todos os campos obrigatórios.';
+                exit;
+            }
+            exit;
+        }
+    }
+
+    /**
      * This function shows the Admin Advertisement edit page.
      */
-    public function editAdvertisement($id){
+    public function editAdvertisementPage($id){
         $u = new Administrators();
-        $a = new Advertisements();
         $c = new Categories();
-        $s = new Store();
         $data = array();
-
-        $id = addslashes(base64_decode(base64_decode($id)));
-
+        // Checks if user is logged in
         if($u->isLogged()){
             $data['title'] = 'ADM - Editar Anúncio';
             $data['link'] = 'adminAdvertisementsCMS/index';
+            // Get user data
             $data['userData'] = $u->getData(1, $_SESSION['adminLogin']);
-            $data['advertisementData'] = $a->getDataById($id);
+            // Sends the Received ID
+            $data['advertisementId'] = $id;
+            // Get Categories
             $data['categoryData'] = $c->getList();
-            $data['subcategoryData'] = array();
-            foreach ($data['categoryData'] as $category){
-                if($category['id'] == $data['advertisementData']['id_category']){
-                    foreach ($category['subs'] as $subcategory){
-                        $data['subcategoryData'][] = $subcategory;
-                    }
-                }
-            }
-
-            if(isset($_POST['title'])){
-                $data['advertisementData']['title'] = addslashes($_POST['title']);
-                $data['advertisementData']['id_category'] = addslashes($_POST['id_category']);
-                $data['advertisementData']['id_subcategory'] = addslashes($_POST['id_subcategory']);
-                $data['advertisementData']['abstract'] = addslashes($_POST['abstract']);
-                $data['advertisementData']['media_type'] = addslashes($_POST['media_type']);
-                $data['advertisementData']['media_link'] = addslashes($_POST['media_link']);
-                $data['advertisementData']['description'] = addslashes($_POST['description']);
-                $data['advertisementData']['rating'] = addslashes($_POST['rating']);
-                if(isset($_POST['highlight'])){
-                    $data['advertisementData']['highlight'] = 1;
-                }else{
-                    $data['advertisementData']['highlight'] = Null;
-                }
-                if(isset($_POST['new'])){
-                    $data['advertisementData']['new'] = 1;
-                }else{
-                    $data['advertisementData']['new'] = Null;
-                }
-                if(isset($_POST['bestseller'])){
-                    $data['advertisementData']['bestseller'] = 1;
-                }else{
-                    $data['advertisementData']['bestseller'] = Null;
-                }
-                if(isset($_POST['sale'])){
-                    $data['advertisementData']['sale'] = 1;
-                }else{
-                    $data['advertisementData']['sale'] = Null;
-                }
-                if((!empty($data['advertisementData']['title'])) && (!empty($data['advertisementData']['id_category'])) && (!empty($data['advertisementData']['id_subcategory'])) && (!empty($data['advertisementData']['abstract'])) && (!empty($data['advertisementData']['media_type'])) && (!empty($data['advertisementData']['media_link'])) && (!empty($data['advertisementData']['description']))){
-
-                    if($data['advertisementData']['media_type'] == 1){
-                        $embed_link = $s->getYoutubeEmbedUrl($data['advertisementData']['media_link']);
-                        if(!empty($embed_link)){
-                            $data['advertisementData']['media'] = "<iframe width='640' height='315' src=".$embed_link." frameborder='0' allow='autoplay; encrypted-media' allowfullscreen></iframe>";
-                        }else{
-                            $data['advertisementData']['media'] = '';
-                        }
-                    }elseif($data['advertisementData']['media_type'] == 2){
-                        $oembed_endpoint = 'http://vimeo.com/api/oembed';
-                        // Grab the video url from the url, or use default
-                        $video_url = $data['advertisementData']['media_link'];
-                        // Create the URLs
-                        $xml_url = $oembed_endpoint . '.xml?url=' . rawurlencode($video_url);
-                        // Curl helper function
-                        function curl_get($url) {
-                            $curl = curl_init($url);
-                            curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-                            curl_setopt($curl, CURLOPT_TIMEOUT, 30);
-                            curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
-                            $return = curl_exec($curl);
-                            curl_close($curl);
-                            return $return;
-                        }
-                        if(curl_get($xml_url) == '404 Not Found'){
-                            $data['advertisementData']['media'] = '';
-                        }else{
-                            $oembed = simplexml_load_string(curl_get($xml_url));
-                            $data['advertisementData']['media'] = $oembed->html;
-                        }
-                    }elseif($data['advertisementData']['media_type'] == 3){
-                        $data['advertisementData']['media'] = "<img width='100%' src=".$data['advertisementData']['media_link'].">";
-                    }elseif($data['advertisementData']['media_type'] == 4){
-                        if($s->url_exists($data['advertisementData']['media_link'])){
-                            $data['advertisementData']['media'] = "<img width='100%' src=".$data['advertisementData']['media_link'].">";
-                        }else{
-                            $data['advertisementData']['media'] = '';
-                        }
-                    }else{
-                        $data['advertisementData']['media'] = $data['advertisementData']['media_type'];
-                    }
-
-                    if(!empty($data['advertisementData']['media'])){
-                        if($a->edit($id, $data['advertisementData']['id_category'], $data['advertisementData']['id_subcategory'], $data['advertisementData']['title'], $data['advertisementData']['abstract'], $data['advertisementData']['media_type'], $data['advertisementData']['media_link'], $data['advertisementData']['media'], $data['advertisementData']['description'], 1, 2, $data['advertisementData']['rating'], $data['advertisementData']['highlight'], $data['advertisementData']['new'], $data['advertisementData']['bestseller'], $data['advertisementData']['sale'])){
-                            $msg = urlencode('Anúncio editado com sucesso!');
-                            header("Location: ".BASE_URL."adminAdvertisementsCMS?notification=".$msg."&status=alert-info");
-                            exit;
-                        }else{
-                            $data['notice'] = '<div class="alert alert-warning">Anúncio já cadastrado.</div>';
-                        }
-                    }else{
-                        $data['notice'] = '<div class="alert alert-warning">Link da mídia inválido.</div>';
-                    }
-                }else{
-                    $data['notice'] = '<div class="alert alert-warning">Preencha todos os campos.</div>';
-                }
-            }
             $this->loadTemplateCMS('cms/adminAdvertisements/edit', $data);
         }else{
             header("Location: ".BASE_URL);
+            exit;
+        }
+    }
+
+    /**
+     * This function shows all data from advertisement in JSON.
+     */
+    public function getAdvertisementData($id){
+        $u = new Administrators();
+        $a = new Advertisements();
+        $c = new Categories();
+        // Check if user is logged
+        if($u->isLogged()) {
+            $data = array();
+            $id = addslashes(base64_decode(base64_decode($id)));
+            $data['advertisementData'] = $a->getDataById($id);
+            // Show the result
+            echo json_encode($data);
+        }
+    }
+
+    /**
+     * This function edit a Advertisement.
+     */
+    public function editAdvertisement(){
+        $u = new Administrators();
+        $a = new Advertisements();
+        $medias_ads = new Medias_ads();
+        $s = new Store();
+
+        if($u->isLogged()){
+            // Array for check the keys
+            $keys = array('id', 'title', 'id_category', 'id_subcategory', 'abstract', 'description', 'rating', 'highlight', 'new', 'bestseller', 'sale', 'medias', 'delete_medias');
+            if ($s->array_keys_check($keys, $_POST)) {
+                // Check if the array is completed
+                if ($s->array_check_completed_keys($keys, $_POST)) {
+                    $id = base64_decode(base64_decode(addslashes($_POST['id'])));
+                    $title = addslashes($_POST['title']);
+                    $id_category = intval($_POST['id_category']);
+                    $id_subcategory = intval($_POST['id_subcategory']);
+                    $abstract = addslashes($_POST['abstract']);
+                    $description = $_POST['description'];
+                    $rating = (empty(addslashes($_POST['rating']))) ? null : addslashes($_POST['rating']);
+                    $highlight = ($_POST['highlight'] == 'true') ? 1 : null;
+                    $new = ($_POST['new'] == 'true') ? 1 : null;
+                    $bestseller = ($_POST['bestseller'] == 'true') ? 1 : null;
+                    $sale = ($_POST['sale'] == 'true') ? 1 : null;
+                    // For medias
+                    $keys = array('media_type', 'media_link');
+                    $medias = json_decode($_POST['medias'], true);
+                    $delete_medias = json_decode($_POST['delete_medias'], true);
+                    // Check medias
+                    $check = false;
+                    if (count($medias) > 0) {
+                        for ($i = 0; $i < count($medias); $i++) {
+                            if ($s->array_keys_check($keys, $medias[$i])) {
+                                if ($s->array_check_completed_keys($keys, $medias[$i])) {
+                                    $check = true;
+                                    if ($medias[$i]['media_type'] == 1) {
+                                        $embed_link = $s->getYoutubeEmbedUrl($medias[$i]['media_link']);
+                                        if (!empty($embed_link)) {
+                                            $medias[$i]['media'] = "<iframe width='640' height='315' src=" . $embed_link . " frameborder='0' allow='autoplay; encrypted-media' allowfullscreen></iframe>";
+                                        } else {
+                                            echo "Link do Youtube inválido.";
+                                            exit;
+                                        }
+                                    } elseif ($medias[$i]['media_type'] == 2) {
+                                        $oembed_endpoint = 'http://vimeo.com/api/oembed';
+                                        // Grab the video url from the url, or use default
+                                        $video_url = $medias[$i]['media_link'];
+                                        // Create the URLs
+                                        $xml_url = $oembed_endpoint . '.xml?url=' . rawurlencode($video_url);
+                                        // Curl helper function
+                                        function curl_get($url){
+                                            $curl = curl_init($url);
+                                            curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+                                            curl_setopt($curl, CURLOPT_TIMEOUT, 30);
+                                            curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
+                                            $return = curl_exec($curl);
+                                            curl_close($curl);
+                                            return $return;
+                                        }
+
+                                        if (curl_get($xml_url) == '404 Not Found') {
+                                            echo "Link do Vimeo inválido.";
+                                            exit;
+                                        } else {
+                                            $oembed = simplexml_load_string(curl_get($xml_url));
+                                            $medias[$i]['media'] = $oembed->html;
+                                        }
+                                    } elseif ($medias[$i]['media_type'] == 3) {
+                                        $medias[$i]['media'] = "<img width='100%' src=";
+                                        $medias[$i]['media'] .= $medias[$i]['media_link'];
+                                        $medias[$i]['media'] .= " />";
+                                    } else {
+                                        echo "Tipo de Mídia inválido.";
+                                        exit;
+                                    }
+                                } else {
+                                    echo 'Preencha todos os campos obrigatórios.';
+                                    exit;
+                                }
+                            } else {
+                                echo 'Preencha todos os campos obrigatórios.';
+                                exit;
+                            }
+                        }
+                        if ($check == true) {
+                            // First: Save the Ad
+                            if($a->edit($id, $id_category, $id_subcategory, $title, $abstract, $description, 1, $rating, $highlight, $new, $bestseller, $sale)) {
+                                // Delete the link ads
+                                $medias_ads->deleteLinksMedias($id);
+                                // Delete the ads in medias_delete
+                                for($i = 0; $i < count($delete_medias); $i++){
+                                    $medias_ads->deleteMedia($delete_medias[$i]);
+                                }
+                                for ($i = 0; $i < count($medias); $i++) {
+                                    $medias_ads->register($id, $medias[$i]['media'], $medias[$i]['media_type'], $medias[$i]['media_link']);
+                                }
+                                // Returns true
+                                echo 'true';
+                                exit;
+                            } else {
+                                echo 'Anúncio já cadastrado.';
+                                exit;
+                            }
+                        }
+                    } else {
+                        echo 'Preencha todos os campos obrigatórios.';
+                        exit;
+                    }
+                } else {
+                    echo 'Preencha todos os campos obrigatórios.';
+                    exit;
+                }
+            } else {
+                echo 'Preencha todos os campos obrigatórios.';
+                exit;
+            }
             exit;
         }
     }

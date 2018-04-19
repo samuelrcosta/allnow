@@ -234,12 +234,10 @@ class Categories extends Model {
      *
      * @param   $name           string for the category name.
      * @param   $id_principal   int for the principal category if exists.
-     * @param   $presential     int if this category is presential or nor.
-     * @param   $for_user       int if this category is visible for users.
      *
      * @return  boolean     boolean false for email already registered, or instead True.
      */
-    public function register($name, $presential = 0, $for_user = 0, $id_principal = Null){
+    public function register($name, $id_principal = Null){
         $s = new Store();
         $slug = $s->createSlug($name);
         $sql = "SELECT * FROM categories WHERE slug = ?";
@@ -249,9 +247,9 @@ class Categories extends Model {
         if($sql && count($sql)){
             return false;
         }else{
-            $sql = "INSERT INTO categories (name, presential, for_user, id_principal, slug) VALUES (?, ?, ?, ?, ?)";
+            $sql = "INSERT INTO categories (name, id_principal, slug) VALUES (?, ?, ?, ?, ?)";
             $sql = $this->db->prepare($sql);
-            $sql->execute(array($name, $presential, $for_user, $id_principal, $slug));
+            $sql->execute(array($name, $id_principal, $slug));
             return true;
         }
     }
@@ -262,12 +260,10 @@ class Categories extends Model {
      *
      * @param   $name           string for the category name.
      * @param   $id_principal   int for the principal category if exists.
-     * @param   $presential     int if this category is presential or nor.
-     * @param   $for_user       int if this category is visible for users.
      *
      * @return  boolean     boolean false for email already registered, or instead True.
      */
-    public function edit($id, $name, $presential = Null, $for_user = 0, $id_principal = Null){
+    public function edit($id, $name, $id_principal = Null){
         $s = new Store();
         $slug = $s->createSlug($name);
         $sql = "SELECT * FROM categories WHERE slug = ? AND id != ?";
@@ -277,9 +273,9 @@ class Categories extends Model {
         if($sql && count($sql)){
             return false;
         }else{
-            $sql = "UPDATE categories SET name = ?, presential = ?, for_user = ?, id_principal = ?, slug = ? WHERE id = ?";
+            $sql = "UPDATE categories SET name = ?, id_principal = ?, slug = ? WHERE id = ?";
             $sql = $this->db->prepare($sql);
-            $sql->execute(array($name, $presential, $for_user, $id_principal, $slug, $id));
+            $sql->execute(array($name, $id_principal, $slug, $id));
             return true;
         }
     }

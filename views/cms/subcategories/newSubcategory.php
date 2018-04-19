@@ -19,9 +19,6 @@
                     <?php endforeach; ?>
                 </select>
             </div>
-            <div class="form-group" style="margin-bottom: 0;">
-                <input type="checkbox" name="presential" id="presential" class="filter_brand" style="margin-right: 5px" <?php echo(isset($presential) && $presential == 1)?'checked':''; ?>> <label for="presential">Presencial? (Habilita o filtro de cidade e estado)</label>
-            </div>
             <?php if(!empty($notice)):?>
                 <?php echo $notice ?>
             <?php endif; ?>

@@ -91,9 +91,12 @@ class Store extends Model{
     function getYoutubeEmbedUrl($url){
         if (strpos($url, 'youtu') !== false) {
             preg_match('/[\\?\\&]v=([^\\?\\&]+)/', $url, $matches);
-            $id = $matches[1];
-
-            return 'https://www.youtube.com/embed/' . $id ;
+            if(count($matches) > 1){
+                $id = $matches[1];
+                return 'https://www.youtube.com/embed/' . $id ;
+            }else{
+                return '';
+            }  
         }else{
             return '';
         }
@@ -106,15 +109,46 @@ class Store extends Model{
      *
      * @return boolean
      */
-    function url_exists($url) {
-
+    public function url_exists($url) {
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_NOBODY, true);
         curl_exec($ch);
         $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
-
         return ($code == 200);
+    }
+
+    /**
+     * This function verify if all keys in $keys exists in $array keys.
+     *
+     * @param   $keys array for the keys
+     * @param   $array array for the check
+     *
+     * @return boolean
+     */
+    public function array_keys_check($keys, $array){
+        if (count(array_intersect($keys,array_keys($array))) == count($keys)) {
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    /**
+     * This function verify if all keys in $keys is completed in $array.
+     *
+     * @param   $keys array for the keys
+     * @param   $array array for the check
+     *
+     * @return boolean
+     */
+    public function array_check_completed_keys($keys, $array){
+        for($i = 0; $i < count($keys); $i++){
+            if(strlen($array[$keys[$i]]) <= 0){
+                return false;
+            }
+        }
+        return true;
     }
 
     /**

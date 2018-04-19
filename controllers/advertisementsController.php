@@ -30,8 +30,6 @@ class advertisementsController extends Controller{
      */
     public function open($id){
         $c = new Categories();
-        $s = new States();
-        $cities = new Cities();
         $a = new Advertisements();
         $data = array();
 

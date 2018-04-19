@@ -9,7 +9,7 @@
                 <?php echo urldecode($_GET['notification']); ?>
             </div>
         <?php endif; ?>
-        <a href="<?php echo BASE_URL ?>adminAdvertisementsCMS/newAdvertisement" class="btn btn-success" style="margin-bottom: 20px">Novo Anúncio</a>
+        <a href="<?php echo BASE_URL ?>adminAdvertisementsCMS/newAdvertisementPage" class="btn btn-success" style="margin-bottom: 20px">Novo Anúncio</a>
         <div class="input-group" style="margin-bottom: 20px">
             <input type="text" class="form-control" id="search" placeholder="Busque por título, categoria, subcategoria ou resumo" onkeyup="search()">
             <span class="input-group-btn">
@@ -70,7 +70,7 @@
                     "<td>" + advertisementsList[id].category_name +"</td>" +
                     "<td>" + advertisementsList[id].subcategory_name +"</td>" +
                     "<td style='white-space: pre;'>" + advertisementsList[id].abstract +"</td>" +
-                    "<td><a href='" + BASE_URL + "adminAdvertisementsCMS/editAdvertisement/" +  btoa(btoa(advertisementsList[id].id)) + "' class='btn btn-info'><i class='icon icon-pencil'></i></a></td>" +
+                    "<td><a href='" + BASE_URL + "adminAdvertisementsCMS/editAdvertisementPage/" +  btoa(btoa(advertisementsList[id].id)) + "' class='btn btn-info'><i class='icon icon-pencil'></i></a></td>" +
                     "<td><button class='btn btn-danger' onclick=" + 'deleteAdvertisement("' + btoa(btoa(advertisementsList[id].id)) + '")' + "><i class='icon icon-trash'></i></button></td>" +
                 "</tr>"
             );
@@ -92,7 +92,7 @@
                         "<td>" + advertisementsList[id].category_name +"</td>" +
                         "<td>" + advertisementsList[id].subcategory_name +"</td>" +
                         "<td style='white-space: pre;'>" + advertisementsList[id].abstract +"</td>" +
-                        "<td><a href='" + BASE_URL + "adminAdvertisementsCMS/editAdvertisement/" +  btoa(btoa(advertisementsList[id].id)) + "' class='btn btn-info'><i class='icon icon-pencil'></i></a></td>" +
+                        "<td><a href='" + BASE_URL + "adminAdvertisementsCMS/editAdvertisementPage/" +  btoa(btoa(advertisementsList[id].id)) + "' class='btn btn-info'><i class='icon icon-pencil'></i></a></td>" +
                         "<td><button class='btn btn-danger' onclick=" + 'deleteAdvertisement("' + btoa(btoa(advertisementsList[id].id)) + '")' + "><i class='icon icon-trash'></i></button></td>" +
                         "</tr>"
                     );

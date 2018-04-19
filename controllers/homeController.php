@@ -27,6 +27,20 @@ class homeController extends Controller {
         $data['categoryMenuData'] = $c->getActiveList();
         $data['menuOptions']['url'] = 'home';
         $data['advertisementsData'] = $a->getHighlightsAds();
+        //normalize data
+        for($i = 0; $i < count($data['advertisementsData']); $i++){
+            $badges = array();
+            if($data['advertisementsData'][$i]['new'] == "1"){
+                $badges[] = array('class' =>'new', 'name' => "Novo");
+            }
+            if($data['advertisementsData'][$i]['bestseller'] == "1"){
+                $badges[] = array('class' =>'bestseller', 'name' => "Mais&nbsp;vendidos");
+            }
+            if($data['advertisementsData'][$i]['sale'] == "1"){
+                $badges[] = array('class' =>'sale', 'name' => "Promoção");
+            }
+            $data['advertisementsData'][$i]['badges'] = $badges;
+        }
         $this->loadTemplate('home/index', $data);
     }
 

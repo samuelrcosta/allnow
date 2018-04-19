@@ -70,6 +70,20 @@ class categoriesController extends Controller{
         $data['menuOptions']['url'] = $data['activePrincipalCategory']['slug'];
         $data['title'] = 'Optium - '.$data['activeCategory']['name'];
         $data['advertisementsData'] = $a->getList($categories, $filters);
+        //normalize data
+        for($i = 0; $i < count($data['advertisementsData']); $i++){
+            $badges = array();
+            if($data['advertisementsData'][$i]['new'] == "1"){
+                $badges[] = array('class' =>'new', 'name' => "Novo");
+            }
+            if($data['advertisementsData'][$i]['bestseller'] == "1"){
+                $badges[] = array('class' =>'bestseller', 'name' => "Mais&nbsp;vendidos");
+            }
+            if($data['advertisementsData'][$i]['sale'] == "1"){
+                $badges[] = array('class' =>'sale', 'name' => "Promoção");
+            }
+            $data['advertisementsData'][$i]['badges'] = $badges;
+        }
         $data['filters'] = $filters;
 
         $this->loadTemplate('categories/open', $data);

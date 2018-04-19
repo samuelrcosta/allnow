@@ -62,12 +62,10 @@ class Administrators extends Model{
      * @param   $name           string for the user's name.
      * @param   $email          string for the user's email.
      * @param   $password       string for the user's password.
-     * @param   $telephone      string for the user's telephone.
-     * @param   $cellphone      string for the user's cellphone.
      *
      * @return  boolean False for email already registered, or instead True.
      */
-    public function edit($id, $name, $cpf, $email, $password, $telephone, $cellphone){
+    public function edit($id, $name, $email, $password){
         $sql = "SELECT * FROM administrators WHERE email = ? AND id != ?";
         $sql = $this->db->prepare($sql);
         $sql->execute(array($email, $id));
@@ -76,14 +74,14 @@ class Administrators extends Model{
             return false;
         }else{
             if(empty($password)){
-                $sql = "UPDATE administrators SET email = ?, name = ?, telephone = ?, cellphone = ? WHERE id = ?";
+                $sql = "UPDATE administrators SET email = ?, name = ? WHERE id = ?";
                 $sql = $this->db->prepare($sql);
-                $sql->execute(array($email, $name, $cpf, $telephone, $cellphone, $id));
+                $sql->execute(array($email, $name, $id));
                 return true;
             }else{
-                $sql = "UPDATE users SET email = ?, password = ?, name = ?, telephone = ?, cellphone = ? WHERE id = ?";
+                $sql = "UPDATE users SET email = ?, password = ?, name = ?, WHERE id = ?";
                 $sql = $this->db->prepare($sql);
-                $sql->execute(array($email, md5($password), $name, $cpf, $telephone, $cellphone, $id));
+                $sql->execute(array($email, md5($password), $name, $id));
                 return true;
             }
         }

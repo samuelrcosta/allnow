@@ -22,8 +22,6 @@
                 <tr>
                     <th>Nome</th>
                     <th>Categoria Principal</th>
-                    <th>Presencial</th>
-                    <th>Visível</th>
                     <th>Editar</th>
                     <th>Excluir</th>
                 </tr>
@@ -65,22 +63,10 @@
     function insertSubcategories(){
         for(var id in subcategoryList){
             for(var sub in subcategoryList[id].subs){
-                if(subcategoryList[id].subs[sub].presential == '1'){
-                    var presential = 'Sim';
-                }else{
-                    var presential = 'Não';
-                }
-                if(subcategoryList[id].subs[sub].for_user == '1'){
-                    var for_user = 'Sim';
-                }else{
-                    var for_user = 'Não';
-                }
                 $("#categories_result").append(
                     "<tr>" +
                         "<td>" + subcategoryList[id].subs[sub].name +"</td>" +
                         "<td>" + subcategoryList[id].name +"</td>" +
-                        "<td>" + presential +"</td>" +
-                        "<td>" + for_user +"</td>" +
                         "<td><a href='" + BASE_URL + "subcategoriesCMS/editSubCategory/" +  btoa(btoa(subcategoryList[id].subs[sub].id)) + "' class='btn btn-info'><i class='icon icon-pencil'></i></a></td>" +
                         "<td><button class='btn btn-danger' onclick=" + 'deleteSubcategory("' + btoa(btoa(subcategoryList[id].subs[sub].id)) + '")' + "><i class='icon icon-trash'></i></button></td>" +
                     "</tr>"
@@ -99,22 +85,10 @@
             for(var id in subcategoryList){
                 for(var sub in subcategoryList[id].subs){
                     if((subcategoryList[id].subs[sub].name.toLowerCase().search(word) !== -1) || (subcategoryList[id].name.toLowerCase().search(word) !== -1)){
-                        if(subcategoryList[id].subs[sub].presential == '1'){
-                            var presential = 'Sim';
-                        }else{
-                            var presential = 'Não';
-                        }
-                        if(subcategoryList[id].subs[sub].for_user == '1'){
-                            var for_user = 'Sim';
-                        }else{
-                            var for_user = 'Não';
-                        }
                         $("#categories_result").append(
                             "<tr>" +
                             "<td>" + subcategoryList[id].subs[sub].name +"</td>" +
                             "<td>" + subcategoryList[id].name +"</td>" +
-                            "<td>" + presential +"</td>" +
-                            "<td>" + for_user +"</td>" +
                             "<td><a href='" + BASE_URL + "subcategoriesCMS/editSubCategory/" +  btoa(btoa(subcategoryList[id].subs[sub].id)) + "' class='btn btn-info'><i class='icon icon-pencil'></i></a></td>" +
                             "<td><button class='btn btn-danger' onclick=" + 'deleteSubcategory("' + btoa(btoa(subcategoryList[id].subs[sub].id)) + '")' + "><i class='icon icon-trash'></i></button></td>" +
                             "</tr>"

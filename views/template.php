@@ -10,6 +10,7 @@
 		<!--!>FormValidator</!-->
 		<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/jquery.form-validator.min.js"></script>
 		<link href="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/theme-default.min.css" rel="stylesheet" type="text/css" />
+
         <!--!>Slick</!-->
         <link rel="stylesheet" type="text/css" href="<?php echo BASE_URL; ?>vendor/slick-1.8.0/slick/slick.css"/>
         <link rel="stylesheet" type="text/css" href="<?php echo BASE_URL; ?>vendor/slick-1.8.0/slick/slick-theme.css"/>
@@ -52,9 +53,16 @@
 		<header>
             <nav class="navbar-top">
                 <div class="container">
-                    <div style="display: flex">
-                        <div style="flex: 1">
-                            <a href="<?php echo BASE_URL; ?>"><img src="<?php echo BASE_URL; ?>assets/images/medium_logo.png"></a>
+                    <div class='menu-container'>
+                        <div class='img-top-logo-big' style="flex: 1">
+                            <a href="<?php echo BASE_URL; ?>">
+                                <img src="<?php echo BASE_URL; ?>assets/images/medium_logo.png">
+                            </a>
+                        </div>
+                        <div class='img-top-logo-small'>
+                            <a href="<?php echo BASE_URL; ?>">
+                                <img src="<?php echo BASE_URL; ?>assets/images/medium_logo.png">
+                            </a>
                         </div>
                         <div style="flex: 7; align-self: center;">
                             <div class="container">
