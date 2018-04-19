@@ -9,15 +9,19 @@
         }, options);
 
         return this.each(function() {
-            cssmenu.prepend('<div id="menu-button">' + settings.title + '</div>');
+            cssmenu.prepend('<div id="menu-button"><i class="fas fa-bars"></i></div>');
             $(this).find("#menu-button").on('click', function(){
                 $(this).toggleClass('menu-opened');
                 var mainmenu = $(this).next('ul');
                 if (mainmenu.hasClass('open')) {
+                    $(this).find('i').removeClass('fas').removeClass('fa-times');
+                    $(this).find('i').addClass('fas').addClass('fa-bars');
                     mainmenu.hide().removeClass('open');
                 }
                 else {
                     mainmenu.show().addClass('open');
+                    $(this).find('i').removeClass('fas').removeClass('fa-bars');
+                    $(this).find('i').addClass('fas').addClass('fa-times');
                     if (settings.format === "dropdown") {
                         mainmenu.find('ul').show();
                     }
@@ -27,13 +31,15 @@
             cssmenu.find('li ul').parent().addClass('has-sub');
 
             multiTg = function() {
-                cssmenu.find(".has-sub").prepend('<span class="submenu-button"></span>');
+                cssmenu.find(".has-sub").find('.link-has-sub').after('<span class="submenu-button"><i class="fas fa-plus"></i></span>');
                 cssmenu.find('.submenu-button').on('click', function() {
                     $(this).toggleClass('submenu-opened');
                     if ($(this).siblings('ul').hasClass('open')) {
+                        $(this).eq(0).find('i').removeClass('fa-minus').addClass('fa-plus');
                         $(this).siblings('ul').removeClass('open').hide();
                     }
                     else {
+                        $(this).eq(0).find('i').removeClass('fa-plus').addClass('fa-minus');
                         $(this).siblings('ul').addClass('open').show();
                     }
                 });
@@ -65,7 +71,7 @@
 
         $(document).ready(function() {
             $("#cssmenu").menumaker({
-                title: "Menu",
+                title: "",
                 format: "multitoggle"
             });
 
