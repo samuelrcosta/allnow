@@ -28,14 +28,12 @@ class advertisementsController extends Controller{
     /**
      * This function shows the advertisements of this category.
      */
-    public function open($id){
+    public function open($slug){
         $c = new Categories();
         $a = new Advertisements();
         $data = array();
 
-        $id = addslashes(base64_decode(base64_decode($id)));
-
-        $data['advertisementData'] = $a->getDataById($id);
+        $data['advertisementData'] = $a->getDataBySlug($slug);
 
         $data['categoryData'] = array();
         $data['categoriesData'] = $c->getActiveList();
@@ -56,7 +54,7 @@ class advertisementsController extends Controller{
         }
 
 
-        $data['site_map'] = "<a href='".BASE_URL."'>Optium.com.br</a> <span> > </span> <a href='".BASE_URL."categories/open/".$data['slug_category']."'>".$data['name_category']."</a> <span> > </span> <a href='".BASE_URL."categories/open/".$data['slug_subcategory']."'>".$data['name_subcategory']."</a> <span> > </span> <a href='".BASE_URL."advertisements/open/".base64_encode(base64_encode($id))."'>".$data['advertisementData']['title']."</a>";
+        $data['site_map'] = "<a href='".BASE_URL."'>Home</a> <span> > </span> <a href='".BASE_URL."categories/open/".$data['slug_category']."'>".$data['name_category']."</a> <span> > </span> <a href='".BASE_URL."categories/open/".$data['slug_subcategory']."'>".$data['name_subcategory']."</a> <span> > </span> <a href='".BASE_URL."advertisements/open/".$slug."'>".$data['advertisementData']['title']."</a>";
 
         $data['categoryMenuData'] = $c->getActiveList();
         $data['menuOptions']['url'] = $data['slug_category'];

@@ -1,5 +1,5 @@
 <div style="clear: both"></div>
-<div class="container">
+<div class="container-fluid">
     <section>
         <div class="row">
             <div class="col-12">
@@ -8,7 +8,7 @@
                     <div class="destaques_container">
                         <div class="row">
                             <?php foreach ($advertisementsData as $ad): ?>
-                            <div class="col-lg-4" style="padding-bottom: 15px;padding-top: 15px;">
+                            <div class="col-md-4" style="padding-bottom: 15px;padding-top: 15px;">
                                 <div class="ad-container">
                                     <div class="medias_container">
                                         <?php foreach ($ad['medias'] as $media): ?>
@@ -24,7 +24,7 @@
                                             </div>
                                         <?php endforeach; ?>
                                     </div>
-                                    <a class="ad-description" href="<?php echo BASE_URL; ?>advertisements/open/<?php echo base64_encode(base64_encode($ad['id'])); ?>">
+                                    <a class="ad-description" href="<?php echo BASE_URL; ?>advertisements/open/<?php echo $ad['slug']; ?>">
                                         <h5 class='ad-description-title'><?php echo $ad['title'] ?></h5>
                                         <p class='ad-description-abstract'><?php echo $ad['abstract'] ?></p>
                                         <?php if(!empty($ad['rating'])): ?>
@@ -52,4 +52,3 @@
     });
 
 </script>
-<?php if(isset($_SESSION['idLogin'])) echo $_SESSION['idLogin']; ?>

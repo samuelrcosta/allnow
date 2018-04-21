@@ -2,15 +2,6 @@
 .menu-container{
     display: flex;
 }
-.img-top-logo-small{
-    display: none;
-    text-align: center;
-    padding-bottom: 20px;
-    border-bottom: 1px solid #e3e3e3;
-}
-.img-top-logo-small img{
-    width: 140px;
-}
 .menu-container-int{
     flex: 7; 
     align-self: center;
@@ -98,6 +89,11 @@
 #cssmenu > ul > li.active > a {
     color: #F79321;
 }
+
+#cssmenu > ul > li:hover > a{
+    border-left: 1px solid #F79321;
+}
+
 #cssmenu > ul > li.has-sub > a {
     padding-right: 25px;
 }
@@ -127,6 +123,8 @@
 #cssmenu ul ul {
     position: absolute;
     left: -9999px;
+    border-bottom: 1px solid #F79321;
+    border-left: 1px solid #F79321;
 }
 #cssmenu li:hover > ul {
     left: auto;
@@ -205,35 +203,39 @@
     display: none;
 }
 @media all and (max-width: 768px), only screen and (-webkit-min-device-pixel-ratio: 2) and (max-width: 1024px), only screen and (min--moz-device-pixel-ratio: 2) and (max-width: 1024px), only screen and (-o-min-device-pixel-ratio: 2/1) and (max-width: 1024px), only screen and (min-device-pixel-ratio: 2) and (max-width: 1024px), only screen and (min-resolution: 192dpi) and (max-width: 1024px), only screen and (min-resolution: 2dppx) and (max-width: 1024px) {
+    header{
+        display: flex;
+        align-items: center;
+    }
+    .site-container {
+        padding-top: 70px;
+    }
+    .navbar-top{
+        margin-top: 0;
+        margin-bottom: 0;
+    }
     .menu-container{
-        display: block;
-    }
-    .img-top-logo-big{
-        display: none
-    }
-    .img-top-logo-small{
         display: block;
     }
     .menu-container-int{
         position: absolute;
         top: 0;
         left: 0;
-        padding-top: 10px;
         z-index: 5;
     }
     #cssmenu {
         width: 100%;
         background: transparent;
-
-        border: 1px solid #e3e3e3;
-        border-radius: 5px;
     }
     #cssmenu ul {
         width: 100%;
         display: none;
         background-color: #FFF;
-        
-        margin-top: 10px;
+    }
+    #cssmenu .open{
+        border-bottom: 1px solid rgba(120, 120, 120, 0.15);
+        -webkit-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+        box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
     }
     #cssmenu.align-center > ul,
     #cssmenu.align-right ul ul {
@@ -246,6 +248,9 @@
         height: auto;
         border-top: 1px solid rgba(120, 120, 120, 0.15);
         float: left;
+    }
+    #cssmenu > ul > li:hover > a {
+        border-left: 0;
     }
     #cssmenu ul li a,
     #cssmenu ul ul li a {
@@ -292,11 +297,13 @@
     }
     #cssmenu #menu-button {
         display: block;
-        padding: 30px;
         color: #000000;
         cursor: pointer;
         font-size: 20px;
         text-transform: uppercase;
+        padding-left: 20px;
+        padding-top: 16px;
+        padding-bottom: 16px;
     }
     #cssmenu .submenu-button {
         /*position: absolute;*/
@@ -312,5 +319,11 @@
         height: 52px;
         min-width: 52px;
         cursor: pointer;
+    }
+    #cssmenu .submenu-button i {
+        padding-top: 19px;
+        padding-bottom: 19px;
+        padding-left: 31px;
+        padding-right: 31px;
     }
 }

@@ -37,11 +37,14 @@
                 <label for="rating" class="form-control-label">Avaliação</label>
                 <select class="form-control" name="rating" id="rating" style="max-width: 400px">
                     <option value="0">Sem avaliação</option>
-                    <option value="1">1 Estrela</option>
-                    <option value="2">2 Estrelas</option>
-                    <option value="3">3 Estrelas</option>
-                    <option value="4">4 Estrelas</option>
-                    <option value="5">5 Estrelas</option>
+                    <option value="2_0">2 Estrelas</option>
+                    <option value="2_5">2,5 Estrelas</option>
+                    <option value="3_0">3 Estrelas</option>
+                    <option value="3_5">3,5 Estrelas</option>
+                    <option value="4_0">4 Estrelas</option>
+                    <option value="4_5">4,5 Estrelas</option>
+                    <option value="5_0">5 Estrelas</option>
+                    <option value="5_5">5,5 Estrelas</option>
                 </select>
             </div>
             <div class="form-group" style="margin-bottom: 0">
@@ -108,7 +111,6 @@
                 <option value="1">Youtube</option>
                 <option value="2">Vimeo</option>
                 <option value="3">Arquivo de Imagem</option>
-                <option value="4">Link de Imagem</option>
             </select>
         </div>
         <div class="form-group div-image div-invisible">

@@ -89,9 +89,9 @@
             if (foundActive === false) {
                 activeElement = $("#cssmenu > ul > li").first();
             }
-
+                
             defaultWidth = lineWidth = activeElement.width();
-
+            
             defaultPosition = linePosition = activeElement.position().left;
 
             menuLine.css("width", lineWidth);

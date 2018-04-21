@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<html lang="pt-br">
 	<head>
 		<meta charset="utf-8" />
 		<title><?php echo $viewData['title']; ?></title>
@@ -48,26 +48,20 @@
             gtag('js', new Date());
             gtag('config', 'UA-116306177-1');
         </script>
-        <!--!>Google Re-captcha</!-->
-		<script src='https://www.google.com/recaptcha/api.js?hl=pt-BR'></script>
 	</head>
 	<body>
 		<header>
             <nav class="navbar-top">
-                <div class="container">
+                <div class="container-fluid">
                     <div class='menu-container'>
                         <div class='img-top-logo-big' style="flex: 1">
                             <a href="<?php echo BASE_URL; ?>">
-                                <img src="<?php echo BASE_URL; ?>assets/images/medium_logo.png">
-                            </a>
-                        </div>
-                        <div class='img-top-logo-small'>
-                            <a href="<?php echo BASE_URL; ?>">
-                                <img src="<?php echo BASE_URL; ?>assets/images/medium_logo.png">
+                                <img src="<?php echo BASE_URL; ?>assets/images/rsz_fav.png">
+                                <img src="<?php echo BASE_URL; ?>assets/images/rsz_nome_logo.png">
                             </a>
                         </div>
                         <div class="menu-container-int">
-                            <div class="container">
+                            <div>
                                 <div id='cssmenu'>
                                     <ul>
                                         <li <?php if(isset($viewData['menuOptions']['url']) && $viewData['menuOptions']['url'] == 'home') echo "class='active'" ?> ><a href='<?php echo BASE_URL; ?>'>Home</a></li>
@@ -93,7 +87,7 @@
                 </div>
             </nav>
 		</header>
-		<section>
+		<section class="site-container">
             <?php $this->loadViewInTemplate($viewName, $viewData); ?>
 	    </section>
 	    <footer>
@@ -114,7 +108,7 @@
 	    	<div class="links">
 	    		<div class="container">
 	    			<div class="row">
-						<div class="col-sm-4">
+						<div class="col-sm-4 footer-corporation-info">
 							<a href="<?php echo BASE_URL; ?>"><img width="150" src="<?php echo BASE_URL; ?>assets/images/logo2.png"></a><br/><br/>
 							<strong>Slogan da empresa</strong><br/><br/>
 							Endereço da Empresa
@@ -132,9 +126,9 @@
 								<div class="col-sm-4">
 									<h3>Informações</h3>
 									<ul>
-										<li><a href="#">Sobre a empresa</a></li>
+										<li><a href="<?php echo BASE_URL; ?>info/sobre">Sobre a empresa</a></li>
+                                        <li><a href="<?php echo BASE_URL; ?>info/contato">Entre em contato</a></li>
                                         <li><a href="#">Facebook</a></li>
-                                        <li><a href="#">Sobre a empresa</a></li>
 									</ul>
 								</div>
 							</div>
@@ -152,9 +146,8 @@
 	    		</div>
 	    	</div>
 	    </footer>
-        <!--!>
-        <script type="text/javascript" src="<?php echo BASE_URL; ?>assets/js/jquery-ui.min.js"></script>
-        </!-->
+
+        
         <!--ALERT MODAL -->
         <div class="modal alert-modal" tabindex="-1" role="dialog">
             <div class="modal-dialog" role="document">

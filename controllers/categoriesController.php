@@ -60,9 +60,9 @@ class categoriesController extends Controller{
         $categories = array();
         $categories[$data['activeCategory_type']] = $data['activeCategory']['id'];
         if($data['activeCategory_type'] == 'id_category'){
-            $data['site_map'] = "<a href='".BASE_URL."'>Optium.com.br</a> <span> > </span> <a href='".BASE_URL."categories/open/".$data['activeCategory']['slug']."'>".$data['activeCategory']['name']."</a>";
+            $data['site_map'] = "<a href='".BASE_URL."'>Home</a> <span> > </span> <a href='".BASE_URL."categories/open/".$data['activeCategory']['slug']."'>".$data['activeCategory']['name']."</a>";
         }else{
-            $data['site_map'] = "<a href='".BASE_URL."'>Optium.com.br</a> <span> > </span> <a href='".BASE_URL."categories/open/".$data['activePrincipalCategory']['slug']."'>".$data['activePrincipalCategory']['name']."</a> <span> > </span> <a href='".BASE_URL."categories/open/".$data['activeCategory']['slug']."'>".$data['activeCategory']['name']."</a>";
+            $data['site_map'] = "<a href='".BASE_URL."'>Home</a> <span> > </span> <a href='".BASE_URL."categories/open/".$data['activePrincipalCategory']['slug']."'>".$data['activePrincipalCategory']['name']."</a> <span> > </span> <a href='".BASE_URL."categories/open/".$data['activeCategory']['slug']."'>".$data['activeCategory']['name']."</a>";
         }
 
 

@@ -115,6 +115,31 @@ class Advertisements extends Model{
     }
 
     /**
+     * This function get the advertisement data from database by slug code.
+     *
+     * @param   $slug     int for the advertisement slug.
+     *
+     * @return  array with the retrieved data.
+     */
+    public function getDataBySlug($slug){
+        $c = new Categories();
+        $m = new Medias_ads();
+        $array = array();
+
+        $sql = 'SELECT * FROM advertisements WHERE slug = ?';
+        $sql = $this->db->prepare($sql);
+        $sql->execute(array($slug));
+        if($sql->rowCount() > 0){
+            $array = $sql->fetch();
+            $array['category_name'] = $c->getNameById($array['id_category']);
+            $array['subcategory_name'] =  $c->getNameById($array['id_subcategory']);
+            $array['medias'] = $m->getMedias($array['id']);
+        }
+
+        return $array;
+    }
+
+    /**
      * This function returns the last inserted ID.
      *
      * @return int for the ID.
