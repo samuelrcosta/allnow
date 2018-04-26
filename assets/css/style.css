@@ -56,6 +56,45 @@ header{
 	float: left;
 }
 
+.container-home-image{
+	background-image: url(../images/wallpaper_small.jpg);
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position: center;
+	height: 350px;
+	width: 100%;
+	margin-top: -20px;
+	right: 0;
+	display: flex;
+	position: absolute;
+}
+
+.effect-phrase{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	height: 100%;
+	text-align: center;
+	font-size: 30px;
+	color: #FFFFFF;
+	font-family: 'montserratmedium', sans-serif;
+	background-color: rgba(6, 30, 38, .65);
+}
+
+.effect-phrase h1{
+	max-width: 600px;
+	font-size: 32px;
+}
+
+.effect-phrase h1 span{
+	color: #F79321;
+}
+
+.container-content-homepage{
+	margin-top: 350px;
+}
+
 .site-container{
 	max-width: 1250px;
 	margin-left: auto;

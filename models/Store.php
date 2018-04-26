@@ -103,6 +103,24 @@ class Store extends Model{
     }
 
     /**
+     * This function execute a cUrl to get Data.
+     *
+     * @param $url  string for the url.
+     *
+     * @return mixed
+     */
+    public function curl_get($url){
+        $curl = curl_init($url);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_TIMEOUT, 30);
+        curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
+        $return = curl_exec($curl);
+        curl_close($curl);
+        return $return;
+    }
+
+
+    /**
      * This function verify if a URL exists.
      *
      * @param $url  string for the url.

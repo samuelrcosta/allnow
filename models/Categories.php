@@ -247,7 +247,7 @@ class Categories extends Model {
         if($sql && count($sql)){
             return false;
         }else{
-            $sql = "INSERT INTO categories (name, id_principal, slug) VALUES (?, ?, ?, ?, ?)";
+            $sql = "INSERT INTO categories (name, id_principal, slug) VALUES (?, ?, ?)";
             $sql = $this->db->prepare($sql);
             $sql->execute(array($name, $id_principal, $slug));
             return true;

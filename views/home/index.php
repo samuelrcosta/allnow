@@ -1,5 +1,8 @@
 <div style="clear: both"></div>
-<div class="container-fluid">
+<div class="container-home-image">
+    <div class="effect-phrase"><h1>Frase de Efeito&nbsp;<span id="phrase-repeat"> </span></h1></div>
+</div>
+<div class="container-fluid container-content-homepage">
     <section>
         <div class="row">
             <div class="col-12">
@@ -42,13 +45,20 @@
     </section>
 </div>
 <script>
-
     $(document).ready(function(){
         $('.medias_container').slick({
             //autoplay: true,
             //autoplaySpeed: 15000,
             infinite: true
         });
+
+        showLetters("#phrase-repeat", "Repetindo uma frase", 0, 250);
     });
 
+    var showLetters = function (target, message, index, interval) {
+        if (index < message.length) {
+            $(target).append(message[index++]);
+            setTimeout(function () { showLetters(target, message, index, interval); }, interval);
+        }
+    }
 </script>

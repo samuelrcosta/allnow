@@ -108,23 +108,11 @@ class adminAdvertisementsCMSController extends Controller{
                                         $video_url = $medias[$i]['media_link'];
                                         // Create the URLs
                                         $xml_url = $oembed_endpoint . '.xml?url=' . rawurlencode($video_url);
-                                        // Curl helper function
-                                        function curl_get($url)
-                                        {
-                                            $curl = curl_init($url);
-                                            curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-                                            curl_setopt($curl, CURLOPT_TIMEOUT, 30);
-                                            curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
-                                            $return = curl_exec($curl);
-                                            curl_close($curl);
-                                            return $return;
-                                        }
-
-                                        if (curl_get($xml_url) == '404 Not Found') {
+                                        if ($s->curl_get($xml_url) == '404 Not Found') {
                                             echo "Link do Vimeo inválido.";
                                             exit;
                                         } else {
-                                            $oembed = simplexml_load_string(curl_get($xml_url));
+                                            $oembed = simplexml_load_string($s->curl_get($xml_url));
                                             $medias[$i]['media'] = $oembed->html;
                                         }
                                     } elseif ($medias[$i]['media_type'] == 3) {
@@ -265,22 +253,11 @@ class adminAdvertisementsCMSController extends Controller{
                                         $video_url = $medias[$i]['media_link'];
                                         // Create the URLs
                                         $xml_url = $oembed_endpoint . '.xml?url=' . rawurlencode($video_url);
-                                        // Curl helper function
-                                        function curl_get($url){
-                                            $curl = curl_init($url);
-                                            curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-                                            curl_setopt($curl, CURLOPT_TIMEOUT, 30);
-                                            curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
-                                            $return = curl_exec($curl);
-                                            curl_close($curl);
-                                            return $return;
-                                        }
-
-                                        if (curl_get($xml_url) == '404 Not Found') {
+                                        if($s->curl_get($xml_url) == '404 Not Found') {
                                             echo "Link do Vimeo inválido.";
                                             exit;
                                         } else {
-                                            $oembed = simplexml_load_string(curl_get($xml_url));
+                                            $oembed = simplexml_load_string($s->curl_get($xml_url));
                                             $medias[$i]['media'] = $oembed->html;
                                         }
                                     } elseif ($medias[$i]['media_type'] == 3) {
