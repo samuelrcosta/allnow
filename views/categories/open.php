@@ -9,7 +9,7 @@
             <div class='row'>
                 <?php foreach ($advertisementsData as $ad): ?>
                     <div class="col-md-4" style="padding-bottom: 15px;padding-top: 15px;">
-                        <div class="ad-container">
+                        <div class="item-container">
                             <div class="medias_container">
                                 <?php foreach ($ad['medias'] as $media): ?>
                                     <div class="ad-media-container media-type-<?= $media['media_type'] ?>" data-type="<?= $media['media_type'] ?>" data-media="<?= ($media['media_type'] != 3) ? $media['media'] : '' ?>" >
