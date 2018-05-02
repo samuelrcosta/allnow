@@ -4,7 +4,7 @@
 		<title><?php echo $viewData['title']; ?></title>
         <link rel="shortcut icon" href="<?php echo BASE_URL;?>/assets/images/favicon.png" type="image/png" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<link href="//fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel="stylesheet" type="text/css">
+		<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel="stylesheet" type="text/css">
         <!--!>BASE URL</!-->
         <script type="text/javascript">var BASE_URL = '<?php echo BASE_URL; ?>';</script>
 		<!--!>Jquery</!-->

@@ -68,7 +68,7 @@ const SlidesController = {
             // Load Images asynchronously
             (function(i){
                 $.ajax({
-                    url: 'http://vimeo.com/api/v2/video/' + vimeo[i].dataset.media + '.json',
+                    url: 'https://vimeo.com/api/v2/video/' + vimeo[i].dataset.media + '.json',
                     dataType: 'jsonp',
                     success: function(data) {
                         let image = new Image();
