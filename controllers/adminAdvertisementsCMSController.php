@@ -95,9 +95,9 @@ class adminAdvertisementsCMSController extends Controller{
                                 if ($s->array_check_completed_keys($keys, $medias[$i])) {
                                     $check = true;
                                     if ($medias[$i]['media_type'] == 1) {
-                                        $embed_link = $s->getYoutubeEmbedUrl($medias[$i]['media_link']);
-                                        if (!empty($embed_link)) {
-                                            $medias[$i]['media'] = "<iframe width='640' height='315' src=" . $embed_link . " frameborder='0' allow='autoplay; encrypted-media' allowfullscreen></iframe>";
+                                        $youtubeID= $s->getYoutubeId($medias[$i]['media_link']);
+                                        if (!empty($youtubeID)) {
+                                            $medias[$i]['media'] = $youtubeID;
                                         } else {
                                             echo "Link do Youtube inválido.";
                                             exit;
@@ -108,12 +108,12 @@ class adminAdvertisementsCMSController extends Controller{
                                         $video_url = $medias[$i]['media_link'];
                                         // Create the URLs
                                         $xml_url = $oembed_endpoint . '.xml?url=' . rawurlencode($video_url);
-                                        if ($s->curl_get($xml_url) == '404 Not Found') {
+                                        if($s->curl_get($xml_url) == '404 Not Found') {
                                             echo "Link do Vimeo inválido.";
                                             exit;
                                         } else {
                                             $oembed = simplexml_load_string($s->curl_get($xml_url));
-                                            $medias[$i]['media'] = $oembed->html;
+                                            $medias[$i]['media'] = $oembed->video_id;
                                         }
                                     } elseif ($medias[$i]['media_type'] == 3) {
                                         $medias[$i]['media'] = "<img width='100%' src=" . $medias[$i]['media_link'] . ">";
@@ -324,7 +324,7 @@ class adminAdvertisementsCMSController extends Controller{
         $id = addslashes(base64_decode(base64_decode($id)));
 
         if($u->isLogged()){
-            $a->inactivate($id);
+            $a->delete($id);
             header("Location: ".BASE_URL."adminAdvertisementsCMS");
         }else{
             header("Location: ".BASE_URL);

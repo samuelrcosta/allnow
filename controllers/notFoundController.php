@@ -20,10 +20,12 @@ class notFoundController extends Controller {
      */
     public function index() {
         $data = array();
+        $c = new Categories();
 
         $data['title'] = 'Página não encontrada';
+        $data['categoryMenuData'] = $c->getActiveList();
 
-        $this->loadView('404', $data);
+        $this->loadTemplate('notFound/404', $data);
     }
 
 }

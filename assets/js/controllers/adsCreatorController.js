@@ -80,7 +80,8 @@ var PageController = {
         formData.append('medias', JSON.stringify(medias));
         var sending = PageController.sendForm(formData);
         if(sending == 'true'){
-            window.location.replace(PageController._base_url + 'adminAdvertisementsCMS');
+            let urlData = encodeURI("?notification=Anúncio cadastrado com sucesso&status=alert-success");
+            window.location.replace(PageController._base_url + 'adminAdvertisementsCMS'+urlData);
         }else{
             $(PageController.NOTICE_CONTAINER).html('<div class="alert alert-warning" role="alert">' + sending + '</div>').show();
             $(PageController.BUTTON_SAVE_ADVERTISEMENT).attr('disabled', false).html('<i class="fa fa-save"></i> Salvar');

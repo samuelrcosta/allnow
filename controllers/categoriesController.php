@@ -3,7 +3,7 @@
  * This class is the Controller of the Category pages.
  *
  * @author  samuelrcosta
- * @version 1.0, 01/20/2017
+ * @version 1.1, 05/02/2018
  * @since   1.0, 01/20/2017
  */
 class categoriesController extends Controller{
@@ -34,11 +34,8 @@ class categoriesController extends Controller{
 
         $slug = addslashes($slug);
 
-        if(isset($_GET['filters']) && !empty($_GET['filters'])){
-            $filters = $_GET['filters'];
-        }
-
         $data['categoriesData'] = $c->getActiveList();
+        $data['categoryMenuData'] = $data['categoriesData'];
 
         foreach ($data['categoriesData'] as $item){
             if($item['slug'] == $slug){
@@ -57,36 +54,41 @@ class categoriesController extends Controller{
             }
         }
 
-        $categories = array();
-        $categories[$data['activeCategory_type']] = $data['activeCategory']['id'];
-        if($data['activeCategory_type'] == 'id_category'){
-            $data['site_map'] = "<a href='".BASE_URL."'>Home</a> <span> > </span> <a href='".BASE_URL."categories/open/".$data['activeCategory']['slug']."'>".$data['activeCategory']['name']."</a>";
+        // Checks if a category with this slug
+        if(isset($data['activeCategory_type'])){
+
+            $categories = array();
+            $categories[$data['activeCategory_type']] = $data['activeCategory']['id'];
+            if($data['activeCategory_type'] == 'id_category'){
+                $data['site_map'] = "<a href='".BASE_URL."'>Home</a> <span> > </span> <a href='".BASE_URL."categories/open/".$data['activeCategory']['slug']."'>".$data['activeCategory']['name']."</a>";
+            }else{
+                $data['site_map'] = "<a href='".BASE_URL."'>Home</a> <span> > </span> <a href='".BASE_URL."categories/open/".$data['activePrincipalCategory']['slug']."'>".$data['activePrincipalCategory']['name']."</a> <span> > </span> <a href='".BASE_URL."categories/open/".$data['activeCategory']['slug']."'>".$data['activeCategory']['name']."</a>";
+            }
+
+            $data['menuOptions']['url'] = $data['activePrincipalCategory']['slug'];
+            $data['title'] = 'Optium - '.$data['activeCategory']['name'];
+            $data['advertisementsData'] = $a->getList($categories, $filters);
+            //normalize data
+            for($i = 0; $i < count($data['advertisementsData']); $i++){
+                $badges = array();
+                if($data['advertisementsData'][$i]['new'] == "1"){
+                    $badges[] = array('class' =>'new', 'name' => "Novo");
+                }
+                if($data['advertisementsData'][$i]['bestseller'] == "1"){
+                    $badges[] = array('class' =>'bestseller', 'name' => "Mais&nbsp;vendidos");
+                }
+                if($data['advertisementsData'][$i]['sale'] == "1"){
+                    $badges[] = array('class' =>'sale', 'name' => "Promoção");
+                }
+                $data['advertisementsData'][$i]['badges'] = $badges;
+            }
+            $data['filters'] = $filters;
+
+            $this->loadTemplate('categories/open', $data);
         }else{
-            $data['site_map'] = "<a href='".BASE_URL."'>Home</a> <span> > </span> <a href='".BASE_URL."categories/open/".$data['activePrincipalCategory']['slug']."'>".$data['activePrincipalCategory']['name']."</a> <span> > </span> <a href='".BASE_URL."categories/open/".$data['activeCategory']['slug']."'>".$data['activeCategory']['name']."</a>";
+            $data['title'] = 'Página não encontrada';
+            $this->loadTemplate('notFound/404', $data);
         }
-
-
-        $data['categoryMenuData'] = $c->getActiveList();
-        $data['menuOptions']['url'] = $data['activePrincipalCategory']['slug'];
-        $data['title'] = 'Optium - '.$data['activeCategory']['name'];
-        $data['advertisementsData'] = $a->getList($categories, $filters);
-        //normalize data
-        for($i = 0; $i < count($data['advertisementsData']); $i++){
-            $badges = array();
-            if($data['advertisementsData'][$i]['new'] == "1"){
-                $badges[] = array('class' =>'new', 'name' => "Novo");
-            }
-            if($data['advertisementsData'][$i]['bestseller'] == "1"){
-                $badges[] = array('class' =>'bestseller', 'name' => "Mais&nbsp;vendidos");
-            }
-            if($data['advertisementsData'][$i]['sale'] == "1"){
-                $badges[] = array('class' =>'sale', 'name' => "Promoção");
-            }
-            $data['advertisementsData'][$i]['badges'] = $badges;
-        }
-        $data['filters'] = $filters;
-
-        $this->loadTemplate('categories/open', $data);
     }
 
     /**

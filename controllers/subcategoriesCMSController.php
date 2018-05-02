@@ -3,7 +3,7 @@
  * This class is the Controller of the Admin Sub-Categories panel.
  *
  * @author  samuelrcosta
- * @version 1.0.0, 01/16/2017
+ * @version 1.1.0, 05/02/2018
  * @since   1.0, 01/16/2017
  */
 
@@ -147,7 +147,7 @@ class subcategoriesCMSController extends Controller{
         $id = addslashes(base64_decode(base64_decode($id)));
 
         if($u->isLogged()){
-            $c->delete($id);
+            $c->delete($id, 'id_subcategory');
             header("Location: ".BASE_URL."subcategoriesCMS");
         }else{
             header("Location: ".BASE_URL);

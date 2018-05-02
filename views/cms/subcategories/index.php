@@ -34,8 +34,8 @@
 </div>
 <div id="background-dark" style="display: none"></div>
 <div id="confirm-delete" style="display: none">
-    <p>Tem certeza que deseja excluir a Sub-Categoria?</p>
-    <button class="btn btn-danger" onclick="yesDelete()">Sim</button>
+    <p>Tem certeza que deseja excluir a Sub-Categoria <strong>e todos os seus anúncios</strong>?</p>
+    <button class="btn btn-danger" onclick="yesDelete()">Sim</button>&nbsp;
     <button class="btn btn-success" onclick="notDelete()">Não</button>
 </div>
 <script>

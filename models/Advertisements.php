@@ -3,7 +3,7 @@
  * This class retrieves and saves data of the users advertisements.
  *
  * @author  samuelrcosta
- * @version 1.1.1, 04/18/2017
+ * @version 1.2.0, 05/02/2018
  * @since   1.0, 01/11/2017
  */
 
@@ -45,12 +45,6 @@ class Advertisements extends Model{
         }
         if(isset($categories['id_category'])){
             $where = 'WHERE id_category = '.$categories['id_category'].' AND status = 1';
-        }
-        if(isset($filters['id_state']) && !empty($filters['id_state'])){
-            $where = $where.' AND id_state = '.$filters['id_state'];
-        }
-        if(isset($filters['id_city']) && !empty($filters['id_city'])){
-            $where = $where.' AND id_city = '.$filters['id_city'];
         }
 
         $sql = 'SELECT *, advertisements.id as id_ad FROM advertisements '.$where;
@@ -140,15 +134,6 @@ class Advertisements extends Model{
     }
 
     /**
-     * This function returns the last inserted ID.
-     *
-     * @return int for the ID.
-     */
-    public function getLastId(){
-
-    }
-
-    /**
      * This function get the advertisements from database using the user ID.
      *
      * @param   $id_user    int for the user ID.
@@ -216,69 +201,18 @@ class Advertisements extends Model{
     }
 
     /**
-     * This function inactivate an advertisement using the its ID.
+     * This function delete an advertisement using the its ID.
      *
      * @param   $id    int for the advertisement ID.
      */
-    public function inactivate($id){
-        $sql = 'UPDATE advertisements SET status = 0 WHERE id = ?';
+    public function delete($id){
+        // Delete Medias
+        $m = new Medias_ads();
+        $m->deleteAdvertisementMedias($id);
+        // Delete Advertisement
+        $sql = 'DELETE FROM advertisements WHERE id = ?';
         $sql = $this->db->prepare($sql);
         $sql->execute(array($id));
     }
 
-    /**
-     * This function delete all user's advertisements.
-     *
-     * @param   $id_user    int for the user ID.
-     */
-    public function deleteUserAds($id_user){
-        $sql = 'DELETE FROM advertisements WHERE id_user = ? AND type = 1';
-        $sql = $this->db->prepare($sql);
-        $sql->execute(array($id_user));
-    }
-
-    /**
-     * This function build a where part of sql query for filters in Category List.
-     *
-     * @param   $filters     array for filters.
-     *
-     * @return array for where clause.
-     */
-    private function buildWhere($filters){
-        $where = array('1=1');
-
-        if(!empty($filters['category'])){
-            $where[] = 'id_category = :id_category';
-        }
-
-        if(!empty($filters['subcategory'])){
-            $where[] = 'id_subcategory = :id_subcategory';
-        }
-
-        if(!empty($filters['searchTerm'])){
-            $where[] = "title LIKE :searchTerm";
-        }
-
-        return $where;
-    }
-
-    /**
-     * This function bind values in query for filters in Category List.
-     *
-     * @param   $filters     array for filters.
-     * @param   $sql    string for the sql query.
-     */
-    private function bindWhere($filters, &$sql){
-        if(!empty($filters['category'])){
-            $sql->bindValue(':id_category', $filters['category']);
-        }
-
-        if(!empty($filters['subcategory'])){
-            $sql->bindValue(':id_subcategory', $filters['id_subcategory']);
-        }
-
-        if(!empty($filters['searchTerm'])){
-            $sql->bindValue(':searchTerm', '%'.$filters['searchTerm'].'%');
-        }
-    }
 }

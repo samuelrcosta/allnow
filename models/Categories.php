@@ -283,9 +283,16 @@ class Categories extends Model {
     /**
      * This function delete a category and all its subcategories.
      *
-     * @param   $id     int for the category id.
+     * @param   $id       int for the category id.
+     * @param   $type     string for the type, id_category or id_subcategory.
      */
-    public function delete($id){
+    public function delete($id, $type){
+        // Delete Ads
+        $a = new Advertisements();
+        $list = $a->getList(array($type => $id));
+        foreach ($list as $ad){
+            $a->delete($ad['id']);
+        }
         $sql = "DELETE FROM categories WHERE id = ?";
         $sql = $this->db->prepare($sql);
         $sql->execute(array($id));
