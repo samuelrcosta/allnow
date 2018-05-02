@@ -240,9 +240,9 @@ class adminAdvertisementsCMSController extends Controller{
                                 if ($s->array_check_completed_keys($keys, $medias[$i])) {
                                     $check = true;
                                     if ($medias[$i]['media_type'] == 1) {
-                                        $embed_link = $s->getYoutubeEmbedUrl($medias[$i]['media_link']);
-                                        if (!empty($embed_link)) {
-                                            $medias[$i]['media'] = "<iframe width='640' height='315' src=" . $embed_link . " frameborder='0' allow='autoplay; encrypted-media' allowfullscreen></iframe>";
+                                        $youtubeID= $s->getYoutubeId($medias[$i]['media_link']);
+                                        if (!empty($youtubeID)) {
+                                            $medias[$i]['media'] = $youtubeID;
                                         } else {
                                             echo "Link do Youtube inválido.";
                                             exit;
@@ -258,7 +258,7 @@ class adminAdvertisementsCMSController extends Controller{
                                             exit;
                                         } else {
                                             $oembed = simplexml_load_string($s->curl_get($xml_url));
-                                            $medias[$i]['media'] = $oembed->html;
+                                            $medias[$i]['media'] = $oembed->video_id;
                                         }
                                     } elseif ($medias[$i]['media_type'] == 3) {
                                         $medias[$i]['media'] = "<img width='100%' src=";

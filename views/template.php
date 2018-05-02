@@ -5,14 +5,12 @@
         <link rel="shortcut icon" href="<?php echo BASE_URL;?>/assets/images/favicon.png" type="image/png" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<link href="//fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel="stylesheet" type="text/css">
+        <!--!>BASE URL</!-->
+        <script type="text/javascript">var BASE_URL = '<?php echo BASE_URL; ?>';</script>
 		<!--!>Jquery</!-->
         <script type="text/javascript" src="<?php echo BASE_URL; ?>vendor/components/jquery/jquery.min.js"></script>
         <!--!>Fonts</!-->
         <link rel="stylesheet" href="<?php echo BASE_URL; ?>vendor/font-awesome/css/fontawesome-all.min.css">
-		<!--!>FormValidator</!-->
-		<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/jquery.form-validator.min.js"></script>
-		<link href="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/theme-default.min.css" rel="stylesheet" type="text/css" />
-
         <!--!>Slick</!-->
         <link rel="stylesheet" type="text/css" href="<?php echo BASE_URL; ?>vendor/slick-1.8.0/slick/slick.css"/>
         <link rel="stylesheet" type="text/css" href="<?php echo BASE_URL; ?>vendor/slick-1.8.0/slick/slick-theme.css"/>
@@ -24,22 +22,11 @@
 		<!--!>Bootstrap 4</!-->
 		<link rel="stylesheet" href="<?php echo BASE_URL; ?>vendor/twbs/bootstrap/dist/css/bootstrap.min.css" type="text/css" />
 		<script type="text/javascript" src="<?php echo BASE_URL; ?>vendor/twbs/bootstrap/dist/js/bootstrap.min.js"></script>
-        <!--!>Bootstrap Select</!-->
-        <link rel="stylesheet" href="<?php echo BASE_URL; ?>vendor/bootstrap-select/dist/css/bootstrap-select.css" type="text/css" />
-        <script type="text/javascript" src="<?php echo BASE_URL; ?>vendor/bootstrap-select/dist/js/bootstrap-select.js"></script>
         <!--!>Menu Maker</!-->
         <script type="text/javascript" src="https://s3.amazonaws.com/menumaker/menumaker.min.js"></script>
         <!--!>Styles</!-->
         <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/style.css" type="text/css" />
         <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/style_menu.css" type="text/css" />
-		<!--!>Google Ads</!-->
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-        <script>
-            (adsbygoogle = window.adsbygoogle || []).push({
-                google_ad_client: "ca-pub-6611541867419246",
-                enable_page_level_ads: true
-            });
-        </script>
         <!-- Global site tag (gtag.js) - Google Analytics -->
         <script async src="https://www.googletagmanager.com/gtag/js?id=UA-116306177-1"></script>
         <script>
@@ -94,14 +81,14 @@
 	    	<div class="subarea">
 	    		<div class="container">
 	    			<div class="row">
-						<div class="col-sm-2"></div>
-						<div class="col-sm-8">
+						<div class="col-md-2"></div>
+						<div class="col-md-8">
 							<form>
 								<input type="text" id="inscribe-email" placeholder="Registre no nosso Newsletter" class="email subemail">
                                 <button type="button" id="inscribe-button" class="button">Inscrever-se</button>
 							</form>
 						</div>
-						<div class="col-sm-2"></div>
+						<div class="col-md-2"></div>
 					</div>
 	    		</div>
 	    	</div>
@@ -109,79 +96,66 @@
 	    		<div class="container">
 	    			<div class="row">
 						<div class="col-sm-4 footer-corporation-info">
-							<a href="<?php echo BASE_URL; ?>"><img width="150" src="<?php echo BASE_URL; ?>assets/images/logo2.png"></a><br/><br/>
-							<strong>Slogan da empresa</strong><br/><br/>
-							Endereço da Empresa
+							<a href="<?php echo BASE_URL; ?>"><img width="150" src="<?php echo BASE_URL; ?>assets/images/fav.png"></a><br/><br/>
+							<strong>Slogan da empresa</strong><br/>
+							CNPJ DA EMPRESA
 						</div>
 						<div class="col-sm-8 linkgroups">
 							<div class="row">
 								<div class="col-sm-4">
-									<h3>Categorias</h3>
-									<ul>
-                                        <?php foreach ($viewData['categoryMenuData'] as $category): ?>
-                                            <li><a href="<?php echo BASE_URL."categories/open/".$category['slug']; ?>"><?php echo $category['name'] ?></a></li>
-                                        <?php endforeach; ?>
-									</ul>
-								</div>
-								<div class="col-sm-4">
 									<h3>Informações</h3>
 									<ul>
-										<li><a href="<?php echo BASE_URL; ?>info/sobre">Sobre a empresa</a></li>
-                                        <li><a href="<?php echo BASE_URL; ?>info/contato">Entre em contato</a></li>
-                                        <li><a href="#">Facebook</a></li>
+										<li><a href="<?php echo BASE_URL; ?>info/about">Sobre a empresa</a></li>
+                                        <li><a href="<?php echo BASE_URL; ?>info/contact">Entre em contato</a></li>
 									</ul>
 								</div>
+                                <div class="col-sm-4">
+                                    <h3>Redes Sociais</h3>
+                                    <ul>
+                                        <li><a href="#">Facebook</a></li>
+                                        <li><a href="#">Instagram</a></li>
+                                        <li><a href="#">Twitter</a></li>
+                                    </ul>
+                                </div>
 							</div>
 						</div>
 					</div>
 	    		</div>
 	    	</div>
 	    	<div class="copyright">
-	    		<div class="container">
-	    			<div class="row">
-						<div class="col-sm-6">© <span>Optium</span> - Todos os Direitos Reservados.</div>
-						<div class="col-sm-6">
-						</div>
-					</div>
-	    		</div>
+                <div class="container">
+                    © <span>Optium</span> - Todos os Direitos Reservados.
+                </div>
 	    	</div>
 	    </footer>
 
-        
-        <!--ALERT MODAL -->
-        <div class="modal alert-modal" tabindex="-1" role="dialog">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Sucesso</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <p>Seu e-mail foi cadastrado em nossa lista. Em breve receberá atualizações</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-orange" data-dismiss="modal">Fechar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
         <script>
-            $("#inscribe-button").click(function(){
-                var email = $('#inscribe-email').val();
-                if(email != ''){
+            let button = $("#inscribe-button");
+            let input = $('#inscribe-email');
+            button.click(function(){
+                let email = input.val();
+                if(email !== ''){
                     $.ajax({
                         url: '<?php echo BASE_URL; ?>home/inscribeRegister',
                         type: 'POST',
                         data: {'email': email},
+                        beforeSend: function() {
+                            button.attr('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> Aguarde');
+                        },
                         success: function(result){
-                            if(result == 'true'){
-                                $('#inscribe-email').val('');
-                                $('.alert-modal').modal('show');
+                            result = JSON.parse(result);
+                            if(result.status === 'subscribed'){
+                                button.html('<i class="fa fa-check"></i> Inscrito!').css("background-color", "#28a745");
+                                input.val('').attr("placeholder", "Inscrição feita com sucesso!");
+                                input.attr('readonly', true);
+                            }else{
+                                button.attr('disabled', false).html('Inscrever-se');
+                                input.val('').attr("placeholder", "Erro: E-mail inválido");
                             }
                         }
                     });
+                }else{
+                    input.attr("placeholder", "Digite um e-mail válido");
                 }
             });
         </script>

@@ -86,18 +86,13 @@
                 }
             });
 
-            if (foundActive === false) {
-                activeElement = $("#cssmenu > ul > li").first();
-            }
-                
-            defaultWidth = lineWidth = activeElement.width();
-            
-            defaultPosition = linePosition = activeElement.position().left;
+            if(foundActive !== false){
+                defaultWidth = lineWidth = activeElement.width();
+                defaultPosition = linePosition = activeElement.position().left;
+                menuLine.css("width", lineWidth);
+                menuLine.css("left", linePosition);
 
-            menuLine.css("width", lineWidth);
-            menuLine.css("left", linePosition);
-
-            $("#cssmenu > ul > li").hover(function() {
+                $("#cssmenu > ul > li").hover(function() {
                     activeElement = $(this);
                     lineWidth = activeElement.width();
                     linePosition = activeElement.position().left;
@@ -108,7 +103,9 @@
                     menuLine.css("left", defaultPosition);
                     menuLine.css("width", defaultWidth);
                 });
-
+            }else{
+                //activeElement = $("#cssmenu > ul > li").first();
+            }
         });
 
 

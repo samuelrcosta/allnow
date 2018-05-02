@@ -48,8 +48,8 @@ class homeController extends Controller {
         $store = new Store();
         if(isset($_POST['email']) && !empty($_POST['email'])){
             $email = $_POST['email'];
-            $store->subscribeMailChimp($email);
-            echo 'true';
+            $result = $store->subscribeMailChimp($email);
+            echo $result;
         }else{
             echo 'false';
         }

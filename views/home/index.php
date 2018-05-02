@@ -6,17 +6,23 @@
     <section>
         <div class="row">
             <div class="col-12">
-                <div class="destaques">
+                <div class="highlights">
                     <h3>Destaques</h3>
-                    <div class="destaques_container">
+                    <div class="highlights_container">
                         <div class="row">
                             <?php foreach ($advertisementsData as $ad): ?>
                             <div class="col-md-4" style="padding-bottom: 15px;padding-top: 15px;">
                                 <div class="ad-container">
                                     <div class="medias_container">
                                         <?php foreach ($ad['medias'] as $media): ?>
-                                            <div <?php if($media['media_type'] != 3) echo 'class="embed-container"'; else echo 'class="ad-image-container"';;?> >
-                                                <?php echo $media['media'] ?>
+                                            <div class="ad-media-container media-type-<?= $media['media_type'] ?>" data-type="<?= $media['media_type'] ?>" data-media="<?= ($media['media_type'] != 3) ? $media['media'] : '' ?>" >
+                                                <?php if($media['media_type'] == 1): ?>
+                                                    <div class="play-button"></div>
+                                                <?php elseif($media['media_type'] == 2): ?>
+                                                    <div class="play-button"></div>
+                                                <?php elseif($media['media_type'] == 3): ?>
+                                                    <?= $media['media'] ?>
+                                                <?php endif; ?>
                                             </div>
                                         <?php endforeach; ?>
                                     </div>
@@ -44,21 +50,11 @@
         </div>
     </section>
 </div>
+<script src="<?php echo BASE_URL; ?>assets/js/controllers/slidesController.js"></script>
+<script src="<?php echo BASE_URL; ?>assets/js/controllers/homePageController.js"></script>
 <script>
     $(document).ready(function(){
-        $('.medias_container').slick({
-            //autoplay: true,
-            //autoplaySpeed: 15000,
-            infinite: true
-        });
-
-        showLetters("#phrase-repeat", "Repetindo uma frase", 0, 250);
+        SlidesController.start();
+        PageController.start();
     });
-
-    var showLetters = function (target, message, index, interval) {
-        if (index < message.length) {
-            $(target).append(message[index++]);
-            setTimeout(function () { showLetters(target, message, index, interval); }, interval);
-        }
-    }
 </script>

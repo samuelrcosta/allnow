@@ -221,6 +221,7 @@
         position: absolute;
         top: 0;
         left: 0;
+        right: 0;
         z-index: 5;
     }
     #cssmenu {
@@ -296,17 +297,17 @@
         display: none;
     }
     #cssmenu #menu-button {
-        display: block;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 52px;
+        height: 52px;
         color: #000000;
         cursor: pointer;
         font-size: 20px;
         text-transform: uppercase;
-        padding-left: 20px;
-        padding-top: 16px;
-        padding-bottom: 16px;
     }
     #cssmenu .submenu-button {
-        /*position: absolute;*/
         text-align: center;
         line-height: 52px;
         float: left;
@@ -314,16 +315,12 @@
         z-index: 15;
         right: 0;
         top: 0;
-        display: block;
         border-left: 1px solid rgba(120, 120, 120, 0.15);
         height: 52px;
         min-width: 52px;
         cursor: pointer;
-    }
-    #cssmenu .submenu-button i {
-        padding-top: 19px;
-        padding-bottom: 19px;
-        padding-left: 31px;
-        padding-right: 31px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 }

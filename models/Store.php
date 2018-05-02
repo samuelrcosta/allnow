@@ -103,6 +103,27 @@ class Store extends Model{
     }
 
     /**
+     * This function returns the Youtube video id from a URL.
+     *
+     * @param   $url    string for youtube URL watch.
+     *
+     * @return  string with video id.
+     */
+    function getYoutubeId($url){
+        if (strpos($url, 'youtu') !== false) {
+            preg_match('/[\\?\\&]v=([^\\?\\&]+)/', $url, $matches);
+            if(count($matches) > 1){
+                $id = $matches[1];
+                return $id ;
+            }else{
+                return '';
+            }
+        }else{
+            return '';
+        }
+    }
+
+    /**
      * This function execute a cUrl to get Data.
      *
      * @param $url  string for the url.
@@ -201,6 +222,7 @@ class Store extends Model{
         $result = curl_exec($ch);
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
+        return $result;
     }
 
 }

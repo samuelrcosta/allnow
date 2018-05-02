@@ -4,21 +4,24 @@
     </div>
     <br>
     <div class="row">
-        <div class="col-md-2 filterarea">
-            <h4><?php echo $categoryData['name'] ?></h4>
-            <ul class="list-subcategories">
-                <?php foreach ($categoryData['subs'] as $sub): ?>
-                    <li><a href="<?php echo BASE_URL; ?>categories/open/<?php echo $sub['slug']; ?>"><i class="fas fa-angle-double-right"></i>&nbsp<?php echo $sub['name']; ?></a></li>
+        <div class="col-md-12">
+            <h2 style="margin-top: 20px;margin-bottom: 10px; font-family: 'montserratlight', sans-serif;"><?php echo $advertisementData['title'] ?></h2>
+            <div class="row">
+                <?php foreach($advertisementData['medias'] as $media): ?>
+                    <div class="col-md-6 medias_container" style="margin-bottom: 15px" >
+                        <div class="ad-media-container media-type-<?= $media['media_type'] ?>" data-type="<?= $media['media_type'] ?>" data-media="<?= ($media['media_type'] != 3) ? $media['media'] : '' ?>" >
+                            <?php if($media['media_type'] == 1): ?>
+                                <div class="play-button"></div>
+                            <?php elseif($media['media_type'] == 2): ?>
+                                <div class="play-button"></div>
+                            <?php elseif($media['media_type'] == 3): ?>
+                                <?= $media['media'] ?>
+                            <?php endif; ?>
+                        </div>
+                    </div>
                 <?php endforeach; ?>
-            </ul>
-        </div>
-        <div class="col-md-10">
-            <h2 style="margin-bottom: 30px; padding-bottom: 5px; border-bottom: 2px solid #F79321;"><?php echo $advertisementData['title'] ?></h2>
-            <?php foreach($advertisementData['medias'] as $media): ?>
-                <div style="margin-top: 20px" <?php if($media['media_type'] != 3) echo 'class="embed-container"';?> >
-                    <?php echo $media['media'] ?>
-                </div>
-            <?php endforeach; ?>
+            </div>
+
             <br>
 
             <?php echo $advertisementData['description'] ?>
@@ -30,3 +33,9 @@
         </div>
     </div>
 </div>
+<script src="<?php echo BASE_URL; ?>assets/js/controllers/slidesController.js"></script>
+<script>
+    $(document).ready(function(){
+        SlidesController.start();
+    });
+</script>
