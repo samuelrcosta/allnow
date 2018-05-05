@@ -18,12 +18,12 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="password_confirmation"><span style="color: red;font-weight: bold">*</span> Nova Senha</label>
+                        <label for="password_confirmation"><span style="color: red;font-weight: bold">*</span> Senha</label>
                         <input type="password" class="form-control" id="password_confirmation" name="password_confirmation">
                     </div>
 
                     <div class="form-group">
-                        <label for="password"><span style="color: red;font-weight: bold">*</span> Confirme nova senha</label>
+                        <label for="password"><span style="color: red;font-weight: bold">*</span> Confirme senha</label>
                         <input type="password" class="form-control" id="password" name="password" data-validation="confirmation" data-validation-error-msg="Confirmação de senha inválida">
                     </div>
                 </div>
