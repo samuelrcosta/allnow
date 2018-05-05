@@ -72,7 +72,7 @@ class infoController extends Controller{
                     $mail_text .= "<b>E-mail: </b>".$email."<br>";
                     $mail_text .= "<b>Telefone: </b>".$phone."<br>";
                     $mail_text .= "<b>Assunto da Mensagem: </b>".$subject."<br>";
-                    $mail_text .= "<b>Mensagem: </b>".$message."</p>";
+                    $mail_text .= "<b>Mensagem: </b><span style='white-space: pre;'>".$message."</span></p>";
                     $template = file_get_contents(BASE_URL."assets/templates/mail_template.htm");
                     $msg = str_replace("#EMAIL_TEXT#", $mail_text, $template);
                     $recipient = array("name" => $this->MailName, "email" => $this->MailUsername);

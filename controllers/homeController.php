@@ -55,10 +55,4 @@ class homeController extends Controller {
         }
     }
 
-    public function teste(){
-        $template = file_get_contents(BASE_URL."assets/templates/mail_template.htm");
-        $template = str_replace("#EMAIL_TEXT#", "<b>Texto do Email -----------</b>", $template);
-        echo $template;
-    }
-
 }
