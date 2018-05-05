@@ -3,7 +3,7 @@ const PageController = {
     PHRASE_REPEAT_CONTAINER: "#phrase-repeat",
 
     // Variables for storage and controller
-    _phrases: ["Repetindo a primeira frase", "mostrando a segunda frase", "A terceira frase", "quarta frase"],
+    _phrases: ["idiomas", "finanças", "negócios", "e muito mais"],
     _nowPhrase: 0,
     _timeToShow: 250,
     _timeToHide: 100,

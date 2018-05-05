@@ -27,6 +27,8 @@
     <link rel="stylesheet" type="text/css" href="<?php echo BASE_URL; ?>vendor/formValidation/formValidation.min.css"/>
     <script type="text/javascript" src="<?php echo BASE_URL; ?>vendor/formValidation/formValidation.min.js"></script>
     <script type="text/javascript" src="<?php echo BASE_URL; ?>vendor/formValidation/bootstrap.js"></script>
+    <!--!>Mustache</!-->
+    <script type="text/javascript" src="<?php echo BASE_URL; ?>vendor/mustache/mustache.min.js"></script>
     <!--!>Jquery DataTable</!-->
     <link rel="stylesheet" href="//cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="//cdn.datatables.net/1.10.16/css/dataTables.bootstrap4.min.css">
@@ -119,6 +121,12 @@
                     <li class="nav-item">
                         <a href="<?php echo BASE_URL; ?>usersCMS" class="nav-link <?php echo ($viewData['link'] == 'usersCMS/index')?'active':''; ?>">
                             <i class="icon icon-people"></i> Usuários
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="<?php echo BASE_URL; ?>contactsCMS" class="nav-link <?php echo ($viewData['link'] == 'contactsCMS/index')?'active':''; ?>">
+                            <i class="icon icon-envelope-open"></i> Contatos
                         </a>
                     </li>
 

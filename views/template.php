@@ -44,7 +44,7 @@
                         <div class='img-top-logo-big' style="flex: 1">
                             <a href="<?php echo BASE_URL; ?>">
                                 <img src="<?php echo BASE_URL; ?>assets/images/rsz_fav.png">
-                                <img src="<?php echo BASE_URL; ?>assets/images/rsz_nome_logo.png">
+                                <img style="margin-top: 15px;height: 35px;" src="<?php echo BASE_URL; ?>assets/images/rsz_nome_logo.png">
                             </a>
                         </div>
                         <div class="menu-container-int">
@@ -84,7 +84,7 @@
 						<div class="col-md-2"></div>
 						<div class="col-md-8">
 							<form>
-								<input type="text" id="inscribe-email" placeholder="Registre no nosso Newsletter" class="email subemail">
+								<input type="text" id="inscribe-email" placeholder="Registre na nossa Newsletter" class="email subemail">
                                 <button type="button" id="inscribe-button" class="button">Inscrever-se</button>
 							</form>
 						</div>
@@ -95,21 +95,23 @@
 	    	<div class="links">
 	    		<div class="container">
 	    			<div class="row">
-						<div class="col-sm-4 footer-corporation-info">
-							<a href="<?php echo BASE_URL; ?>"><img width="150" src="<?php echo BASE_URL; ?>assets/images/fav.png"></a><br/><br/>
-							<strong>Slogan da empresa</strong><br/>
-							CNPJ DA EMPRESA
+						<div class="col-sm-4 footer-corporation-info" style="text-align: center">
+							<a href="<?php echo BASE_URL; ?>"><img width="100" src="<?php echo BASE_URL; ?>assets/images/fav.png"></a><br/>
+							<strong>Você no seu próximo nível</strong><br/>
+							Algumas informações...
 						</div>
 						<div class="col-sm-8 linkgroups">
 							<div class="row">
-								<div class="col-sm-4">
+								<div class="col-sm-5">
 									<h3>Informações</h3>
 									<ul>
 										<li><a href="<?php echo BASE_URL; ?>info/about">Sobre a empresa</a></li>
                                         <li><a href="<?php echo BASE_URL; ?>info/contact">Entre em contato</a></li>
+                                        <li><a href="#">Política de privacidade</a></li>
+                                        <li><a href="#">Termos de uso</a></li>
 									</ul>
 								</div>
-                                <div class="col-sm-4">
+                                <div class="col-sm-7">
                                     <h3>Redes Sociais</h3>
                                     <ul>
                                         <li><a href="#">Facebook</a></li>

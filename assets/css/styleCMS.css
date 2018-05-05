@@ -9,7 +9,14 @@
 /**
  * Color System
  */
-
+.status-Respondido{
+  color: #28a745;
+  font-weight: bold;
+}
+.status-Recebido{
+  color: #ef5350;
+  font-weight: bold;
+}
 /**
  * Options
  */

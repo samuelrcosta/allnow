@@ -1,6 +1,8 @@
 <div style="clear: both"></div>
 <div class="container-home-image">
-    <div class="effect-phrase"><h1>Frase de Efeito&nbsp;<span id="phrase-repeat"> </span></h1></div>
+    <div class="effect-phrase"><h1>A maior plataforma de produtos digitais do país:&nbsp;<span id="phrase-repeat"> </span></h1><br>
+        <a href="#inscribe-email">Se inscreva em nossa newsletter e fique por dentro das novidades</a>
+    </div>
 </div>
 <div class="container-fluid container-content-homepage">
     <section>

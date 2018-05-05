@@ -2,9 +2,15 @@
 class Controller {
 
 	protected $db;
+	protected $MailName;
+	protected $MailUsername;
 
 	public function __construct() {
 		global $config;
+		global $MailName;
+		global $MailUsername;
+		$this->MailName = $MailName;
+		$this->MailUsername = $MailUsername;
 	}
 	
 	public function loadView($viewName, $viewData = array()) {

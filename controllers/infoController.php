@@ -66,7 +66,26 @@ class infoController extends Controller{
                     $subject = addslashes($_POST['subject']);
                     $message = addslashes($_POST['message']);
                     // Sends E-mail to Admin
+                    $mail_subject = "Optium - Novo contato no site";
+                    $mail_text = "<p><b>Uma solicitação de contato foi cadastrada no site</b></p>";
+                    $mail_text .= "<p><b>Nome: </b>".$name."<br>";
+                    $mail_text .= "<b>E-mail: </b>".$email."<br>";
+                    $mail_text .= "<b>Telefone: </b>".$phone."<br>";
+                    $mail_text .= "<b>Assunto da Mensagem: </b>".$subject."<br>";
+                    $mail_text .= "<b>Mensagem: </b>".$message."</p>";
+                    $template = file_get_contents(BASE_URL."assets/templates/mail_template.htm");
+                    $msg = str_replace("#EMAIL_TEXT#", $mail_text, $template);
+                    $recipient = array("name" => $this->MailName, "email" => $this->MailUsername);
+                    $s->sendMail(array($recipient), $mail_subject, $msg);
                     // Sends E-mail to user
+                    $mail_subject = "Optium - Recebemos sua mensagem de contato";
+                    $mail_text = "<p><b>Olá ".$name."!</b></p>";
+                    $mail_text .= "<p>Recebemos seu contato.<br>";
+                    $mail_text .= "Responderemos o mais rápido possível.<br></p>";
+                    $msg = str_replace("#EMAIL_TEXT#", $mail_text, $template);
+                    $recipient = array("name" => $name, "email" => $email);
+                    $s->sendMail(array($recipient), $mail_subject, $msg);
+                    // Save in database
                     $c->register($name, $email, $phone, $subject, $message);
                     // Returns true
                     echo json_encode(true);

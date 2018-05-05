@@ -2,7 +2,7 @@ const PageController = {
 
     // ids
     FORM: '#contactForm',
-    INPUT_PHONE: "#telephone",
+    INPUT_PHONE: "#phone",
 
     // buttons
     BUTTON_SAVE_CONTACT: ".save-contact-button",
@@ -44,6 +44,11 @@ const PageController = {
         // Return sends button to normal
         $(PageController.BUTTON_SAVE_CONTACT).attr('disabled', false).html('<i class="fa fa-envelope"></i> Enviar');
         if(sending === true){
+            // Clean all inputs
+            $(PageController.FORM).find('input').val("");
+            $(PageController.FORM).find('textarea').val("");
+            // Reset FormValidator
+            $(PageController.FORM).get(0).reset();
             $(PageController.CONTAINER_SUCCESS).html('<div class="alert alert-success" style="border-radius: 0" role="alert">Sua mensagem foi enviada com sucesso.<br>Em breve responderemos.</div>').slideDown();
         }else{
             $(PageController.NOTICE_CONTAINER).html('<div class="alert alert-danger" style="border-radius: 0" role="alert">' + sending + '</div>').show();
