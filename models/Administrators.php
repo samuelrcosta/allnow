@@ -79,7 +79,7 @@ class Administrators extends Model{
                 $sql->execute(array($email, $name, $id));
                 return true;
             }else{
-                $sql = "UPDATE users SET email = ?, password = ?, name = ?, WHERE id = ?";
+                $sql = "UPDATE administrators SET email = ?, password = ?, name = ? WHERE id = ?";
                 $sql = $this->db->prepare($sql);
                 $sql->execute(array($email, md5($password), $name, $id));
                 return true;

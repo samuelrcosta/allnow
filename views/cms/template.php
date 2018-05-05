@@ -51,19 +51,6 @@
         </a>
 
         <ul class="navbar-nav ml-auto">
-            <li class="nav-item d-md-down-none">
-                <a href="#">
-                    <i class="fa fa-bell"></i>
-                    <span class="badge badge-pill badge-danger">5</span>
-                </a>
-            </li>
-
-            <li class="nav-item d-md-down-none">
-                <a href="#">
-                    <i class="fa fa-envelope-open"></i>
-                    <span class="badge badge-pill badge-danger">5</span>
-                </a>
-            </li>
 
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -72,24 +59,8 @@
                 </a>
 
                 <div class="dropdown-menu dropdown-menu-right">
-                    <div class="dropdown-header">Minha Conta</div>
-
-                    <a href="#" class="dropdown-item">
-                        <i class="fa fa-user"></i> Profile
-                    </a>
-
-                    <a href="#" class="dropdown-item">
-                        <i class="fa fa-envelope"></i> Messages
-                    </a>
-
-                    <div class="dropdown-header">Configurações</div>
-
-                    <a href="#" class="dropdown-item">
-                        <i class="fa fa-bell"></i> Notifications
-                    </a>
-
-                    <a href="#" class="dropdown-item">
-                        <i class="fa fa-wrench"></i> Settings
+                    <a href="<?php echo BASE_URL; ?>admin/sendMailPage" class="dropdown-item">
+                        <i class="fa fa-envelope"></i> Enviar E-mail
                     </a>
 
                     <a href="<?php echo BASE_URL; ?>admin/logoff" class="dropdown-item">
@@ -114,7 +85,7 @@
 
                     <li class="nav-item">
                         <a href="<?php echo BASE_URL; ?>adminAdvertisementsCMS" class="nav-link <?php echo ($viewData['link'] == 'adminAdvertisementsCMS/index')?'active':''; ?>">
-                            <i class="icon icon-notebook"></i> Meus Anúncios
+                            <i class="icon icon-notebook"></i> Anúncios
                         </a>
                     </li>
 
@@ -144,58 +115,6 @@
                             <li class="nav-item">
                                 <a href="<?php echo BASE_URL; ?>subcategoriesCMS" class="nav-link <?php echo ($viewData['link'] == 'subcategoriesCMS/index')?'active':''; ?>">
                                     <i class="icon icon-organization"></i> Sub-Categorias
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-
-                    <li class="nav-title">More</li>
-
-                    <li class="nav-item nav-dropdown">
-                        <a href="#" class="nav-link nav-dropdown-toggle">
-                            <i class="icon icon-umbrella"></i> Pages <i class="fa fa-caret-left"></i>
-                        </a>
-
-                        <ul class="nav-dropdown-items">
-                            <li class="nav-item">
-                                <a href="#" class="nav-link">
-                                    <i class="icon icon-umbrella"></i> Blank Page
-                                </a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a href="#" class="nav-link">
-                                    <i class="icon icon-umbrella"></i> Login
-                                </a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a href="#" class="nav-link">
-                                    <i class="icon icon-umbrella"></i> Register
-                                </a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a href="#" class="nav-link">
-                                    <i class="icon icon-umbrella"></i> Invoice
-                                </a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a href="#" class="nav-link">
-                                    <i class="icon icon-umbrella"></i> 404
-                                </a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a href="#" class="nav-link">
-                                    <i class="icon icon-umbrella"></i> 500
-                                </a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a href="#" class="nav-link">
-                                    <i class="icon icon-umbrella"></i> Settings
                                 </a>
                             </li>
                         </ul>

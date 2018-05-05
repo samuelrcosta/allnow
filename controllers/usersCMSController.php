@@ -3,7 +3,7 @@
  * This class is the Controller of the Admin Users panel.
  *
  * @author  samuelrcosta
- * @version 1.0.0, 01/20/2017
+ * @version 1.2.0, 05/05/2018
  * @since   1.0, 01/20/2017
  */
 
@@ -21,8 +21,6 @@ class usersCMSController extends Controller{
      */
     public function index(){
         $u = new Administrators();
-        $users = new Users();
-        $c = new Categories();
         $data = array();
 
         if($u->isLogged()){
@@ -35,6 +33,63 @@ class usersCMSController extends Controller{
         }else{
             header("Location: ".BASE_URL);
             exit;
+        }
+    }
+
+    /**
+     * This function shows the register page for a new user.
+     */
+    public function newUser(){
+        $u = new Administrators();
+        $data = array();
+
+        if($u->isLogged()){
+            $data['title'] = 'ADM - Novo usuário';
+            $data['link'] = 'usersCMS/index';
+            $data['userData'] = $u->getData(1, $_SESSION['adminLogin']);
+
+            $this->loadTemplateCMS('cms/users/newUser', $data);
+        }else{
+            header("Location: ".BASE_URL);
+            exit;
+        }
+    }
+
+    /**
+     * This function register a new user in database, with POST request
+     */
+    public function saveNewUser(){
+        $u = new Administrators();
+        if($u->isLogged()){
+            if(!empty($_POST)){
+                $s = new Store();
+                // Array for check the keys
+                $keys = array('email', 'name', 'password', 'password_confirmation');
+                if($s->array_keys_check($keys, $_POST)){
+                    // Check if the array is completed
+                    if($s->array_check_completed_keys($keys, $_POST)){
+                        $email = addslashes($_POST['email']);
+                        $name = addslashes($_POST['name']);
+                        $password = addslashes($_POST['password']);
+                        $password_confirmation = addslashes($_POST['password_confirmation']);
+                        // Checks passwords
+                        if($password == $password_confirmation){
+                            // Try to register
+                            if($u->register($name, $email, $password)){
+                                echo json_encode(true);
+                            }else{
+                                echo json_encode("E-mail já cadastrado.");
+                            }
+                        }else{
+                            echo json_encode("Confirmação de senha inválida.");
+                        }
+                    }else{
+                        echo json_encode("Dados incompletos.");
+                    }
+                }else{
+                    echo json_encode("Dados corrompidos.");
+                }
+            }
         }
     }
 
@@ -57,19 +112,25 @@ class usersCMSController extends Controller{
             if(isset($_POST['name']) && !empty($_POST['name'])){
                 $name = addslashes($_POST['name']);
                 $email = addslashes($_POST['email']);
+                $password = addslashes($_POST['password']);
+                $passConfirm = addslashes($_POST['password_confirmation']);
+
+                $data['usData']['name'] = $name;
+                $data['usData']['email'] = $email;
 
                 if(!empty($name) && !empty($email)){
-                    if($u->edit($id, $name, $email, '')){
-                        $msg = urlencode('Dados editados com sucesso.');
-                        header("Location: " . BASE_URL . "usersCMS?notification=".$msg."&status=alert-success");
+                    // Checks passwords
+                    if($password == $passConfirm){
+                        if($u->edit($id, $name, $email, $password)){
+                            $msg = urlencode('Dados editados com sucesso.');
+                            header("Location: " . BASE_URL . "usersCMS?notification=".$msg."&status=alert-success");
+                        }else{
+                            $data['notice'] = '<div class="alert alert-warning">O email digitado já está cadastrado em outra conta.</div>';
+                        }
                     }else{
-                        $data['usData']['name'] = $name;
-                        $data['usData']['email'] = $email;
-                        $data['notice'] = '<div class="alert alert-warning">O email digitado já está cadastrado em outra conta.</div>';
+                        $data['notice'] = '<div class="alert alert-warning">Confirmação de senha inválida.</div>';
                     }
                 }else{
-                    $data['usData']['name'] = $name;
-                    $data['usData']['email'] = $email;
                     $data['notice'] = '<div class="alert alert-warning">Preencha todos os campos.</div>';
                 }
             }else{

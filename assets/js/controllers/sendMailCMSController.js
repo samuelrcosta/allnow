@@ -3,6 +3,7 @@ const PageController = {
     SELECT_STATUS: '#select-status',
     CARD_ANSWER: '.card-answer',
     FORM_ANSWER: '#formEmail',
+    INPUT_EMAIL: '#email',
     INPUT_SUBJECT: '#subject',
     INPUT_MESSAGE: 'message',
 
@@ -13,41 +14,12 @@ const PageController = {
     // containers
     NOTICE_CONTAINER: '.notice-container',
 
-    // Templates
 
     // Variables for control and storage
-    _contactId: null,
-    // Variables to storage templates
-
-    // ---------------------------------------------- LoadTemplates --------------------------------------------------//
-    _loadTemplates: function _loadTemplates(){
-    },
 
     _listeners: function _listeners(){
-        // Button to shows answer form
-        $(PageController.BUTTON_ANSWER).click(function(){
-            // Shows form card
-            $(PageController.CARD_ANSWER).slideDown(400, function(){
-                this.scrollIntoView(false);
-            });
-        });
-
-        // Select status
-        $(PageController.SELECT_STATUS).change(function(){
-            let status = $(this).val();
-            let formData = new FormData();
-            formData.append('id', PageController._contactId);
-            formData.append('status', status);
-            PageController.sendFormAsync(formData);
-        });
-
         // Validate fields
         PageController._validateFields();
-    },
-
-    // ---------------------------------------------- renders --------------------------------------------------//
-    _render: function _render(template, data){
-        return Mustache.render(template, data);
     },
 
     // ---------------------------------------------- Utils --------------------------------------------------//
@@ -67,25 +39,27 @@ const PageController = {
                     $(PageController.NOTICE_CONTAINER).html("");
                     // TurnOff the save button
                     $(PageController.BUTTON_SEND).attr('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> Aguarde');
-                    setTimeout(PageController._sendAnswer, 20);
+                    setTimeout(PageController._sendMail, 20);
                 }
                 return false; // Will stop the submission of the form
             }
         });
     },
 
-    _sendAnswer: function _sendAnswer(){
-        let formData = new FormData();
-        // Creates the formData
-        formData.append('id', PageController._contactId);
-        formData.append('subject', $(PageController.INPUT_SUBJECT).val());
-        formData.append('message', CKEDITOR.instances.message.getData());
+    _sendMail: function _sendMail(){
+        $("#message").val(CKEDITOR.instances.message.getData());
+        let form = document.getElementById('formEmail');
+        let formData = new FormData(form);
         let sending = JSON.parse(PageController.sendForm(formData));
         // Return sends button to normal
         $(PageController.BUTTON_SEND).attr('disabled', false).html('<i class="fas fa-check"></i> Enviar');
         if(sending === true){
-            let urlData = encodeURI("?notification=Mensagem enviada com sucesso&status=alert-success");
-            window.location.replace(BASE_URL + 'contactsCMS' + urlData);
+            // Clean all fields
+            CKEDITOR.instances.message.setData("");
+            $(PageController.FORM_ANSWER).find('input').val("");
+            // Reset FormValidator
+            $(PageController.FORM_ANSWER).get(0).reset();
+            $(PageController.NOTICE_CONTAINER).html('<div class="alert alert-success" role="alert">E-mail enviado com sucesso!</div>').show();
         }else{
             $(PageController.NOTICE_CONTAINER).html('<div class="alert alert-danger" role="alert">' + sending + '</div>').show();
         }
@@ -95,7 +69,7 @@ const PageController = {
     sendForm: function sendForm(formData){
         let callback = false;
         $.ajax({
-            url: BASE_URL + 'contactsCMS/sendAnswer',
+            url: BASE_URL + 'admin/sendMail',
             data: formData,
             async: false,
             processData: false,
@@ -108,28 +82,11 @@ const PageController = {
         return callback;
     },
 
-    sendFormAsync: function sendFormAsync(formData){
-        $.ajax({
-            url: BASE_URL + 'contactsCMS/editStatus',
-            data: formData,
-            async: true,
-            processData: false,
-            contentType: false,
-            type: 'POST',
-            success: function(data){
-
-            }
-        });
-    },
-
     // ---------------------------------------------- Start --------------------------------------------------//
 
-    start: function start(contactId){
+    start: function start(){
         //CKEDITOR
         CKEDITOR.replace('message');
-        this._contactId = contactId;
-        // Load all templates
-        this._loadTemplates();
         // Activate page listeners
         this._listeners();
     }

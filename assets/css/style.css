@@ -196,7 +196,6 @@ footer {
 	border-radius:5px 0 0 5px;
 	outline:0;
 	padding-left:15px;
-	font-size: 14px;
 }
 .subarea .subemail:read-only{
 	cursor: not-allowed;
@@ -557,7 +556,11 @@ footer h3 {
 		border-bottom: 1px solid #ccc;
 		padding-bottom: 20px;
 	}
-
+	.slick-prev,
+	.slick-next {
+		width: 25px;
+		height: 25px;
+	}
 	.slick-prev:before, .slick-next:before {
 		font-size: 25px;
 	}
@@ -574,5 +577,8 @@ footer h3 {
 	.subarea .subemail {
 		font-size: 13px;
 		padding-left: 5px;
+	}
+	.subarea .subemail:focus {
+		font-size: 16px;
 	}
 }

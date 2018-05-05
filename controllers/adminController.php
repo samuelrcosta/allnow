@@ -3,7 +3,7 @@
  * This class is the Controller of the AdminPage.
  *
  * @author  samuelrcosta
- * @version 1.0.0, 01/15/2017
+ * @version 1.1.0, 05/05/2018
  * @since   1.0, 01/15/2017
  */
 
@@ -41,7 +41,7 @@ class adminController extends Controller{
                 }else{
                     $configs = new Configs();
                     $attempts = $configs->registerLoginAttempt();
-                    $subject = 'Login Attempt #'.$attempts.' - AllNow';
+                    $subject = 'Login Attempt #'.$attempts.' - Optium';
                     $message = '<html xmlns="http://www.w3.org/1999/xhtml">
                                 <head>
                                     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -51,7 +51,7 @@ class adminController extends Controller{
                                     <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                         <tbody>
                                             <tr>
-                                                <td>An attempt was made to log in to the AllNow website</td>
+                                                <td>An attempt was made to log in to the Optium website</td>
                                             </tr>
                                             <tr>
                                                 <td>Data:</td>
@@ -69,7 +69,7 @@ class adminController extends Controller{
                     $recipients = array();
                     $recipients[] = array(
                         'email' => 'samu.rcosta@gmail.com',
-                        'name' => 'AllNow Administration'
+                        'name' => 'Optium Administration'
                     );
                     $s->sendMail($recipients, $subject, $message);
                     $data['email'] = $email;
@@ -81,6 +81,9 @@ class adminController extends Controller{
         }
     }
 
+    /**
+     * This function shows the dashboard page
+     */
     public function dashboard(){
         $u = new Administrators();
         $data = array();
@@ -94,6 +97,61 @@ class adminController extends Controller{
         }else{
             header("Location: ".BASE_URL);
             exit;
+        }
+    }
+
+    /**
+     * This function shows the sends mail page
+     */
+    public function sendMailPage(){
+        $u = new Administrators();
+        $data = array();
+
+        if($u->isLogged()){
+            $data['title'] = 'ADM - Enviar E-mail';
+            $data['link'] = 'admin';
+            $data['userData'] = $u->getData(1, $_SESSION['adminLogin']);
+
+            $this->loadTemplateCMS('cms/login/sendMail', $data);
+        }else{
+            header("Location: ".BASE_URL);
+            exit;
+        }
+    }
+
+    /**
+     * This function sends a mail based in
+     */
+    public function sendMail(){
+        $u = new Administrators();
+        if($u->isLogged()){
+            if(!empty($_POST)){
+                $s = new Store();
+                // Array for check the keys
+                $keys = array('name', 'email','subject', 'message');
+                if($s->array_keys_check($keys, $_POST)){
+                    // Check if the array is completed
+                    if($s->array_check_completed_keys($keys, $_POST)){
+                        $name = addslashes($_POST['name']);
+                        $email = addslashes($_POST['email']);
+                        $subject = addslashes($_POST['subject']);
+                        $message = addslashes($_POST['message']);
+                        // Sends the message
+                        $template = file_get_contents(BASE_URL."assets/templates/mail_template.htm");
+                        $msg = str_replace("#EMAIL_TEXT#", $message, $template);
+                        $recipient = array("name" => $name, "email" => $email);
+                        if($s->sendMail(array($recipient), $subject, $msg)){
+                            echo json_encode(true);
+                        }else{
+                            echo json_encode("Erro no envio do e-mail.");
+                        }
+                    }else{
+                        echo json_encode("Dados incompletos.");
+                    }
+                }else{
+                    echo json_encode("Dados corrompidos.");
+                }
+            }
         }
     }
 

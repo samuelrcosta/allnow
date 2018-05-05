@@ -1,6 +1,6 @@
 <div class="card">
-    <div class="card-header bg-light">
-        Usuários Cadastrados
+    <div class="card-header bg-light" style="display: flex;align-items: center;justify-content: space-between;">
+        Usuários Cadastrados <a href="<?= BASE_URL ?>usersCMS/newUser" class="btn btn-success"><i class="fa fa-plus"></i> Novo Usuário</a>
     </div>
 
     <div class="card-body">

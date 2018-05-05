@@ -105,7 +105,46 @@ class contactsCMSController extends Controller{
      * This function sends a email to contact
      */
     public function sendAnswer(){
-        echo json_encode("Em desenvolvimento...");
+        $u = new Administrators();
+        if($u->isLogged()){
+            if(!empty($_POST)){
+                $s = new Store();
+                $c = new Contacts();
+                // Array for check the keys
+                $keys = array('id', 'subject', 'message');
+                if($s->array_keys_check($keys, $_POST)){
+                    // Check if the array is completed
+                    if($s->array_check_completed_keys($keys, $_POST)){
+                        $id = addslashes($_POST['id']);
+                        $subject = addslashes($_POST['subject']);
+                        $message = addslashes($_POST['message']);
+                        // get contact data
+                        $contactData = $c->getDataById($id);
+                        if(!empty($contactData)){
+                            // Change status if its equals 1
+                            if($contactData['status'] == "1"){
+                                $c->setStatus($id, "2");
+                            }
+                            // Sends the message
+                            $template = file_get_contents(BASE_URL."assets/templates/mail_template.htm");
+                            $msg = str_replace("#EMAIL_TEXT#", $message, $template);
+                            $recipient = array("name" => $contactData['name'], "email" => $contactData['email']);
+                            if($s->sendMail(array($recipient), $subject, $msg)){
+                                echo json_encode(true);
+                            }else{
+                                echo json_encode("Erro no envio do e-mail.");
+                            }
+                        }else{
+                            echo json_encode("Erro: Contato não encontrado.");
+                        }
+                    }else{
+                        echo json_encode("Dados incompletos.");
+                    }
+                }else{
+                    echo json_encode("Dados corrompidos.");
+                }
+            }
+        }
     }
 
     /**
