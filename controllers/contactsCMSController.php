@@ -24,7 +24,7 @@ class contactsCMSController extends Controller{
         $c = new Contacts();
         $data = array();
 
-        if($u->isLogged()){
+        if($u->isLogged() && $u->havePermission('contacts')){
             $data['title'] = 'ADM - Contatos';
             $data['link'] = 'contactsCMS/index';
             $data['userData'] = $u->getData(1, $_SESSION['adminLogin']);
@@ -45,7 +45,7 @@ class contactsCMSController extends Controller{
         $c = new Contacts();
         $data = array();
 
-        if($u->isLogged()){
+        if($u->isLogged() && $u->havePermission('contacts')){
             $id = addslashes(base64_decode(base64_decode($id)));
             $data['title'] = 'ADM - Visualizar Contato';
             $data['link'] = 'contactsCMS/index';
@@ -69,7 +69,7 @@ class contactsCMSController extends Controller{
      */
     public function editStatus(){
         $u = new Administrators();
-        if($u->isLogged()){
+        if($u->isLogged() && $u->havePermission('contacts')){
             if(!empty($_POST)){
                 $s = new Store();
                 $c = new Contacts();
@@ -106,7 +106,7 @@ class contactsCMSController extends Controller{
      */
     public function sendAnswer(){
         $u = new Administrators();
-        if($u->isLogged()){
+        if($u->isLogged() && $u->havePermission('contacts')){
             if(!empty($_POST)){
                 $s = new Store();
                 $c = new Contacts();
@@ -155,9 +155,8 @@ class contactsCMSController extends Controller{
         $u = new Administrators();
         $c = new Contacts();
 
-        $id = addslashes(base64_decode(base64_decode($id)));
-
-        if($u->isLogged()){
+        if($u->isLogged() && $u->havePermission('contacts')){
+            $id = addslashes(base64_decode(base64_decode($id)));
             // try to delete
             if($c->delete($id)){
                 $msg = urlencode('Contato excluído com sucesso!');

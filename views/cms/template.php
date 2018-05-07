@@ -42,7 +42,7 @@
             <i class="fa fa-bars"></i>
         </a>
 
-        <a class="navbar-brand" href="#">
+        <a class="navbar-brand" href="<?php echo BASE_URL; ?>admin">
             <img src="<?php echo BASE_URL; ?>assets/images/small_logo.png" alt="logo">
         </a>
 
@@ -54,7 +54,7 @@
 
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <img src="<?php echo BASE_URL; ?>assets/images/avatar_model.png" class="avatar avatar-sm" alt="logo">
+                    <img src="<?php echo BASE_URL; ?>assets/images/users_profile/<?= $viewData['userData']['avatar']; ?>" class="avatar avatar-sm" alt="logo">
                     <span class="small ml-1 d-md-down-none"><?php echo $viewData['userData']['name']; ?></span>
                 </a>
 
@@ -82,43 +82,51 @@
                             <i class="icon icon-speedometer"></i> Dashboard
                         </a>
                     </li>
-
+                    <?php if(strpos($viewData['userData']['perms'], 'ads') !== false): ?>
                     <li class="nav-item">
                         <a href="<?php echo BASE_URL; ?>adminAdvertisementsCMS" class="nav-link <?php echo ($viewData['link'] == 'adminAdvertisementsCMS/index')?'active':''; ?>">
                             <i class="icon icon-notebook"></i> Anúncios
                         </a>
                     </li>
-
+                    <?php endif; ?>
+                    <?php if(strpos($viewData['userData']['perms'], 'users') !== false): ?>
                     <li class="nav-item">
                         <a href="<?php echo BASE_URL; ?>usersCMS" class="nav-link <?php echo ($viewData['link'] == 'usersCMS/index')?'active':''; ?>">
                             <i class="icon icon-people"></i> Usuários
                         </a>
                     </li>
-
+                    <?php endif; ?>
+                    <?php if(strpos($viewData['userData']['perms'], 'contacts') !== false): ?>
                     <li class="nav-item">
                         <a href="<?php echo BASE_URL; ?>contactsCMS" class="nav-link <?php echo ($viewData['link'] == 'contactsCMS/index')?'active':''; ?>">
                             <i class="icon icon-envelope-open"></i> Contatos
                         </a>
                     </li>
-
+                    <?php endif; ?>
+                    <?php if((strpos($viewData['userData']['perms'], 'categories') !== false) || (strpos($viewData['userData']['perms'], 'subcats') !== false)): ?>
                     <li class="nav-item nav-dropdown">
                         <a href="#" class="nav-link nav-dropdown-toggle">
                             <i class="icon icon-settings"></i> Configurações <i class="fa fa-caret-left"></i>
                         </a>
 
                         <ul class="nav-dropdown-items">
+                            <?php if(strpos($viewData['userData']['perms'], 'categories') !== false): ?>
                             <li class="nav-item">
                                 <a href="<?php echo BASE_URL; ?>categoriesCMS" class="nav-link <?php echo ($viewData['link'] == 'categoriesCMS/index')?'active':''; ?>">
                                     <i class="icon icon-organization"></i> Categorias
                                 </a>
                             </li>
+                            <?php endif; ?>
+                            <?php if(strpos($viewData['userData']['perms'], 'subcats') !== false): ?>
                             <li class="nav-item">
                                 <a href="<?php echo BASE_URL; ?>subcategoriesCMS" class="nav-link <?php echo ($viewData['link'] == 'subcategoriesCMS/index')?'active':''; ?>">
                                     <i class="icon icon-organization"></i> Sub-Categorias
                                 </a>
                             </li>
+                            <?php endif; ?>
                         </ul>
                     </li>
+                    <?php endif; ?>
                 </ul>
             </nav>
         </div>

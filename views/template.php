@@ -130,11 +130,26 @@
                 </div>
 	    	</div>
 	    </footer>
-
         <script>
             let button = $("#inscribe-button");
             let input = $('#inscribe-email');
-            button.click(function(){
+
+            // Prevent form submit by enter
+            $(document).ready(function() {
+                $(window).keydown(function(event){
+                    if(event.keyCode === 13) {
+                        event.preventDefault();
+                        subscribe();
+                        return false;
+                    }
+                });
+
+                button.click(function(){
+                    subscribe();
+                });
+            });
+
+            function subscribe() {
                 let email = input.val();
                 if(email !== ''){
                     $.ajax({
@@ -159,7 +174,7 @@
                 }else{
                     input.attr("placeholder", "Digite um e-mail válido");
                 }
-            });
+            }
         </script>
         <script type="text/javascript" src="<?php echo BASE_URL; ?>assets/js/script_menu.js"></script>
 		<script type="text/javascript" src="<?php echo BASE_URL; ?>assets/js/script.js"></script>

@@ -24,7 +24,7 @@ class subcategoriesCMSController extends Controller{
         $c = new Categories();
         $data = array();
 
-        if($u->isLogged()){
+        if($u->isLogged() && $u->havePermission('subcats')){
             $data['title'] = 'ADM - Sub-Categorias';
             $data['link'] = 'subcategoriesCMS/index';
             $data['userData'] = $u->getData(1, $_SESSION['adminLogin']);
@@ -45,7 +45,7 @@ class subcategoriesCMSController extends Controller{
         $c = new Categories();
         $data = array();
 
-        if($u->isLogged()){
+        if($u->isLogged() && $u->havePermission('subcats')){
             //Verify if exists POST for a new register
 
             if(isset($_POST['name']) && !empty($_POST['name'])){
@@ -95,7 +95,7 @@ class subcategoriesCMSController extends Controller{
 
         $id = addslashes(base64_decode(base64_decode($id)));
 
-        if($u->isLogged()){
+        if($u->isLogged() && $u->havePermission('subcats')){
 
             //Verify if exists POST for edit
 
@@ -146,7 +146,7 @@ class subcategoriesCMSController extends Controller{
 
         $id = addslashes(base64_decode(base64_decode($id)));
 
-        if($u->isLogged()){
+        if($u->isLogged() && $u->havePermission('subcats')){
             $c->delete($id, 'id_subcategory');
             header("Location: ".BASE_URL."subcategoriesCMS");
         }else{

@@ -36,10 +36,11 @@ class Administrators extends Model{
      *
      * @param   $name       string for the user's name.
      * @param   $email      string for the user's email.
+     * @param   $perms      string for the users's permissions.
      * @param   $password   string for the user's password.
      * @return  boolean     boolean false for email already registered, or instead True.
      */
-    public function register($name, $email, $password){
+    public function register($name, $email, $perms, $password){
         $sql = "SELECT * FROM administrators WHERE email = ?";
         $sql = $this->db->prepare($sql);
         $sql->execute(array($email));
@@ -47,9 +48,9 @@ class Administrators extends Model{
         if($sql && count($sql)){
             return false;
         }else{
-            $sql = "INSERT INTO administrators (email, password, name) VALUES (?, ?, ?)";
+            $sql = "INSERT INTO administrators (email, password, name, perms) VALUES (?, ?, ?, ?)";
             $sql = $this->db->prepare($sql);
-            $sql->execute(array($email, md5($password), $name));
+            $sql->execute(array($email, md5($password), $name, $perms));
             return true;
         }
     }
@@ -61,11 +62,12 @@ class Administrators extends Model{
      * @param   $id             int for the user's ID number saved in the database.
      * @param   $name           string for the user's name.
      * @param   $email          string for the user's email.
+     * @param   $perms          string for the users's menu permissions.
      * @param   $password       string for the user's password.
      *
      * @return  boolean False for email already registered, or instead True.
      */
-    public function edit($id, $name, $email, $password){
+    public function edit($id, $name, $email, $perms, $password){
         $sql = "SELECT * FROM administrators WHERE email = ? AND id != ?";
         $sql = $this->db->prepare($sql);
         $sql->execute(array($email, $id));
@@ -74,14 +76,14 @@ class Administrators extends Model{
             return false;
         }else{
             if(empty($password)){
-                $sql = "UPDATE administrators SET email = ?, name = ? WHERE id = ?";
+                $sql = "UPDATE administrators SET email = ?, name = ?, perms = ? WHERE id = ?";
                 $sql = $this->db->prepare($sql);
-                $sql->execute(array($email, $name, $id));
+                $sql->execute(array($email, $name, $perms, $id));
                 return true;
             }else{
-                $sql = "UPDATE administrators SET email = ?, password = ?, name = ? WHERE id = ?";
+                $sql = "UPDATE administrators SET email = ?, password = ?, name = ?, perms = ? WHERE id = ?";
                 $sql = $this->db->prepare($sql);
-                $sql->execute(array($email, md5($password), $name, $id));
+                $sql->execute(array($email, md5($password), $name, $perms, $id));
                 return true;
             }
         }
@@ -113,6 +115,24 @@ class Administrators extends Model{
     public function isLogged(){
         if(isset($_SESSION['adminLogin']) && !empty($_SESSION['adminLogin'])){
             return true;
+        }else{
+            return false;
+        }
+    }
+
+    /**
+     * Function checks if the user have permission.
+     *
+     * @return  boolean for the result.
+    */
+    public function havePermission($perm){
+        if(isset($_SESSION['adminLogin']) && !empty($_SESSION['adminLogin'])){
+            $data = $this->getData(1, $_SESSION['adminLogin']);
+            if(strpos($data['perms'], $perm) !== false){
+                return true;
+            }else{
+                return false;
+            }
         }else{
             return false;
         }

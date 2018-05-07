@@ -134,9 +134,8 @@ class Advertisements extends Model{
     }
 
     /**
-     * This function get the advertisements from database using the user ID.
+     * This function register a new advertisement in database.
      *
-     * @param   $id_user    int for the user ID.
      * @param   $id_category    int for the category Advertisement ID.
      * @param   $id_subcategory    int for the subcategory Advertisement ID.
      * @param   $title    string for the Advertisement title.
@@ -151,7 +150,7 @@ class Advertisements extends Model{
      *
      * @return boolean true if success or false if failed.
      */
-    public function register($id_user, $id_category, $id_subcategory, $title, $abstract, $description, $status, $rating, $highlight = null, $new = null, $bestseller = null, $sale = null){
+    public function register($id_category, $id_subcategory, $title, $abstract, $description, $status, $rating, $highlight = null, $new = null, $bestseller = null, $sale = null){
         $s = new Store();
         $slug = $s->createSlug($title);
         $sql = 'SELECT * FROM advertisements WHERE slug = ? AND status = 1';
@@ -160,9 +159,9 @@ class Advertisements extends Model{
         if($sql->rowCount() > 0){
             return false;
         }else{
-            $sql = 'INSERT INTO advertisements (id_user, id_category, id_subcategory, title, abstract, description, status, rating, highlight, new, bestseller, sale, slug) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+            $sql = 'INSERT INTO advertisements (id_category, id_subcategory, title, abstract, description, status, rating, highlight, new, bestseller, sale, slug) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
             $sql = $this->db->prepare($sql);
-            $sql->execute(array($id_user, $id_category, $id_subcategory, $title, $abstract, $description, $status, $rating, $highlight, $new, $bestseller, $sale, $slug));
+            $sql->execute(array($id_category, $id_subcategory, $title, $abstract, $description, $status, $rating, $highlight, $new, $bestseller, $sale, $slug));
             return $this->db->lastInsertId();
         }
     }

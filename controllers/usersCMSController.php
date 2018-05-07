@@ -23,7 +23,7 @@ class usersCMSController extends Controller{
         $u = new Administrators();
         $data = array();
 
-        if($u->isLogged()){
+        if($u->isLogged() && $u->havePermission('users')){
             $data['title'] = 'ADM - Usuários';
             $data['link'] = 'usersCMS/index';
             $data['userData'] = $u->getData(1, $_SESSION['adminLogin']);
@@ -43,7 +43,7 @@ class usersCMSController extends Controller{
         $u = new Administrators();
         $data = array();
 
-        if($u->isLogged()){
+        if($u->isLogged() && $u->havePermission('users')){
             $data['title'] = 'ADM - Novo usuário';
             $data['link'] = 'usersCMS/index';
             $data['userData'] = $u->getData(1, $_SESSION['adminLogin']);
@@ -60,7 +60,7 @@ class usersCMSController extends Controller{
      */
     public function saveNewUser(){
         $u = new Administrators();
-        if($u->isLogged()){
+        if($u->isLogged() && $u->havePermission('users')){
             if(!empty($_POST)){
                 $s = new Store();
                 // Array for check the keys
@@ -74,8 +74,20 @@ class usersCMSController extends Controller{
                         $password_confirmation = addslashes($_POST['password_confirmation']);
                         // Checks passwords
                         if($password == $password_confirmation){
+                            // Build the permissions
+                            $perms = "";
+                            if(isset($_POST['menuAds']))
+                                $perms .= "ads;";
+                            if(isset($_POST['menuUsers']))
+                                $perms .= "users;";
+                            if(isset($_POST['menuContacts']))
+                                $perms .= "contacts;";
+                            if(isset($_POST['menuCategories']))
+                                $perms .= "categories;";
+                            if(isset($_POST['menuSubcategories']))
+                                $perms .= "subcats;";
                             // Try to register
-                            if($u->register($name, $email, $password)){
+                            if($u->register($name, $email, $perms, $password)){
                                 echo json_encode(true);
                             }else{
                                 echo json_encode("E-mail já cadastrado.");
@@ -94,55 +106,74 @@ class usersCMSController extends Controller{
     }
 
     /**
-     * This function receive a user id on Base64 (2x),
-     * show the edit page with the user data, receive back
-     * all edited data and update the database.
-     * Finally headers to index page (usersCMS/index)
+     * This function shows users editPage
      */
-    public function editUser($id){
+    public function editUserPage($id){
         $u = new Administrators();
         $data = array();
 
-        $id = addslashes(base64_decode(base64_decode($id)));
-
-        if($u->isLogged()){
-
-            //Verify if exists POST for edit
-
-            if(isset($_POST['name']) && !empty($_POST['name'])){
-                $name = addslashes($_POST['name']);
-                $email = addslashes($_POST['email']);
-                $password = addslashes($_POST['password']);
-                $passConfirm = addslashes($_POST['password_confirmation']);
-
-                $data['usData']['name'] = $name;
-                $data['usData']['email'] = $email;
-
-                if(!empty($name) && !empty($email)){
-                    // Checks passwords
-                    if($password == $passConfirm){
-                        if($u->edit($id, $name, $email, $password)){
-                            $msg = urlencode('Dados editados com sucesso.');
-                            header("Location: " . BASE_URL . "usersCMS?notification=".$msg."&status=alert-success");
-                        }else{
-                            $data['notice'] = '<div class="alert alert-warning">O email digitado já está cadastrado em outra conta.</div>';
-                        }
-                    }else{
-                        $data['notice'] = '<div class="alert alert-warning">Confirmação de senha inválida.</div>';
-                    }
-                }else{
-                    $data['notice'] = '<div class="alert alert-warning">Preencha todos os campos.</div>';
-                }
-            }else{
-                //If not, render editPage
-                $data['usData'] = $u->getData(1, $id);
-            }
-
+        if($u->isLogged() && $u->havePermission('users')){
+            $id = addslashes(base64_decode(base64_decode($id)));
             $data['title'] = 'ADM - Editar Usuário';
             $data['link'] = 'usersCMS/index';
             $data['userData'] = $u->getData(1, $_SESSION['adminLogin']);
-
+            $data['usData'] = $u->getData(1, $id);
             $this->loadTemplateCMS('cms/users/editUser', $data);
+        }else{
+            header("Location: ".BASE_URL);
+            exit;
+        }
+    }
+
+    /**
+     * This function edit a user using POST request
+     */
+    public function editUser(){
+        $u = new Administrators();
+
+        if($u->isLogged() && $u->havePermission('users')){
+            if(!empty($_POST)){
+                $s = new Store();
+                // Array for check the keys
+                $keys = array('id', 'email', 'name');
+                if($s->array_keys_check($keys, $_POST)){
+                    // Check if the array is completed
+                    if($s->array_check_completed_keys($keys, $_POST)){
+                        $id = addslashes($_POST['id']);
+                        $email = addslashes($_POST['email']);
+                        $name = addslashes($_POST['name']);
+                        $password = addslashes($_POST['password']);
+                        $password_confirmation = addslashes($_POST['password_confirmation']);
+                        // Checks passwords
+                        if($password == $password_confirmation){
+                            // Build the permissions
+                            $perms = "";
+                            if(isset($_POST['menuAds']))
+                                $perms .= "ads;";
+                            if(isset($_POST['menuUsers']))
+                                $perms .= "users;";
+                            if(isset($_POST['menuContacts']))
+                                $perms .= "contacts;";
+                            if(isset($_POST['menuCategories']))
+                                $perms .= "categories;";
+                            if(isset($_POST['menuSubcategories']))
+                                $perms .= "subcats;";
+                            // Try to register
+                            if($u->edit($id, $name, $email, $perms, $password)){
+                                echo json_encode(true);
+                            }else{
+                                echo json_encode("E-mail já cadastrado.");
+                            }
+                        }else{
+                            echo json_encode("Confirmação de senha inválida.");
+                        }
+                    }else{
+                        echo json_encode("Dados incompletos.");
+                    }
+                }else{
+                    echo json_encode("Dados corrompidos.");
+                }
+            }
         }else{
             header("Location: ".BASE_URL);
             exit;
@@ -155,12 +186,10 @@ class usersCMSController extends Controller{
      */
     public function deleteUser($id){
         $u = new Administrators();
-        $user = new Users();
 
-        $id = addslashes(base64_decode(base64_decode($id)));
-
-        if($u->isLogged()){
-            $user->delete($id);
+        if($u->isLogged() && $u->havePermission('users')){
+            $id = addslashes(base64_decode(base64_decode($id)));
+            $u->delete($id);
             $msg = urlencode('Usuário deletado com sucesso.');
             header("Location: " . BASE_URL . "usersCMS?notification=".$msg."&status=alert-success");
         }else{

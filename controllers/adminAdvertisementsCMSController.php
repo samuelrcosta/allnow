@@ -25,7 +25,7 @@ class adminAdvertisementsCMSController extends Controller{
         $a = new Advertisements();
         $data = array();
 
-        if($u->isLogged()){
+        if($u->isLogged() && $u->havePermission('ads')){
             $data['title'] = 'ADM - Meus Anúncios';
             $data['link'] = 'adminAdvertisementsCMS/index';
             $data['userData'] = $u->getData(1, $_SESSION['adminLogin']);
@@ -46,7 +46,7 @@ class adminAdvertisementsCMSController extends Controller{
         $c = new Categories();
         $data = array();
 
-        if($u->isLogged()){
+        if($u->isLogged() && $u->havePermission('ads')){
             $data['title'] = 'ADM - Cadastrar Anúncio';
             $data['link'] = 'adminAdvertisementsCMS/index';
             $data['userData'] = $u->getData(1, $_SESSION['adminLogin']);
@@ -68,7 +68,7 @@ class adminAdvertisementsCMSController extends Controller{
         $medias_ads = new Medias_ads();
         $s = new Store();
         // Check if user is logged
-        if($u->isLogged()) {
+        if($u->isLogged() && $u->havePermission('ads')) {
             // Array for check the keys
             $keys = array('title', 'id_category', 'id_subcategory', 'abstract', 'description', 'rating', 'highlight', 'new', 'bestseller', 'sale', 'medias');
             if ($s->array_keys_check($keys, $_POST)) {
@@ -132,7 +132,7 @@ class adminAdvertisementsCMSController extends Controller{
                         }
                         if ($check == true) {
                             // First: Save the Ad
-                            $idAdvertisement = $a->register($_SESSION['adminLogin'], $id_category, $id_subcategory, $title, $abstract, $description, 1, $rating, $highlight, $new, $bestseller, $sale);
+                            $idAdvertisement = $a->register($id_category, $id_subcategory, $title, $abstract, $description, 1, $rating, $highlight, $new, $bestseller, $sale);
                             if ($idAdvertisement != false) {
                                 for ($i = 0; $i < count($medias); $i++) {
                                     $medias_ads->register($idAdvertisement, $medias[$i]['media'], $medias[$i]['media_type'], $medias[$i]['media_link']);
@@ -169,7 +169,7 @@ class adminAdvertisementsCMSController extends Controller{
         $c = new Categories();
         $data = array();
         // Checks if user is logged in
-        if($u->isLogged()){
+        if($u->isLogged() && $u->havePermission('ads')){
             $data['title'] = 'ADM - Editar Anúncio';
             $data['link'] = 'adminAdvertisementsCMS/index';
             // Get user data
@@ -193,7 +193,7 @@ class adminAdvertisementsCMSController extends Controller{
         $a = new Advertisements();
         $c = new Categories();
         // Check if user is logged
-        if($u->isLogged()) {
+        if($u->isLogged() && $u->havePermission('ads')) {
             $data = array();
             $id = addslashes(base64_decode(base64_decode($id)));
             $data['advertisementData'] = $a->getDataById($id);
@@ -211,7 +211,7 @@ class adminAdvertisementsCMSController extends Controller{
         $medias_ads = new Medias_ads();
         $s = new Store();
 
-        if($u->isLogged()){
+        if($u->isLogged() && $u->havePermission('ads')){
             // Array for check the keys
             $keys = array('id', 'title', 'id_category', 'id_subcategory', 'abstract', 'description', 'rating', 'highlight', 'new', 'bestseller', 'sale', 'medias', 'delete_medias');
             if ($s->array_keys_check($keys, $_POST)) {
@@ -321,9 +321,8 @@ class adminAdvertisementsCMSController extends Controller{
         $u = new Administrators();
         $a = new Advertisements();
 
-        $id = addslashes(base64_decode(base64_decode($id)));
-
-        if($u->isLogged()){
+        if($u->isLogged() && $u->havePermission('ads')){
+            $id = addslashes(base64_decode(base64_decode($id)));
             $a->delete($id);
             header("Location: ".BASE_URL."adminAdvertisementsCMS");
         }else{

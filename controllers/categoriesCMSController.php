@@ -24,7 +24,7 @@ class categoriesCMSController extends Controller{
         $c = new Categories();
         $data = array();
 
-        if($u->isLogged()){
+        if($u->isLogged() && $u->havePermission('categories')){
             $data['title'] = 'ADM - Categorias';
             $data['link'] = 'categoriesCMS/index';
             $data['userData'] = $u->getData(1, $_SESSION['adminLogin']);
@@ -45,7 +45,7 @@ class categoriesCMSController extends Controller{
         $c = new Categories();
         $data = array();
 
-        if($u->isLogged()){
+        if($u->isLogged() && $u->havePermission('categories')){
             //Verify if exists POST for a new register
 
             if(isset($_POST['name']) && !empty($_POST['name'])){
@@ -90,7 +90,7 @@ class categoriesCMSController extends Controller{
 
         $id = addslashes(base64_decode(base64_decode($id)));
 
-        if($u->isLogged()){
+        if($u->isLogged() && $u->havePermission('categories')){
 
             //Verify if exists POST for edit
 
@@ -136,7 +136,7 @@ class categoriesCMSController extends Controller{
 
         $id = addslashes(base64_decode(base64_decode($id)));
 
-        if($u->isLogged()){
+        if($u->isLogged() && $u->havePermission('categories')){
             $c->delete($id, 'id_category');
             header("Location: ".BASE_URL."categoriesCMS");
         }else{

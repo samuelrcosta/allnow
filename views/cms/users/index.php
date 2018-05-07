@@ -33,7 +33,7 @@
 </div>
 <div id="background-dark" style="display: none"></div>
 <div id="confirm-delete" style="display: none">
-    <p>Tem certeza que deseja excluir o usuário e <strong>todos os seus anúncios</strong>?</p>
+    <p>Tem certeza que deseja excluir o usuário?</p>
     <button class="btn btn-danger" onclick="yesDelete()">Sim</button>
     <button class="btn btn-success" onclick="notDelete()">Não</button>
 </div>
@@ -65,7 +65,7 @@
                 "<tr>" +
                     "<td>" + usersList[id].name +"</td>" +
                     "<td>" + usersList[id].email +"</td>" +
-                    "<td><a href='" + BASE_URL + "usersCMS/editUser/" +  btoa(btoa(usersList[id].id)) + "' class='btn btn-info'><i class='icon icon-pencil'></i></a></td>" +
+                    "<td><a href='" + BASE_URL + "usersCMS/editUserPage/" +  btoa(btoa(usersList[id].id)) + "' class='btn btn-info'><i class='icon icon-pencil'></i></a></td>" +
                     "<td><button class='btn btn-danger' onclick=" + 'deleteUser("' + btoa(btoa(usersList[id].id)) + '")' + "><i class='icon icon-trash'></i></button></td>" +
                 "</tr>"
             );
@@ -85,7 +85,7 @@
                         "<tr>" +
                             "<td>" + usersList[id].name +"</td>" +
                             "<td>" + usersList[id].email +"</td>" +
-                            "<td><a href='" + BASE_URL + "usersCMS/editUser/" +  btoa(btoa(usersList[id].id)) + "' class='btn btn-info'><i class='icon icon-pencil'></i></a></td>" +
+                            "<td><a href='" + BASE_URL + "usersCMS/editUserPage/" +  btoa(btoa(usersList[id].id)) + "' class='btn btn-info'><i class='icon icon-pencil'></i></a></td>" +
                             "<td><button class='btn btn-danger' onclick=" + 'deleteUser("' + btoa(btoa(usersList[id].id)) + '")' + "><i class='icon icon-trash'></i></button></td>" +
                         "</tr>"
                     );
