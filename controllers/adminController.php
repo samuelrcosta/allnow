@@ -156,6 +156,84 @@ class adminController extends Controller{
     }
 
     /**
+     * This function shows the profile Page
+     */
+    public function profilePage(){
+        $u = new Administrators();
+        $data = array();
+
+        if($u->isLogged()){
+            $data['title'] = 'ADM - Meu Perfil';
+            $data['link'] = 'admin';
+            $data['userData'] = $u->getData(1, $_SESSION['adminLogin']);
+
+            $this->loadTemplateCMS('cms/profilePage', $data);
+        }else{
+            header("Location: ".BASE_URL);
+            exit;
+        }
+    }
+
+    /**
+     * This function edit a profile using a POST request
+     */
+    public function editProfile(){
+        $u = new Administrators();
+
+        if($u->isLogged()){
+            if(!empty($_POST)){
+                $s = new Store();
+                // Array for check the keys
+                $keys = array('name', 'email', 'current_password', 'password', 'password_confirmation');
+                $needKeys = array('name', 'email');
+                if($s->array_keys_check($keys, $_POST)){
+                    // Check if the array is completed
+                    if($s->array_check_completed_keys($needKeys, $_POST)){
+                        $id =$_SESSION['adminLogin'];
+                        $name = addslashes($_POST['name']);
+                        $email = addslashes($_POST['email']);
+                        $currentPassword = addslashes($_POST['current_password']);
+                        $password = addslashes($_POST['password']);
+                        $passwordConfirmation = addslashes($_POST['password_confirmation']);
+                        if($password == $passwordConfirmation){
+                            $userData = $u->getData(1, $id);
+                            // Checks if the password
+                            if(!empty($currentPassword) && !empty($password)){
+                                if($userData['password'] != md5($currentPassword)){
+                                    echo json_encode("Senha atual não confere");
+                                    exit;
+                                }
+                            }
+                            // try to edit
+                            if($u->edit($id, $name, $email, $userData['perms'], $password)){
+                                if(isset($_FILES) && !empty($_FILES['filename'])){
+                                    echo json_encode($u->saveAvatar($id, $userData['avatar'], $_FILES));
+                                    exit;
+                                }else{
+                                    echo json_encode(true);
+                                    exit;
+                                }
+                            }else{
+                                echo json_encode("Erro ao editar.");
+                                exit;
+                            }
+                        }
+                    }else{
+                        echo json_encode("Dados incompletos.");
+                        exit;
+                    }
+                }else{
+                    echo json_encode("Dados corrompidos.");
+                    exit;
+                }
+            }
+        }else{
+            header("Location: ".BASE_URL);
+            exit;
+        }
+    }
+
+    /**
      * This function use the Admin user's logoff method and redirects to homepage
      */
     public function logoff(){

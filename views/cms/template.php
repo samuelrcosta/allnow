@@ -54,13 +54,17 @@
 
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <img src="<?php echo BASE_URL; ?>assets/images/users_profile/<?= $viewData['userData']['avatar']; ?>" class="avatar avatar-sm" alt="logo">
+                    <img style="object-fit: cover;" src="<?php echo BASE_URL; ?>assets/images/users_profile/<?= $viewData['userData']['avatar']; ?>" class="avatar avatar-sm" alt="logo">
                     <span class="small ml-1 d-md-down-none"><?php echo $viewData['userData']['name']; ?></span>
                 </a>
 
                 <div class="dropdown-menu dropdown-menu-right">
                     <a href="<?php echo BASE_URL; ?>admin/sendMailPage" class="dropdown-item">
                         <i class="fa fa-envelope"></i> Enviar E-mail
+                    </a>
+
+                    <a href="<?php echo BASE_URL; ?>admin/profilePage" class="dropdown-item">
+                        <i class="fas fa-user"></i> Meu Perfil
                     </a>
 
                     <a href="<?php echo BASE_URL; ?>admin/logoff" class="dropdown-item">

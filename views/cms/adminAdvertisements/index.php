@@ -1,6 +1,6 @@
 <div class="card">
     <div class="card-header bg-light">
-        Meus anúncios
+        Anúncios
     </div>
 
     <div class="card-body">

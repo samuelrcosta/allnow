@@ -186,5 +186,34 @@ class Administrators extends Model{
         return $array;
     }
 
+    /**
+     * This function saves a image into disk and this name on database.
+     *
+     * @return  mixed boolean true if saves correctly and String for error with this description
+     */
+    public function saveAvatar($id, $oldAvatar, $data){
+        $exts_checks = array('jpg', 'png', 'jpeg');
+        $ext = explode(".", $data['image']['name']);
+        $ext = strtolower(end($ext));
+        if(array_search($ext, $exts_checks) === false) {
+            return "Extensão da imagem não permitida";
+        }else{
+            $new_name = $id.md5(time()).".".$ext;
+            $dir = $_SERVER['DOCUMENT_ROOT'] . SERVER_URL . "assets/images/users_profile/";
+            if(move_uploaded_file($data['image']['tmp_name'], $dir.$new_name)){
+                if($oldAvatar != 'avatar_model.png'){
+                    // Remove old avatar
+                    unlink($_SERVER['DOCUMENT_ROOT'] . SERVER_URL . "assets/images/users_profile/".$oldAvatar);
+                }
+                $sql = "UPDATE administrators SET avatar = ? WHERE id = ?";
+                $sql = $this->db->prepare($sql);
+                $sql->execute(array($new_name, $id));
+                return true;
+            }else{
+                return "Problema ao salvar a imagem";
+            }
+        }
+    }
+
 }
 ?>
