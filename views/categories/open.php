@@ -33,9 +33,7 @@
                             <a class="ad-description" href="<?php echo BASE_URL; ?>advertisements/open/<?php echo $ad['slug']; ?>">
                                 <h5 class='ad-description-title'><?php echo $ad['title'] ?></h5>
                                 <p class='ad-description-abstract'><?php echo $ad['abstract'] ?></p>
-                                <?php if(!empty($ad['rating'])): ?>
-                                    <div class="rating-image rating-stars-<?php echo $ad['rating'] ?>"></div>
-                                <?php endif; ?>
+                                <div class="rating-image rating-stars-<?php echo $ad['rating'] ?>"></div>
                             </a>
                         </div>
                     </div>

@@ -17,16 +17,17 @@ class Advertisements extends Model{
      * @return  array with the retrieved data.
      */
     public function getAdminAds(){
-        $c = new Categories();
+        //$c = new Categories();
         $m = new Medias_ads();
 
-        $sql = 'SELECT * FROM advertisements WHERE status = 1';
+        $sql = 'SELECT advertisements.*, (SELECT name FROM categories WHERE advertisements.id_category = id) as category_name,
+(SELECT name FROM categories WHERE advertisements.id_subcategory = id) as subcategory_name FROM advertisements WHERE status = 1';
         $sql = $this->db->query($sql);
         $array = $sql->fetchAll();
 
         foreach ($array as &$ad){
-            $ad['category_name'] = $c->getNameById($ad['id_category']);
-            $ad['subcategory_name'] =  $c->getNameById($ad['id_subcategory']);
+            //$ad['category_name'] = $c->getNameById($ad['id_category']);
+            //$ad['subcategory_name'] =  $c->getNameById($ad['id_subcategory']);
             $ad['medias'] = $m->getMedias($ad['id']);
         }
 
@@ -34,7 +35,7 @@ class Advertisements extends Model{
     }
 
     public function getList($categories = array(), $filters = array()){
-        $c = new Categories();
+        //$c = new Categories();
         $m = new Medias_ads();
         $array = array();
 
@@ -47,14 +48,14 @@ class Advertisements extends Model{
             $where = 'WHERE id_category = '.$categories['id_category'].' AND status = 1';
         }
 
-        $sql = 'SELECT *, advertisements.id as id_ad FROM advertisements '.$where;
+        $sql = 'SELECT advertisements.*, advertisements.id as id_ad, (SELECT name FROM categories WHERE advertisements.id_category = id) as category_name, (SELECT name FROM categories WHERE advertisements.id_subcategory = id) as subcategory_name FROM advertisements '.$where;
         $sql = $this->db->query($sql);
 
         if($sql->rowCount() > 0){
             $array = $sql->fetchAll();
             foreach ($array as $key => $item){
-                $array[$key]['category_name'] = $c->getNameById($item['id_category']);
-                $array[$key]['subcategory_name'] = $c->getNameById($item['id_subcategory']);
+                //$array[$key]['category_name'] = $c->getNameById($item['id_category']);
+                //$array[$key]['subcategory_name'] = $c->getNameById($item['id_subcategory']);
                 $array[$key]['medias'] = $m->getMedias($item['id']);
             }
         }
@@ -68,18 +69,17 @@ class Advertisements extends Model{
      * @return  array with the retrieved data.
      */
     public function getHighlightsAds(){
-        $c = new Categories();
         $m = new Medias_ads();
-        $sql = 'SELECT * FROM advertisements WHERE highlight = 1 AND status = 1';
+        $sql = 'SELECT advertisements.*, (SELECT name FROM categories WHERE advertisements.id_category = id) as category_name,
+(SELECT name FROM categories WHERE advertisements.id_subcategory = id) as subcategory_name
+FROM advertisements WHERE highlight = 1 AND status = 1';
         $sql = $this->db->query($sql);
         $array = $sql->fetchAll();
-
         foreach ($array as &$ad){
-            $ad['category_name'] = $c->getNameById($ad['id_category']);
-            $ad['subcategory_name'] =  $c->getNameById($ad['id_subcategory']);
+            //$ad['category_name'] = $c->getNameById($ad['id_category']);
+            //$ad['subcategory_name'] =  $c->getNameById($ad['id_subcategory']);
             $ad['medias'] = $m->getMedias($ad['id']);
         }
-
         return $array;
     }
 
@@ -91,17 +91,18 @@ class Advertisements extends Model{
      * @return  array with the retrieved data.
      */
     public function getDataById($id){
-        $c = new Categories();
+        //$c = new Categories();
         $m = new Medias_ads();
         $array = array();
 
-        $sql = 'SELECT * FROM advertisements WHERE id = ?';
+        $sql = 'SELECT advertisements.*, (SELECT name FROM categories WHERE advertisements.id_category = id) as name_category,
+(SELECT name FROM categories WHERE advertisements.id_subcategory = id) as name_subcategory FROM advertisements WHERE id = ?';
         $sql = $this->db->prepare($sql);
         $sql->execute(array($id));
         if($sql->rowCount() > 0){
             $array = $sql->fetch();
-            $array['category_name'] = $c->getNameById($array['id_category']);
-            $array['subcategory_name'] =  $c->getNameById($array['id_subcategory']);
+            //$array['category_name'] = $c->getNameById($array['id_category']);
+            //$array['subcategory_name'] =  $c->getNameById($array['id_subcategory']);
             $array['medias'] = $m->getMedias($array['id']);
         }
 
@@ -116,17 +117,18 @@ class Advertisements extends Model{
      * @return  array with the retrieved data.
      */
     public function getDataBySlug($slug){
-        $c = new Categories();
+        //$c = new Categories();
         $m = new Medias_ads();
         $array = array();
 
-        $sql = 'SELECT * FROM advertisements WHERE slug = ?';
+        $sql = 'SELECT advertisements.*, (SELECT name FROM categories WHERE advertisements.id_category = id) as category_name,
+(SELECT name FROM categories WHERE advertisements.id_subcategory = id) as subcategory_name FROM advertisements WHERE slug = ?';
         $sql = $this->db->prepare($sql);
         $sql->execute(array($slug));
         if($sql->rowCount() > 0){
             $array = $sql->fetch();
-            $array['category_name'] = $c->getNameById($array['id_category']);
-            $array['subcategory_name'] =  $c->getNameById($array['id_subcategory']);
+            //$array['category_name'] = $c->getNameById($array['id_category']);
+            //$array['subcategory_name'] =  $c->getNameById($array['id_subcategory']);
             $array['medias'] = $m->getMedias($array['id']);
         }
 
