@@ -206,7 +206,7 @@ class adminController extends Controller{
                             }
                             // try to edit
                             if($u->edit($id, $name, $email, $userData['perms'], $password)){
-                                if(isset($_FILES) && !empty($_FILES['filename'])){
+                                if(isset($_FILES) && !empty($_FILES['image']['tmp_name'])){
                                     echo json_encode($u->saveAvatar($id, $userData['avatar'], $_FILES));
                                     exit;
                                 }else{
