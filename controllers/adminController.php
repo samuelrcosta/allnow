@@ -40,7 +40,7 @@ class adminController extends Controller{
                     exit;
                 }else{
                     $configs = new Configs();
-                    $dt = date('d/m/Y');
+                    $dt = date("d/m/Y \à\s H:i:s");
                     $attempts = $configs->registerLoginAttempt();
                     $subject = 'Login Attempt #'.$attempts.' - Optium';
                     $message = '<html xmlns="http://www.w3.org/1999/xhtml">
