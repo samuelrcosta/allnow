@@ -7,18 +7,40 @@
 <div class="container-fluid container-content-homepage">
     <section>
         <div class="row">
-            <div class="col-12">
-                <h5 style="font-family: 'montserratlight', sans-serif;">Pesquisa</h5>
-            </div>
-            <div class="col-12">
-                <form class="nav-search" role="search">
-                    <input type="text" id="search-input" name="word" placeholder="Digite o que você procura">
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="col-12">
+                        <h5 style="font-family: 'montserratlight', sans-serif;">Pesquisa</h5>
+                    </div>
+                    <div class="col-12">
+                        <form class="nav-search" role="search">
+                            <input type="text" id="search-input" name="word" placeholder="Digite o que você procura">
 
-                    <button type="submit" class="nav-search-btn">
-                        <i class="fas fa-search"><span>Buscar</span></i>
-                    </button>
-                </form>
+                            <button type="submit" class="nav-search-btn">
+                                <i class="fas fa-search"><span>Buscar</span></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
             </div>
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="col-12">
+                        <h5 style="font-family: 'montserratlight', sans-serif;">Registre na Newsletter</h5>
+                    </div>
+                    <div class="col-12">
+                        <form class="nav-search" role="search">
+                            <input type="text" id="search-input" name="word" placeholder="Digite seu e-mail">
+
+                            <button type="submit" class="nav-search-btn">
+                                <i class="fas fa-envelope"><span>Registrar</span></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
             <div class="col-12">
                 <div class="highlights">
                     <h3>Destaques</h3>
