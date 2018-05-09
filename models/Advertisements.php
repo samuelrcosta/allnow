@@ -84,6 +84,32 @@ FROM advertisements WHERE highlight = 1 AND status = 1';
     }
 
     /**
+     * This function search a advertisement in database by word.
+     *
+     * @param   $word   string for the search worrd
+     * @return  array with the retrieved data.
+     */
+    public function getSearchAds($word){
+        $m = new Medias_ads();
+        $array = array();
+        $sql = "SELECT advertisements.*, (SELECT name FROM categories WHERE advertisements.id_category = id) as category_name,
+(SELECT name FROM categories WHERE advertisements.id_subcategory = id) as subcategory_name
+FROM advertisements WHERE (title LIKE '%".$word."%' OR abstract LIKE '%".$word."%') AND status = 1";
+        $sql = $this->db->prepare($sql);
+        //$sql->execute(array($word, $word));
+        $sql->execute(array());
+        if($sql->rowCount() > 0) {
+            $array = $sql->fetchAll();
+            foreach ($array as &$ad) {
+                //$ad['category_name'] = $c->getNameById($ad['id_category']);
+                //$ad['subcategory_name'] =  $c->getNameById($ad['id_subcategory']);
+                $ad['medias'] = $m->getMedias($ad['id']);
+            }
+        }
+        return $array;
+    }
+
+    /**
      * This function get the advertisement data from database by id code.
      *
      * @param   $id     int for the advertisement id.

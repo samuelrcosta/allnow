@@ -1,7 +1,7 @@
 <!--!>FormValidator</!-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/jquery.form-validator.min.js"></script>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/theme-default.min.css" rel="stylesheet" type="text/css" />
-<h1 style="font-family: 'montserratlight', sans-serif;margin-left: 20px;">Contato</h1>
+<h2 style="font-family: 'montserratlight', sans-serif;margin-left: 20px;">Contato</h2>
 <div class="contact-container">
     <div class="contact-message">
         Preencha os campos e nos envie uma mensagem. Responderemos em X dias úteis.

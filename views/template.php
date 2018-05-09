@@ -83,7 +83,7 @@
 	    			<div class="row">
 						<div class="col-md-2"></div>
 						<div class="col-md-8">
-							<form>
+							<form id="inscribeForm">
 								<input type="text" id="inscribe-email" placeholder="Registre na nossa Newsletter" class="email subemail">
                                 <button type="button" id="inscribe-button" class="button">Inscrever-se</button>
 							</form>
@@ -107,8 +107,8 @@
 									<ul>
 										<li><a href="<?php echo BASE_URL; ?>info/about">Sobre a empresa</a></li>
                                         <li><a href="<?php echo BASE_URL; ?>info/contact">Entre em contato</a></li>
-                                        <li><a href="#">Política de privacidade</a></li>
-                                        <li><a href="#">Termos de uso</a></li>
+                                        <li><a href="<?php echo BASE_URL; ?>info/PrivacyPolicy">Política de privacidade</a></li>
+                                        <li><a href="<?php echo BASE_URL; ?>info/termsOfUse">Termos de uso</a></li>
 									</ul>
 								</div>
                                 <div class="col-sm-7">
@@ -136,7 +136,7 @@
 
             // Prevent form submit by enter
             $(document).ready(function() {
-                $(window).keydown(function(event){
+                $('#inscribeForm').on('keyup keypress', function(event){
                     if(event.keyCode === 13) {
                         event.preventDefault();
                         subscribe();

@@ -100,4 +100,28 @@ class infoController extends Controller{
         }
     }
 
+    /**
+     * This function shows the terms of use page
+     */
+    public function TermsOfUse(){
+        $c = new Categories();
+        $data = array();
+
+        $data['title'] = 'Optium - Termos de Uso';
+        $data['categoryMenuData'] = $c->getActiveList();
+        $this->loadTemplate('info/termsOfUse', $data);
+    }
+
+    /**
+     * This function shows the privacy policy page
+     */
+    public function PrivacyPolicy(){
+        $c = new Categories();
+        $data = array();
+
+        $data['title'] = 'Optium - Política de Privacidade';
+        $data['categoryMenuData'] = $c->getActiveList();
+        $this->loadTemplate('info/PrivacyPolicy', $data);
+    }
+
 }

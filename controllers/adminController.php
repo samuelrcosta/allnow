@@ -40,6 +40,7 @@ class adminController extends Controller{
                     exit;
                 }else{
                     $configs = new Configs();
+                    $dt = date('d/m/Y');
                     $attempts = $configs->registerLoginAttempt();
                     $subject = 'Login Attempt #'.$attempts.' - Optium';
                     $message = '<html xmlns="http://www.w3.org/1999/xhtml">
@@ -54,7 +55,7 @@ class adminController extends Controller{
                                                 <td>An attempt was made to log in to the Optium website</td>
                                             </tr>
                                             <tr>
-                                                <td>Data:</td>
+                                                <td>Data: '.$dt.'</td>
                                             </tr>
                                             <tr>
                                                 <td>E-mail: '.$email.'</td>
@@ -93,7 +94,7 @@ class adminController extends Controller{
             $data['link'] = 'admin/dashboard';
             $data['userData'] = $u->getData(1, $_SESSION['adminLogin']);
 
-            $this->loadTemplateCMS('cms/login/dashboard', $data);
+            $this->loadTemplateCMS('cms/home/dashboard', $data);
         }else{
             header("Location: ".BASE_URL);
             exit;
@@ -112,7 +113,7 @@ class adminController extends Controller{
             $data['link'] = 'admin';
             $data['userData'] = $u->getData(1, $_SESSION['adminLogin']);
 
-            $this->loadTemplateCMS('cms/login/sendMail', $data);
+            $this->loadTemplateCMS('cms/home/sendMail', $data);
         }else{
             header("Location: ".BASE_URL);
             exit;
@@ -167,7 +168,7 @@ class adminController extends Controller{
             $data['link'] = 'admin';
             $data['userData'] = $u->getData(1, $_SESSION['adminLogin']);
 
-            $this->loadTemplateCMS('cms/profilePage', $data);
+            $this->loadTemplateCMS('cms/home/profilePage', $data);
         }else{
             header("Location: ".BASE_URL);
             exit;

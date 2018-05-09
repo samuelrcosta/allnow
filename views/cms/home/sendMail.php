@@ -31,7 +31,7 @@
             </div>
 
             <div class="form-group">
-                <button type="submit" class="btn btn-success sendAnswer"><i class="fas fa-check"></i> Enviar</button>
+                <button type="submit" class="btn btn-success sendAnswer"><i class="fas fa-envelope"></i> Enviar</button>
             </div>
         </form>
     </div>

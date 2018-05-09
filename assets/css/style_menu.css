@@ -120,6 +120,7 @@
     border-color: #F79321;
 }
 #cssmenu ul ul {
+    width: 100%;
     position: absolute;
     left: -9999px;
     border-bottom: 1px solid #F79321;
@@ -151,8 +152,9 @@
     height: 32px;
 }
 #cssmenu ul ul li a {
+    width: 100%;
     padding: 10px 20px;
-    width: 160px;
+    /*width: 160px;*/
     font-size: 12px;
     background: #FFFFFF;
     text-decoration: none;

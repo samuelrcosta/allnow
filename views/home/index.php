@@ -1,12 +1,24 @@
 <div style="clear: both"></div>
 <div class="container-home-image">
-    <div class="effect-phrase"><h1>A maior plataforma de produtos digitais do país:&nbsp;<span id="phrase-repeat"> </span></h1><br>
+    <div id="init" class="effect-phrase"><h1>A maior plataforma de produtos digitais do país:&nbsp;<span id="phrase-repeat"> </span></h1><br>
         <a href="#inscribe-email">Se inscreva em nossa newsletter e fique por dentro das novidades</a>
     </div>
 </div>
 <div class="container-fluid container-content-homepage">
     <section>
         <div class="row">
+            <div class="col-12">
+                <h5 style="font-family: 'montserratlight', sans-serif;">Pesquisa</h5>
+            </div>
+            <div class="col-12">
+                <form class="nav-search" role="search">
+                    <input type="text" id="search-input" name="word" placeholder="Digite o que você procura">
+
+                    <button type="submit" class="nav-search-btn">
+                        <i class="fas fa-search"><span>Buscar</span></i>
+                    </button>
+                </form>
+            </div>
             <div class="col-12">
                 <div class="highlights">
                     <h3>Destaques</h3>
