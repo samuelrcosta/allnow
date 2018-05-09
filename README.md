@@ -1,2 +1,6 @@
-# allnow
-Repositório do website https://allnow.com.br, desenvolvido sob demanda em PHP.
+# Optium
+Website https://optium.com.br repository, developed on demand for divulgation courses in general.
+
+* Php 7.0
+* Mysql
+* MVC
