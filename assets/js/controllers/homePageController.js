@@ -15,15 +15,6 @@ const PageController = {
     _listeners: function _listeners(){
         // Letters repeat show
         PageController._showLetters(PageController.PHRASE_REPEAT_CONTAINER, PageController._phrases[PageController._nowPhrase], 0, 250);
-        // On search submit
-        $(PageController.SEARCH_FORM).on('submit', function (e) {
-            e.preventDefault();
-            let word = $(PageController.INPUT_SEARCH).val();
-            if(word !== ''){
-                word = encodeURI(word);
-                window.location.replace(BASE_URL + 'home/search/' + word);
-            }
-        });
     },
 
     _showLetters: function _showLetters(target, message, index, interval) {

@@ -11,6 +11,7 @@
         <script type="text/javascript" src="<?php echo BASE_URL; ?>vendor/components/jquery/jquery.min.js"></script>
         <!--!>Fonts</!-->
         <link rel="stylesheet" href="<?php echo BASE_URL; ?>vendor/font-awesome/css/fontawesome-all.min.css">
+        <link rel="stylesheet" href="<?php echo BASE_URL; ?>vendor/simple-line-icons/css/simple-line-icons.css">
         <!--!>Slick</!-->
         <link rel="stylesheet" type="text/css" href="<?php echo BASE_URL; ?>vendor/slick-1.8.0/slick/slick.css"/>
         <link rel="stylesheet" type="text/css" href="<?php echo BASE_URL; ?>vendor/slick-1.8.0/slick/slick-theme.css"/>
@@ -69,6 +70,18 @@
                                     </ul>
                                 </div>
                             </div>
+                        </div>
+                        <div class="menu-search-container">
+                            <form class="nav-search" role="search">
+                                <input type="text" id="search-input" name="word" autocomplete="off" placeholder="Pesquisa...">
+
+                                <button type="submit" class="nav-search-btn">
+                                    <i class="icon-magnifier"><span>Buscar</span></i>
+                                </button>
+                            </form>
+                        </div>
+                        <div class="search-mobile-button">
+                            <i class="icon-magnifier"></i>
                         </div>
                     </div>
                 </div>

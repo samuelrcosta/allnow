@@ -4,18 +4,6 @@
     </div>
     <br>
     <div class="row">
-        <div class="col-12">
-            <h5 style="font-family: 'montserratlight', sans-serif;">Pesquisa</h5>
-        </div>
-        <div class="col-12">
-            <form class="nav-search" role="search">
-                <input type="text" id="search-input" name="word" placeholder="Digite o que você procura" value="<?php echo $word ?>">
-
-                <button type="submit" class="nav-search-btn">
-                    <i class="fas fa-search"><span>Buscar</span></i>
-                </button>
-            </form>
-        </div>
         <div class="col-sm-12">
             <h2 style="margin-bottom: 10px; font-family: 'montserratlight', sans-serif;">Resultados de '<?php echo $word ?>'</h2>
             <div class='row'>

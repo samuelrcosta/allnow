@@ -2,7 +2,8 @@
     display: flex;
 }
 .menu-container-int{
-    flex: 7; 
+    min-width: fit-content;
+    flex: 6;
     align-self: center;
 }
 #cssmenu,
@@ -224,6 +225,16 @@
         left: 0;
         right: 0;
         z-index: 5;
+    }
+    .img-top-logo-big {
+        margin-right: 0;
+    }
+    .menu-search-container{
+        display: none;
+    }
+    .search-mobile-button{
+        z-index: 6;
+        display: flex;
     }
     #cssmenu {
         width: 100%;
