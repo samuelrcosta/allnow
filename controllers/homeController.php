@@ -69,7 +69,7 @@ class homeController extends Controller {
             $data['menuOptions']['url'] = 'home';
             $data['word'] = $word;
             $data['advertisementsData'] = $a->getSearchAds($word);
-            $data['site_map'] = "<a href='".BASE_URL."'>Home</a> <span> > <a href='".BASE_URL."#init'>Pesquisa</a> <span> > </span> <a href='".BASE_URL."home/search/".$word."'>".$word."</a>";
+            $data['site_map'] = "<a href='".BASE_URL."'>Home</a> <span> > </span> Pesquisa <span> > </span> <a href='".BASE_URL."home/search/".$word."'>".$word."</a>";
             //normalize data
             for($i = 0; $i < count($data['advertisementsData']); $i++){
                 $badges = array();

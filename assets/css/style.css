@@ -83,7 +83,6 @@ header{
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	cursor: pointer;
 }
 .menu-search-container.active{
 	position: absolute;
@@ -314,6 +313,52 @@ footer {
 	background-color:#F79321;
 }
 .subarea button:disabled{
+	cursor: not-allowed;
+}
+.newsletter-top{
+	margin-bottom:30px;
+}
+.newsletter-top form{
+	display: flex;
+	margin:0;
+	padding:0;
+	border-radius: 5px;
+	box-shadow: 0 2px 2px 0 rgba(0,0,0,.14), 0 3px 1px -2px rgba(0,0,0,.2), 0 1px 5px 0 rgba(0,0,0,.12);
+}
+.newsletter-top .subemail {
+	margin:0;
+	flex: 3;
+	height:50px;
+	display:inline-block;
+	border:0;
+	padding:0;
+	border: 1px solid #E0E0E0;
+	border-radius:5px 0 0 5px;
+	outline:0;
+	padding-left:15px;
+}
+.newsletter-top .subemail:read-only{
+	cursor: not-allowed;
+}
+.newsletter-top button {
+	cursor: pointer;
+	margin:0;
+	height:50px;
+	display:inline-block;
+	border:0;
+	padding:0;
+	outline:0;
+	border-radius:0 5px 5px 0;
+	margin-left: -5px;
+	color:#FFF;
+	background-color:#F79321;
+	width: 70px;
+	font-size: 20px;
+}
+.newsletter-top button:hover {
+	background-color:#F79321;
+}
+.newsletter-top button:disabled{
 	cursor: not-allowed;
 }
 footer h3 {
@@ -608,7 +653,7 @@ footer h3 {
     right: 0;
 }
 
-.contact-container, .about-container, .card-block{
+.contact-container, .about-container, .card-block, .card-block-info{
 	background-color: #FFFFFF;
 	box-shadow: 0 2px 2px 0 rgba(0,0,0,.14), 0 3px 1px -2px rgba(0,0,0,.2), 0 1px 5px 0 rgba(0,0,0,.12);
 	height: auto;
@@ -631,14 +676,23 @@ footer h3 {
 }
 
 @media all and (max-width: 575px) {
+	#search-input{
+		font-size: 16px;
+	}
 	.site-map{
 		font-size: 11px;
 	}
-	.subarea button {
+	.subarea button{
 		height: 45px;
 	}
-	.subarea .subemail {
+	.newsletter-top button{
+		width: 50px;
+		font-size: 17px;
 		height: 45px;
+	}
+	.subarea .subemail, .newsletter-top .subemail{
+		height: 45px;
+		font-size: 16px;
 	}
 	.subarea:before {
 		margin-top: 23px;

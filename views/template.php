@@ -73,7 +73,7 @@
                         </div>
                         <div class="menu-search-container">
                             <form class="nav-search" role="search">
-                                <input type="text" id="search-input" name="word" autocomplete="off" placeholder="Pesquisa...">
+                                <input type="text" id="search-input" name="word" value="<?=(isset($viewData['word']))? $viewData['word'] : '' ?>" autocomplete="off" placeholder="Pesquisa...">
 
                                 <button type="submit" class="nav-search-btn">
                                     <i class="icon-magnifier"><span>Buscar</span></i>
@@ -96,9 +96,9 @@
 	    			<div class="row">
 						<div class="col-md-2"></div>
 						<div class="col-md-8">
-							<form id="inscribeForm">
-								<input type="text" id="inscribe-email" placeholder="Registre na nossa Newsletter" class="email subemail">
-                                <button type="button" id="inscribe-button" class="button">Inscrever-se</button>
+							<form class="inscribeForm">
+								<input type="text" placeholder="Registre na nossa Newsletter" class="email subemail inscribe-email">
+                                <button type="button" data-type="footer" class="button inscribe-button">Inscrever-se</button>
 							</form>
 						</div>
 						<div class="col-md-2"></div>
@@ -143,51 +143,11 @@
                 </div>
 	    	</div>
 	    </footer>
+        <script type="text/javascript" src="<?php echo BASE_URL; ?>assets/js/controllers/templateController.js"></script>
         <script>
-            let button = $("#inscribe-button");
-            let input = $('#inscribe-email');
-
-            // Prevent form submit by enter
             $(document).ready(function() {
-                $('#inscribeForm').on('keyup keypress', function(event){
-                    if(event.keyCode === 13) {
-                        event.preventDefault();
-                        subscribe();
-                        return false;
-                    }
-                });
-
-                button.click(function(){
-                    subscribe();
-                });
+                TemplateController.start();
             });
-
-            function subscribe() {
-                let email = input.val();
-                if(email !== ''){
-                    $.ajax({
-                        url: '<?php echo BASE_URL; ?>home/inscribeRegister',
-                        type: 'POST',
-                        data: {'email': email},
-                        beforeSend: function() {
-                            button.attr('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> Aguarde');
-                        },
-                        success: function(result){
-                            result = JSON.parse(result);
-                            if(result.status === 'subscribed'){
-                                button.html('<i class="fa fa-check"></i> Inscrito!').css("background-color", "#28a745");
-                                input.val('').attr("placeholder", "Inscrição feita com sucesso!");
-                                input.attr('readonly', true);
-                            }else{
-                                button.attr('disabled', false).html('Inscrever-se');
-                                input.val('').attr("placeholder", "Erro: E-mail inválido");
-                            }
-                        }
-                    });
-                }else{
-                    input.attr("placeholder", "Digite um e-mail válido");
-                }
-            }
         </script>
         <script type="text/javascript" src="<?php echo BASE_URL; ?>assets/js/script_menu.js"></script>
 		<script type="text/javascript" src="<?php echo BASE_URL; ?>assets/js/script.js"></script>

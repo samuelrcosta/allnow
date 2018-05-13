@@ -1,11 +1,24 @@
 <div style="clear: both"></div>
 <div class="container-home-image">
     <div id="init" class="effect-phrase"><h1>A maior plataforma de produtos digitais do país:&nbsp;<span id="phrase-repeat"> </span></h1><br>
-        <a href="#inscribe-email">Se inscreva em nossa newsletter e fique por dentro das novidades</a>
     </div>
 </div>
 <div class="container-fluid container-content-homepage">
     <section>
+        <div class="newsletter-top">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-8">
+                        <form class="inscribeForm">
+                            <input type="text" autocomplete="off" placeholder="Registre na nossa Newsletter" class="email subemail inscribe-email">
+                            <button type="button" data-type="home" class="button inscribe-button"><i class="fa fa-envelope"></i></button>
+                        </form>
+                    </div>
+                    <div class="col-md-2"></div>
+                </div>
+            </div>
+        </div>
         <div class="row">
             <div class="col-12">
                 <div class="highlights">
