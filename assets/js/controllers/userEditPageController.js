@@ -39,6 +39,9 @@ const PageController = {
         if(perms.includes("subcats")){
             $("#menuSubcategories").prop("checked", true);
         }
+        if(perms.includes("homeTutorial")){
+            $("#menuHomeTutorial").prop("checked", true);
+        }
     },
 
     _validateFields: function _validateFields(){

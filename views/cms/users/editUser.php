@@ -57,6 +57,9 @@
                     <div class="checkbox">
                         <label><input type="checkbox" name="menuSubcategories" id="menuSubcategories" value="True">&nbsp;Subcategorias</label>
                     </div>
+                    <div class="checkbox">
+                        <label><input type="checkbox" name="menuHomeTutorial" id="menuHomeTutorial" value="True">&nbsp;Home do Site</label>
+                    </div>
                 </div>
             </div>
 

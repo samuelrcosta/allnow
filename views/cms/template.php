@@ -128,6 +128,13 @@
                                 </a>
                             </li>
                             <?php endif; ?>
+                            <?php if(strpos($viewData['userData']['perms'], 'homeTutorial') !== false): ?>
+                                <li class="nav-item">
+                                    <a href="<?php echo BASE_URL; ?>homePageTutorialCMS" class="nav-link <?php echo ($viewData['link'] == 'homePageTutorialCMS/index')?'active':''; ?>">
+                                        <i class="fas fa-home"></i> Home do Site
+                                    </a>
+                                </li>
+                            <?php endif; ?>
                         </ul>
                     </li>
                     <?php endif; ?>

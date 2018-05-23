@@ -86,6 +86,8 @@ class usersCMSController extends Controller{
                                 $perms .= "categories;";
                             if(isset($_POST['menuSubcategories']))
                                 $perms .= "subcats;";
+                            if(isset($_POST['menuHomeTutorial']))
+                                $perms .= "homeTutorial;";
                             // Try to register
                             if($u->register($name, $email, $perms, $password)){
                                 echo json_encode(true);
@@ -158,6 +160,8 @@ class usersCMSController extends Controller{
                                 $perms .= "categories;";
                             if(isset($_POST['menuSubcategories']))
                                 $perms .= "subcats;";
+                            if(isset($_POST['menuHomeTutorial']))
+                                $perms .= "homeTutorial;";
                             // Try to register
                             if($u->edit($id, $name, $email, $perms, $password)){
                                 echo json_encode(true);

@@ -8,6 +8,8 @@ const SlidesController = {
     // containers
     MEDIAS_CONTAINER: ".medias_container",
     AD_MEDIA_CONTAINER: ".ad-media-container",
+    TUT_MEDIAS_CONTAINER: ".tutorial_media_container",
+    TUT_AD_MEDIA_CONTAINER: ".tutorial-ad-media-container",
     YOUTUBE_MEDIA_CONTAINER: ".media-type-1",
     VIMEO_MEDIA_CONTAINER: ".media-type-2",
 
@@ -33,6 +35,12 @@ const SlidesController = {
         }else{
             $(SlidesController.PLAY_BUTTON).removeClass('play-md').removeClass('play-big').addClass('play-sm');
         }
+
+        // Ajust tutorial video
+        let tutorialWidth = $(SlidesController.TUT_MEDIAS_CONTAINER).first().width();
+        let tutorialheight = Math.floor((tutorialWidth * 9) / 16);
+        $(SlidesController.TUT_MEDIAS_CONTAINER).height(tutorialheight);
+        $(SlidesController.TUT_AD_MEDIA_CONTAINER).height(tutorialheight);
     },
 
     _loadSlickSlide: function _loadSlickSlide(){

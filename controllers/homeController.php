@@ -20,6 +20,7 @@ class homeController extends Controller {
      */
     public function index() {
         $c = new Categories();
+        $conf = new Configs();
         $a = new Advertisements();
         $data = array();
 
@@ -27,6 +28,10 @@ class homeController extends Controller {
         $data['categoryMenuData'] = $c->getActiveList();
         $data['menuOptions']['url'] = 'home';
         $data['advertisementsData'] = $a->getHighlightsAds();
+
+        // Get tutorial data
+        $data['tutorialData'] = json_decode(strval($conf->getConfig("tutorial_advertisement")), true);
+
         //normalize data
         for($i = 0; $i < count($data['advertisementsData']); $i++){
             $badges = array();

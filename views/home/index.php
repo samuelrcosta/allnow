@@ -19,6 +19,22 @@
                 </div>
             </div>
         </div>
+        <?php if($tutorialData['status'] == 'on'): ?>
+            <div class="tutorial-container">
+                <div class="tutorial-title">
+                    <h2><?= $tutorialData['data']['title']; ?></h2>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 offset-md-3">
+                        <div class="tutorial_media_container">
+                            <div class="tutorial-ad-media-container media-type-<?= $tutorialData['data']['media_type'] ?>" data-type="<?= $tutorialData['data']['media_type'] ?>" data-media="<?= $tutorialData['data']['media'] ?>" >
+                                <div class="play-button"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <?php endif; ?>
         <div class="row">
             <div class="col-12">
                 <div class="highlights">
