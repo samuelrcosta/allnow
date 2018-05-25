@@ -1,5 +1,7 @@
 <?php
 /**
+ * ------------------------------------------------- DISABLED -----------------------------------------------------
+ *
  * This class is the Controller of the LoginPage.
  *
  * @author  samuelrcosta

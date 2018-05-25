@@ -3,16 +3,23 @@
  * This class is the Controller of the Admin Sub-Categories panel.
  *
  * @author  samuelrcosta
- * @version 1.1.0, 05/02/2018
+ * @version 1.2.0, 05/24/2018
  * @since   1.0, 01/16/2017
  */
 
 class subcategoriesCMSController extends Controller{
 
+    // Models instances
+    private $u;
+    private $c;
+
     /**
      * Class constructor
      */
     public function __construct(){
+        // Initialize instances
+        $this->u = new Administrators();
+        $this->c = new Categories();
         parent::__construct();
     }
 
@@ -20,15 +27,13 @@ class subcategoriesCMSController extends Controller{
      * This function shows the Admin Sub-Categories List page.
      */
     public function index(){
-        $u = new Administrators();
-        $c = new Categories();
         $data = array();
 
-        if($u->isLogged() && $u->havePermission('subcats')){
+        if($this->u->isLogged() && $this->u->havePermission('subcats')){
             $data['title'] = 'ADM - Sub-Categorias';
             $data['link'] = 'subcategoriesCMS/index';
-            $data['userData'] = $u->getData(1, $_SESSION['adminLogin']);
-            $data['subcategoriesData'] = $c->getList();
+            $data['userData'] = $this->u->getData(1, $_SESSION['adminLogin']);
+            $data['subcategoriesData'] = $this->c->getSubcategoriesList();
 
             $this->loadTemplateCMS('cms/subcategories/index', $data);
         }else{
@@ -41,11 +46,9 @@ class subcategoriesCMSController extends Controller{
      * This function shows the Admin Sub-Categories register page.
      */
     public function newSubCategory(){
-        $u = new Administrators();
-        $c = new Categories();
         $data = array();
 
-        if($u->isLogged() && $u->havePermission('subcats')){
+        if($this->u->isLogged() && $this->u->havePermission('subcats')){
             //Verify if exists POST for a new register
 
             if(isset($_POST['name']) && !empty($_POST['name'])){
@@ -53,8 +56,7 @@ class subcategoriesCMSController extends Controller{
                 $id_principal = addslashes($_POST['id_principal']);
 
                 if((!empty($name)) && !empty($id_principal)){
-                    $principalCategory = array_reverse($c->getCategoryTree($id_principal));
-                    if($c->register($name, $id_principal)){
+                    if($this->c->register($name, $id_principal)){
                         $msg = urlencode('Sub-Categoria cadastrada com sucesso!');
                         header("Location: ".BASE_URL."subcategoriesCMS?notification=".$msg."&status=alert-info");
                         exit;
@@ -72,8 +74,8 @@ class subcategoriesCMSController extends Controller{
 
             $data['title'] = 'ADM - Nova Sub-Categoria';
             $data['link'] = 'subcategoriesCMS/index';
-            $data['userData'] = $u->getData(1, $_SESSION['adminLogin']);
-            $data['categoryData'] = $c->getList();
+            $data['userData'] = $this->u->getData(1, $_SESSION['adminLogin']);
+            $data['categoryData'] = $this->c->getPrincipals();
 
             $this->loadTemplateCMS('cms/subcategories/newSubcategory', $data);
         }else{
@@ -89,13 +91,11 @@ class subcategoriesCMSController extends Controller{
      * Finally headers to index page (subcategoriesCMS/index)
      */
     public function editSubCategory($id){
-        $u = new Administrators();
-        $c = new Categories();
         $data = array();
 
         $id = addslashes(base64_decode(base64_decode($id)));
 
-        if($u->isLogged() && $u->havePermission('subcats')){
+        if($this->u->isLogged() && $this->u->havePermission('subcats')){
 
             //Verify if exists POST for edit
 
@@ -104,7 +104,7 @@ class subcategoriesCMSController extends Controller{
                 $id_principal = addslashes($_POST['id_principal']);
 
                 if((!empty($name)) && !empty($id_principal)){
-                    if($c->edit($id, $name, $id_principal)){
+                    if($this->c->edit($id, $name, $id_principal)){
                         $msg = urlencode('Sub-Categoria editada com sucesso!');
                         header("Location: ".BASE_URL."subcategoriesCMS?notification=".$msg."&status=alert-info");
                         exit;
@@ -120,14 +120,13 @@ class subcategoriesCMSController extends Controller{
                 }
             }else{
                 //If not, render editPage
-                $categoryList = array_reverse($c->getCategoryTree($id));
-                $data['subcategoryData'] = $categoryList['0'];
+                $data['subcategoryData'] = $this->c->getDataById($id);
             }
 
             $data['title'] = 'ADM - Editar Sub-Categoria';
             $data['link'] = 'subcategoriesCMS/index';
-            $data['userData'] = $u->getData(1, $_SESSION['adminLogin']);
-            $data['categoryData'] = $c->getList();
+            $data['userData'] = $this->u->getData(1, $_SESSION['adminLogin']);
+            $data['categoryData'] = $this->c->getPrincipals();
 
             $this->loadTemplateCMS('cms/subcategories/editSubcategory', $data);
         }else{
@@ -147,7 +146,7 @@ class subcategoriesCMSController extends Controller{
         $id = addslashes(base64_decode(base64_decode($id)));
 
         if($u->isLogged() && $u->havePermission('subcats')){
-            $c->delete($id, 'id_subcategory');
+            $c->delete($id);
             header("Location: ".BASE_URL."subcategoriesCMS");
         }else{
             header("Location: ".BASE_URL);
@@ -160,20 +159,9 @@ class subcategoriesCMSController extends Controller{
      * get all subcategory data and echo in json
      */
     public function getSubcategories($id){
-        $c = new Categories();
-
         $id = addslashes(base64_decode(base64_decode($id)));
 
-        $subcategoryData = array();
-
-        $data = $c->getList();
-        foreach ($data as $category){
-            if($category['id'] == $id){
-                foreach ($category['subs'] as $subcategory){
-                    $subcategoryData[] = $subcategory;
-                }
-            }
-        }
+        $subcategoryData = $this->c->getSubcategoriesByPrincipalId($id);
 
         echo json_encode($subcategoryData);
     }

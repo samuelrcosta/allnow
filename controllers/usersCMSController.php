@@ -3,31 +3,37 @@
  * This class is the Controller of the Admin Users panel.
  *
  * @author  samuelrcosta
- * @version 1.2.0, 05/05/2018
+ * @version 1.2.5, 05/24/2018
  * @since   1.0, 01/20/2017
  */
 
 class usersCMSController extends Controller{
+
+    // Models instances
+    private $u;
+    private $s;
 
     /**
      * Class constructor
      */
     public function __construct(){
         parent::__construct();
+        // Initialize instances
+        $this->u = new Administrators();
+        $this->s = new Store();
     }
 
     /**
      * This function shows the Admin Users List page.
      */
     public function index(){
-        $u = new Administrators();
         $data = array();
 
-        if($u->isLogged() && $u->havePermission('users')){
+        if($this->u->isLogged() && $this->u->havePermission('users')){
             $data['title'] = 'ADM - Usuários';
             $data['link'] = 'usersCMS/index';
-            $data['userData'] = $u->getData(1, $_SESSION['adminLogin']);
-            $data['usersData'] = $u->getList();
+            $data['userData'] = $this->u->getData(1, $_SESSION['adminLogin']);
+            $data['usersData'] = $this->u->getList();
 
             $this->loadTemplateCMS('cms/users/index', $data);
         }else{
@@ -40,13 +46,12 @@ class usersCMSController extends Controller{
      * This function shows the register page for a new user.
      */
     public function newUser(){
-        $u = new Administrators();
         $data = array();
 
-        if($u->isLogged() && $u->havePermission('users')){
+        if($this->u->isLogged() && $this->u->havePermission('users')){
             $data['title'] = 'ADM - Novo usuário';
             $data['link'] = 'usersCMS/index';
-            $data['userData'] = $u->getData(1, $_SESSION['adminLogin']);
+            $data['userData'] = $this->u->getData(1, $_SESSION['adminLogin']);
 
             $this->loadTemplateCMS('cms/users/newUser', $data);
         }else{
@@ -59,15 +64,13 @@ class usersCMSController extends Controller{
      * This function register a new user in database, with POST request
      */
     public function saveNewUser(){
-        $u = new Administrators();
-        if($u->isLogged() && $u->havePermission('users')){
+        if($this->u->isLogged() && $this->u->havePermission('users')){
             if(!empty($_POST)){
-                $s = new Store();
                 // Array for check the keys
                 $keys = array('email', 'name', 'password', 'password_confirmation');
-                if($s->array_keys_check($keys, $_POST)){
+                if($this->s->array_keys_check($keys, $_POST)){
                     // Check if the array is completed
-                    if($s->array_check_completed_keys($keys, $_POST)){
+                    if($this->s->array_check_completed_keys($keys, $_POST)){
                         $email = addslashes($_POST['email']);
                         $name = addslashes($_POST['name']);
                         $password = addslashes($_POST['password']);
@@ -82,6 +85,8 @@ class usersCMSController extends Controller{
                                 $perms .= "users;";
                             if(isset($_POST['menuContacts']))
                                 $perms .= "contacts;";
+                            if(isset($_POST['menuAreas']))
+                                $perms .= "areas;";
                             if(isset($_POST['menuCategories']))
                                 $perms .= "categories;";
                             if(isset($_POST['menuSubcategories']))
@@ -89,7 +94,7 @@ class usersCMSController extends Controller{
                             if(isset($_POST['menuHomeTutorial']))
                                 $perms .= "homeTutorial;";
                             // Try to register
-                            if($u->register($name, $email, $perms, $password)){
+                            if($this->u->register($name, $email, $perms, $password)){
                                 echo json_encode(true);
                             }else{
                                 echo json_encode("E-mail já cadastrado.");
@@ -111,15 +116,14 @@ class usersCMSController extends Controller{
      * This function shows users editPage
      */
     public function editUserPage($id){
-        $u = new Administrators();
         $data = array();
 
-        if($u->isLogged() && $u->havePermission('users')){
+        if($this->u->isLogged() && $this->u->havePermission('users')){
             $id = addslashes(base64_decode(base64_decode($id)));
             $data['title'] = 'ADM - Editar Usuário';
             $data['link'] = 'usersCMS/index';
-            $data['userData'] = $u->getData(1, $_SESSION['adminLogin']);
-            $data['usData'] = $u->getData(1, $id);
+            $data['userData'] = $this->u->getData(1, $_SESSION['adminLogin']);
+            $data['usData'] = $this->u->getData(1, $id);
             $this->loadTemplateCMS('cms/users/editUser', $data);
         }else{
             header("Location: ".BASE_URL);
@@ -131,16 +135,13 @@ class usersCMSController extends Controller{
      * This function edit a user using POST request
      */
     public function editUser(){
-        $u = new Administrators();
-
-        if($u->isLogged() && $u->havePermission('users')){
+        if($this->u->isLogged() && $this->u->havePermission('users')){
             if(!empty($_POST)){
-                $s = new Store();
                 // Array for check the keys
                 $keys = array('id', 'email', 'name');
-                if($s->array_keys_check($keys, $_POST)){
+                if($this->s->array_keys_check($keys, $_POST)){
                     // Check if the array is completed
-                    if($s->array_check_completed_keys($keys, $_POST)){
+                    if($this->s->array_check_completed_keys($keys, $_POST)){
                         $id = addslashes($_POST['id']);
                         $email = addslashes($_POST['email']);
                         $name = addslashes($_POST['name']);
@@ -156,6 +157,8 @@ class usersCMSController extends Controller{
                                 $perms .= "users;";
                             if(isset($_POST['menuContacts']))
                                 $perms .= "contacts;";
+                            if(isset($_POST['menuAreas']))
+                                $perms .= "areas;";
                             if(isset($_POST['menuCategories']))
                                 $perms .= "categories;";
                             if(isset($_POST['menuSubcategories']))
@@ -163,7 +166,7 @@ class usersCMSController extends Controller{
                             if(isset($_POST['menuHomeTutorial']))
                                 $perms .= "homeTutorial;";
                             // Try to register
-                            if($u->edit($id, $name, $email, $perms, $password)){
+                            if($this->u->edit($id, $name, $email, $perms, $password)){
                                 echo json_encode(true);
                             }else{
                                 echo json_encode("E-mail já cadastrado.");
@@ -189,11 +192,9 @@ class usersCMSController extends Controller{
      * execute delete function and headers to index page (usersCMS/index)
      */
     public function deleteUser($id){
-        $u = new Administrators();
-
-        if($u->isLogged() && $u->havePermission('users')){
+        if($this->u->isLogged() && $this->u->havePermission('users')){
             $id = addslashes(base64_decode(base64_decode($id)));
-            $u->delete($id);
+            $this->u->delete($id);
             $msg = urlencode('Usuário deletado com sucesso.');
             header("Location: " . BASE_URL . "usersCMS?notification=".$msg."&status=alert-success");
         }else{

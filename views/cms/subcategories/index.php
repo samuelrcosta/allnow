@@ -61,17 +61,15 @@
     var subcategoryList = <?php echo json_encode($subcategoriesData) ?>;
 
     function insertSubcategories(){
-        for(var id in subcategoryList){
-            for(var sub in subcategoryList[id].subs){
-                $("#categories_result").append(
-                    "<tr>" +
-                        "<td>" + subcategoryList[id].subs[sub].name +"</td>" +
-                        "<td>" + subcategoryList[id].name +"</td>" +
-                        "<td><a href='" + BASE_URL + "subcategoriesCMS/editSubCategory/" +  btoa(btoa(subcategoryList[id].subs[sub].id)) + "' class='btn btn-info'><i class='icon icon-pencil'></i></a></td>" +
-                        "<td><button class='btn btn-danger' onclick=" + 'deleteSubcategory("' + btoa(btoa(subcategoryList[id].subs[sub].id)) + '")' + "><i class='icon icon-trash'></i></button></td>" +
-                    "</tr>"
-                );
-            }
+        for(let id in subcategoryList){
+            $("#categories_result").append(
+                "<tr>" +
+                    "<td>" + subcategoryList[id].name +"</td>" +
+                    "<td>" + subcategoryList[id].principal_name +"</td>" +
+                    "<td><a href='" + BASE_URL + "subcategoriesCMS/editSubCategory/" +  btoa(btoa(subcategoryList[id].id)) + "' class='btn btn-info'><i class='icon icon-pencil'></i></a></td>" +
+                    "<td><button class='btn btn-danger' onclick=" + 'deleteSubcategory("' + btoa(btoa(subcategoryList[id].id)) + '")' + "><i class='icon icon-trash'></i></button></td>" +
+                "</tr>"
+            );
         }
     }
 
@@ -81,19 +79,17 @@
             insertSubcategories();
         }else{
             $("#categories_result").html('');
-            var word = $("#search").val().toLowerCase();
-            for(var id in subcategoryList){
-                for(var sub in subcategoryList[id].subs){
-                    if((subcategoryList[id].subs[sub].name.toLowerCase().search(word) !== -1) || (subcategoryList[id].name.toLowerCase().search(word) !== -1)){
-                        $("#categories_result").append(
-                            "<tr>" +
-                            "<td>" + subcategoryList[id].subs[sub].name +"</td>" +
-                            "<td>" + subcategoryList[id].name +"</td>" +
-                            "<td><a href='" + BASE_URL + "subcategoriesCMS/editSubCategory/" +  btoa(btoa(subcategoryList[id].subs[sub].id)) + "' class='btn btn-info'><i class='icon icon-pencil'></i></a></td>" +
-                            "<td><button class='btn btn-danger' onclick=" + 'deleteSubcategory("' + btoa(btoa(subcategoryList[id].subs[sub].id)) + '")' + "><i class='icon icon-trash'></i></button></td>" +
-                            "</tr>"
-                        );
-                    }
+            let word = $("#search").val().toLowerCase();
+            for(let id in subcategoryList){
+                if((subcategoryList[id].name.toLowerCase().search(word) !== -1) || (subcategoryList[id].principal_name.toLowerCase().search(word) !== -1)){
+                    $("#categories_result").append(
+                        "<tr>" +
+                        "<td>" + subcategoryList[id].name +"</td>" +
+                        "<td>" + subcategoryList[id].principal_name +"</td>" +
+                        "<td><a href='" + BASE_URL + "subcategoriesCMS/editSubCategory/" +  btoa(btoa(subcategoryList[id].id)) + "' class='btn btn-info'><i class='icon icon-pencil'></i></a></td>" +
+                        "<td><button class='btn btn-danger' onclick=" + 'deleteSubcategory("' + btoa(btoa(subcategoryList[id].id)) + '")' + "><i class='icon icon-trash'></i></button></td>" +
+                        "</tr>"
+                    );
                 }
             }
         }

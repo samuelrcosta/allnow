@@ -176,8 +176,8 @@
     right: 10px;
     width: 4px;
     height: 4px;
-    border-bottom: 1px solid #dddddd;
-    border-right: 1px solid #dddddd;
+    border-bottom: 1px solid #F79321;
+    border-right: 1px solid #F79321;
     content: "";
     -webkit-transform: rotate(-45deg);
     -moz-transform: rotate(-45deg);
@@ -199,7 +199,7 @@
     border-left: 1px solid #dddddd;
 }
 #cssmenu ul ul li.has-sub:hover > a::after {
-    border-color: #ffffff;
+    border-color: #F79321;
 }
 #cssmenu .submenu-button {
     display: none;

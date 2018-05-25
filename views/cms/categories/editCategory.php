@@ -10,6 +10,15 @@
                 <label for="name" class="form-control-label">Nome da Categoria</label>
                 <input class="form-control" name="name" id="name" style="max-width: 400px" data-validation="required" data-validation-error-msg="Digite uma categoria" value="<?php echo $categoryData['name']; ?>"/>
             </div>
+            <div class="form-group">
+                <label for="id_area" class="form-control-label">Área</label>
+                <select class="form-control" name="id_area" id="id_area" data-validation="required" data-validation-error-msg="Selecione uma área" style="max-width: 400px">
+                    <option></option>
+                    <?php foreach ($areasData as $area): ?>
+                        <option <?php echo (isset($categoryData['id_area']) && $categoryData['id_area'] == $area['id'])?'selected="selected"':''; ?> value="<?php echo $area['id'] ?>" ><?php echo $area['name'] ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
             <?php if(!empty($notice)):?>
                 <?php echo $notice ?>
             <?php endif; ?>

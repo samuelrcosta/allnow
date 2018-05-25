@@ -114,6 +114,13 @@
                         </a>
 
                         <ul class="nav-dropdown-items">
+                            <?php if(strpos($viewData['userData']['perms'], 'areas') !== false): ?>
+                                <li class="nav-item">
+                                    <a href="<?php echo BASE_URL; ?>areasCMS" class="nav-link <?php echo ($viewData['link'] == 'areasCMS/index')?'active':''; ?>">
+                                        <i class="icon icon-organization"></i> Áreas
+                                    </a>
+                                </li>
+                            <?php endif; ?>
                             <?php if(strpos($viewData['userData']['perms'], 'categories') !== false): ?>
                             <li class="nav-item">
                                 <a href="<?php echo BASE_URL; ?>categoriesCMS" class="nav-link <?php echo ($viewData['link'] == 'categoriesCMS/index')?'active':''; ?>">

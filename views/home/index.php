@@ -25,12 +25,15 @@
                     <h2><?= $tutorialData['data']['title']; ?></h2>
                 </div>
                 <div class="row">
-                    <div class="col-md-6 offset-md-3">
+                    <div class="col-md-5 offset-3 tutorial-video">
                         <div class="tutorial_media_container">
                             <div class="tutorial-ad-media-container media-type-<?= $tutorialData['data']['media_type'] ?>" data-type="<?= $tutorialData['data']['media_type'] ?>" data-media="<?= $tutorialData['data']['media'] ?>" >
-                                <div class="play-button"></div>
+                                <div class="play-button principal-play-button"></div>
                             </div>
                         </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="tutorial-text"><?= $tutorialData['data']['text'] ?></div>
                     </div>
                 </div>
             </div>

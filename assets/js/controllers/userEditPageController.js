@@ -33,6 +33,9 @@ const PageController = {
         if(perms.includes("contacts")){
             $("#menuContacts").prop("checked", true);
         }
+        if(perms.includes("areas")){
+            $("#menuAreas").prop("checked", true);
+        }
         if(perms.includes("categories")){
             $("#menuCategories").prop("checked", true);
         }

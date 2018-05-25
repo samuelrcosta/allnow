@@ -8,58 +8,55 @@
  */
 class advertisementsController extends Controller{
 
+    // Models instances
+    private $a;
+    private $c;
+    private $areas;
+
     /**
      * Class constructor
      */
     public function __construct() {
         parent::__construct();
+        // Initialize instances
+        $this->a = new Advertisements();
+        $this->c = new Categories();
+        $this->areas = new Areas();
     }
 
     /**
-     * This page shows all advertisements in database.
+     * This page not exists, redirect to home.
      */
     public function index(){
-        $filters = array();
-        if(isset($_GET['filters'])){
-            $filters = $_GET['filters'];
-        }
+        header("Location: ".BASE_URL);
+        exit;
     }
 
     /**
      * This function shows the advertisements of this category.
      */
     public function open($slug){
-        $c = new Categories();
-        $a = new Advertisements();
         $data = array();
 
         $data['categoryData'] = array();
-        $data['categoriesData'] = $c->getActiveList();
-        $data['categoryMenuData'] = $c->getActiveList();
+        $data['categoryMenuData'] = $this->areas->getCompleteList();
 
-        $data['advertisementData'] = $a->getDataBySlug($slug);
-        if(!empty($data['advertisementData'])){
+        $adData = $this->a->getDataBySlug($slug);
+        if(!empty($adData)){
+            $categoryData = $this->c->getDataById($adData['id_category']);
+            $subcategoryData = $this->c->getDataById($adData['id_subcategory']);
+            $areaData = $this->areas->getArea($categoryData['id_area']);
 
-            foreach ($data['categoriesData'] as $item){
-                if($item['id'] == $data['advertisementData']['id_category']){
-                    $data['categoryData'] = $item;
-                    $data['name_category'] = $item['name'];
-                    $data['slug_category'] = $item['slug'];
-                }
-                foreach ($item['subs'] as $sub){
-                    if($sub['id'] == $data['advertisementData']['id_subcategory']){
-                        $data['name_subcategory'] = $sub['name'];
-                        $data['slug_subcategory'] = $sub['slug'];
-                        break;
-                    }
-                }
-            }
+            $siteMap = "<a href='".BASE_URL."'>Home</a>";
+            $siteMap .= " <span> > </span> <a href='".BASE_URL."areas/open/".$areaData['slug']."'>".$areaData['name']."</a>";
+            $siteMap .= " <span> > </span> <a href='".BASE_URL."categories/open/".$categoryData['slug']."'>".$categoryData['name']."</a>";
+            $siteMap .= " <span> > </span> <a href='".BASE_URL."categories/open/".$subcategoryData['slug']."'>".$subcategoryData['name']."</a>";
+            $siteMap .= " <span> > </span> <a href='".BASE_URL."advertisements/open/".$adData['slug']."'>".$adData['title']."</a>";
 
-
-            $data['site_map'] = "<a href='".BASE_URL."'>Home</a> <span> > </span> <a href='".BASE_URL."categories/open/".$data['slug_category']."'>".$data['name_category']."</a> <span> > </span> <a href='".BASE_URL."categories/open/".$data['slug_subcategory']."'>".$data['name_subcategory']."</a> <span> > </span> <a href='".BASE_URL."advertisements/open/".$slug."'>".$data['advertisementData']['title']."</a>";
-
-            $data['menuOptions']['url'] = $data['slug_category'];
-            $data['title'] = 'Optium - '.$data['advertisementData']['title'];
+            $data['site_map'] = $siteMap;
+            $data['menuUrlActive'] = $areaData['id'];
+            $data['title'] = 'Optium - '.$adData['title'];
+            $data['advertisementData'] = $adData;
 
             $this->loadTemplate('advertisements/open', $data);
         }else{

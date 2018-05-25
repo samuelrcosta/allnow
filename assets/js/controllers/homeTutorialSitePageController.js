@@ -21,10 +21,12 @@ const PageController = {
         if(PageController._configData.status === 'on'){
             $('#active_radio').prop("checked", true);
             $("#title").attr("data-validation", "required");
+            $("#text").attr("data-validation", "required");
             $("#media_type").attr("data-validation", "required");
             $("#media_link").attr("data-validation", "required");
         }
         $("#title").val(PageController._configData.data.title);
+        $("#text").val(PageController._configData.data.text);
         $("#media_type").val(PageController._configData.data.media_type);
         $("#media_link").val(PageController._configData.data.media_link);
     },
@@ -33,6 +35,7 @@ const PageController = {
         if(value === true){
             // Activate validations
             $("#title").attr("data-validation", "required");
+            $("#text").attr("data-validation", "required");
             $("#media_type").attr("data-validation", "required");
             $("#media_link").attr("data-validation", "required");
         }else{
@@ -41,6 +44,7 @@ const PageController = {
             $(PageController.NOTICE_CONTAINER).html("");
             // Disable validation
             $("#title").attr("data-validation", "");
+            $("#text").attr("data-validation", "");
             $("#media_type").attr("data-validation", "");
             $("#media_link").attr("data-validation", "");
         }

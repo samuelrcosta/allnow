@@ -54,15 +54,15 @@ const SlidesController = {
 
         for (let i = 0; i < youtube.length; i++) {
             // thumbnail image source.
-            let source = "https://img.youtube.com/vi/" + youtube[i].dataset.media + "/sddefault.jpg";
-
+            //let source = "https://img.youtube.com/vi/" + youtube[i].dataset.media + "/sddefault.jpg";
+            let source = "https://img.youtube.com/vi/" + youtube[i].dataset.media + "/hqdefault.jpg";
             // Load the image asynchronously
+
             let image = new Image();
             image.src = source;
             image.addEventListener("load", function () {
                 youtube[i].appendChild(image);
             }(i));
-
             // Add a listener for play button
             $(youtube[i]).find(SlidesController.PLAY_BUTTON).on('click', function(){
                 SlidesController._loadYoutubeVideo($(this));

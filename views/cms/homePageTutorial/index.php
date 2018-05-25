@@ -18,6 +18,11 @@
             </div>
 
             <div class="form-group">
+                <label for="title" class="form-control-label">Texto ao lado da mídia</label>
+                <textarea class="form-control" name="text" id="text" style="max-width: 400px; resize: none" rows="5" data-validation="" data-validation-error-msg="Digite um texto"></textarea>
+            </div>
+
+            <div class="form-group">
                 <label for="media_type" class="form-control-label">Tipo de Mídia</label>
                 <select class="form-control" id="media_type" name="media_type" style="max-width: 400px;background-position-x: 95%;" data-validation="" data-validation-error-msg="Selecione o tipo da mídia">
                     <option value=""></option>

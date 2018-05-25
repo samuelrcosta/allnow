@@ -198,6 +198,8 @@ class Store extends Model{
      *
      * @param $email  string for the user email.
      * @param $name  string for the user name.
+     *
+     * @return mixed var
      */
     public function subscribeMailChimp($email, $name = ''){
         $memberID = md5(strtolower($email));
@@ -228,4 +230,27 @@ class Store extends Model{
         return $result;
     }
 
+    /**
+     * This function normalize badges name on advertisement list.
+     *
+     * @param   $adsData    array with advertisements
+     *
+     * @return array with badges name
+     */
+    public function normalizeBadgesName($adsData){
+        for($i = 0; $i < count($adsData); $i++){
+            $badges = array();
+            if($adsData[$i]['new'] == "1"){
+                $badges[] = array('class' =>'new', 'name' => "Novo");
+            }
+            if($adsData[$i]['bestseller'] == "1"){
+                $badges[] = array('class' =>'bestseller', 'name' => "Mais&nbsp;vendidos");
+            }
+            if($adsData[$i]['sale'] == "1"){
+                $badges[] = array('class' =>'sale', 'name' => "Promoção");
+            }
+            $adsData[$i]['badges'] = $badges;
+        }
+        return $adsData;
+    }
 }

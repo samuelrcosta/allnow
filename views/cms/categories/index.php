@@ -21,6 +21,7 @@
                 <thead>
                     <tr>
                         <th>Nome</th>
+                        <th>Área</th>
                         <th>Editar</th>
                         <th>Excluir</th>
                     </tr>
@@ -64,6 +65,7 @@
             $("#categories_result").append(
                 "<tr>" +
                     "<td>" + categoryList[id].name +"</td>" +
+                    "<td>" + categoryList[id].area_name +"</td>" +
                     "<td><a href='" + BASE_URL + "categoriesCMS/editCategory/" +  btoa(btoa(categoryList[id].id)) + "' class='btn btn-info'><i class='icon icon-pencil'></i></a></td>" +
                     "<td><button class='btn btn-danger' onclick=" + 'deleteCategory("' + btoa(btoa(categoryList[id].id)) + '")' + "><i class='icon icon-trash'></i></button></td>" +
                 "</tr>"
@@ -79,10 +81,11 @@
             $("#categories_result").html('');
             var word = $("#search").val().toLowerCase();
             for(var id in categoryList){
-                if(categoryList[id].name.toLowerCase().search(word) !== -1){
+                if(categoryList[id].name.toLowerCase().search(word) !== -1 || categoryList[id].area_name.toLowerCase().search(word) !== -1){
                     $("#categories_result").append(
                         "<tr>" +
                             "<td>" + categoryList[id].name +"</td>" +
+                            "<td>" + categoryList[id].area_name +"</td>" +
                             "<td><a href='" + BASE_URL + "categoriesCMS/editCategory/" +  btoa(btoa(categoryList[id].id)) + "' class='btn btn-info'><i class='icon icon-pencil'></i></a></td>" +
                             "<td><button class='btn btn-danger' onclick=" + 'deleteCategory("' + btoa(btoa(categoryList[id].id)) + '")' + "><i class='icon icon-trash'></i></button></td>" +
                         "</tr>"

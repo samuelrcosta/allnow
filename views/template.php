@@ -30,6 +30,7 @@
         <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/style_menu.css" type="text/css" />
         <!-- Global site tag (gtag.js) - Google Analytics -->
         <script async src="https://www.googletagmanager.com/gtag/js?id=UA-116306177-1"></script>
+        <script type='text/javascript' src='//platform-api.sharethis.com/js/sharethis.js#property=5b075ecacbc3900011ee29ff&product=inline-share-buttons' async='async'></script>
         <script>
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
@@ -52,21 +53,43 @@
                             <div>
                                 <div id='cssmenu'>
                                     <ul>
-                                        <li <?php if(isset($viewData['menuOptions']['url']) && $viewData['menuOptions']['url'] == 'home') echo "class='active'" ?> ><a href='<?php echo BASE_URL; ?>'>Home</a></li>
+                                        <li class="<?= ($viewData['menuUrlActive'] == 'home') ? 'active' : '' ?>" >
+                                            <a href='<?php echo BASE_URL; ?>'>Home</a>
+                                        </li>
                                         <?php foreach ($viewData['categoryMenuData'] as $category): ?>
-                                            <?php if(empty($category['subs'])): ?>
-                                                <li <?php if(isset($viewData['menuOptions']['url']) && $viewData['menuOptions']['url'] == $category['slug']) echo "class='active'" ?> ><a href='<?php echo BASE_URL."categories/open/".$category['slug']; ?>'><?php echo $category['name'] ?></a></li>
+                                        <?php if(empty($category['subs'])): ?>
+                                        <li class="<?= ($viewData['menuUrlActive'] == $category['id']) ? 'active' : '' ?>">
+                                            <a href='<?php echo BASE_URL."areas/open/".$category['slug']; ?>'><?php echo $category['name'] ?></a>
+                                        </li>
+                                        <?php else: ?>
+                                        <li class='has-sub <?= ($viewData['menuUrlActive'] == $category['id']) ? 'active' : '' ?>'>
+                                            <a class="link-has-sub" href='<?php echo BASE_URL."areas/open/".$category['slug']; ?>'><?php echo $category['name'] ?></a>
+                                            <ul>
+                                            <?php foreach ($category['subs'] as $sub): ?>
+                                            <?php if(empty($sub['subs'])): ?>
+                                            <li>
+                                                <a href='<?php echo BASE_URL."categories/open/".$sub['slug']; ?>'><?php echo $sub['name'] ?></a>
+                                            </li>
                                             <?php else: ?>
-                                                <li class='has-sub <?php if(isset($viewData['menuOptions']['url']) && $viewData['menuOptions']['url'] == $category['slug']) echo "active" ?>'>
-                                                    <a class="link-has-sub" href='<?php echo BASE_URL."categories/open/".$category['slug']; ?>'><?php echo $category['name'] ?></a>
-                                                    <ul>
-                                                        <?php foreach ($category['subs'] as $sub): ?>
-                                                            <li><a href='<?php echo BASE_URL."categories/open/".$sub['slug']; ?>'><?php echo $sub['name'] ?></a></li>
-                                                        <?php endforeach; ?>
-                                                    </ul>
+                                            <li class='has-sub'>
+                                                <a class="link-has-sub" href='<?php echo BASE_URL."categories/open/".$sub['slug']; ?>'><?php echo $sub['name'] ?></a>
+                                                <ul>
+                                                <?php foreach ($sub['subs'] as $catSub): ?>
+                                                <li>
+                                                    <a href='<?php echo BASE_URL."categories/open/".$catSub['slug']; ?>'><?php echo $catSub['name'] ?></a>
                                                 </li>
+                                                <?php endforeach; ?>
+                                                </ul>
+                                            </li>
                                             <?php endif; ?>
+                                            <?php endforeach; ?>
+                                            </ul>
+                                        </li>
+                                        <?php endif; ?>
                                         <?php endforeach; ?>
+                                        <li class="<?= ($viewData['menuUrlActive'] == 'sobre') ? 'active' : '' ?>">
+                                            <a href="<?= BASE_URL ?>info/about">Sobre</a>
+                                        </li>
                                     </ul>
                                 </div>
                             </div>
@@ -90,6 +113,9 @@
 		<section class="site-container">
             <?php $this->loadViewInTemplate($viewName, $viewData); ?>
 	    </section>
+        <div class="share-area">
+            <div class="sharethis-inline-share-buttons"></div>
+        </div>
 	    <footer>
 	    	<div class="subarea">
 	    		<div class="container">

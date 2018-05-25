@@ -9,11 +9,20 @@
 
 class infoController extends Controller{
 
+    // Models instances
+    private $a;
+    private $c;
+    private $s;
+
     /**
      * Class constructor
      */
     public function __construct() {
         parent::__construct();
+        // Initialize instances
+        $this->a = new Areas();
+        $this->c = new Contacts();
+        $this->s = new Store();
     }
 
     /**
@@ -28,11 +37,11 @@ class infoController extends Controller{
      * This function shows the corporation informations
      */
     public function about(){
-        $c = new Categories();
         $data = array();
 
         $data['title'] = 'Optium - Sobre a empresa';
-        $data['categoryMenuData'] = $c->getActiveList();
+        $data['menuUrlActive'] = 'sobre';
+        $data['categoryMenuData'] = $this->a->getCompleteList();
         $this->loadTemplate('info/about', $data);
     }
 
@@ -40,11 +49,10 @@ class infoController extends Controller{
      * This function shows the contact page
      */
     public function contact(){
-        $c = new Categories();
         $data = array();
 
         $data['title'] = 'Optium - Contato';
-        $data['categoryMenuData'] = $c->getActiveList();
+        $data['categoryMenuData'] = $this->a->getCompleteList();
         $this->loadTemplate('info/contact', $data);
     }
 
@@ -53,13 +61,11 @@ class infoController extends Controller{
      */
     public function saveContact(){
         if(!empty($_POST)){
-            $s = new Store();
-            $c = new Contacts();
             // Array for check the keys
             $keys = array('name', 'email', 'phone', 'subject', 'message');
-            if($s->array_keys_check($keys, $_POST)){
+            if($this->s->array_keys_check($keys, $_POST)){
                 // Check if the array is completed
-                if($s->array_check_completed_keys($keys, $_POST)){
+                if($this->s->array_check_completed_keys($keys, $_POST)){
                     $name = addslashes($_POST['name']);
                     $email = addslashes($_POST['email']);
                     $phone = addslashes($_POST['phone']);
@@ -76,7 +82,7 @@ class infoController extends Controller{
                     $template = file_get_contents(BASE_URL."assets/templates/mail_template.htm");
                     $msg = str_replace("#EMAIL_TEXT#", $mail_text, $template);
                     $recipient = array("name" => $this->MailName, "email" => $this->MailUsername);
-                    $s->sendMail(array($recipient), $mail_subject, $msg);
+                    $this->s->sendMail(array($recipient), $mail_subject, $msg);
                     // Sends E-mail to user
                     $mail_subject = "Optium - Recebemos sua mensagem de contato";
                     $mail_text = "<p><b>Olá ".$name."!</b></p>";
@@ -84,9 +90,9 @@ class infoController extends Controller{
                     $mail_text .= "Responderemos o mais rápido possível.<br></p>";
                     $msg = str_replace("#EMAIL_TEXT#", $mail_text, $template);
                     $recipient = array("name" => $name, "email" => $email);
-                    $s->sendMail(array($recipient), $mail_subject, $msg);
+                    $this->s->sendMail(array($recipient), $mail_subject, $msg);
                     // Save in database
-                    $c->register($name, $email, $phone, $subject, $message);
+                    $this->c->register($name, $email, $phone, $subject, $message);
                     // Returns true
                     echo json_encode(true);
                 }else{
@@ -104,11 +110,10 @@ class infoController extends Controller{
      * This function shows the terms of use page
      */
     public function TermsOfUse(){
-        $c = new Categories();
         $data = array();
 
         $data['title'] = 'Optium - Termos de Uso';
-        $data['categoryMenuData'] = $c->getActiveList();
+        $data['categoryMenuData'] = $this->a->getCompleteList();
         $this->loadTemplate('info/termsOfUse', $data);
     }
 
@@ -116,11 +121,10 @@ class infoController extends Controller{
      * This function shows the privacy policy page
      */
     public function PrivacyPolicy(){
-        $c = new Categories();
         $data = array();
 
         $data['title'] = 'Optium - Política de Privacidade';
-        $data['categoryMenuData'] = $c->getActiveList();
+        $data['categoryMenuData'] = $this->a->getCompleteList();
         $this->loadTemplate('info/PrivacyPolicy', $data);
     }
 

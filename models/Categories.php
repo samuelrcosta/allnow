@@ -3,227 +3,137 @@
  * This class retrieves and saves data of the categories.
  *
  * @author  samuelrcosta
- * @version 1.0.1, 01/16/2017
+ * @version 1.2.1, 05/24/2018
  * @since   1.0.0, 01/15/2017
  */
 
 class Categories extends Model {
 
+    // Models instances
+    private $s;
+    private $a;
+
     /**
-     * This function takes all data from the categories database and rearranges each category with its subcategories.
-     *
-     * @return  array containing all returned and rearranges data.
+     * Class constructor
      */
-    public function getList(){
+    public function __construct(){
+        parent::__construct();
+        // Initialize instances
+        $this->s = new Store();
+        $this->a = new Advertisements();
+    }
+
+    /**
+     * This return all principal categories
+     *
+     * @return  array containing all data.
+     */
+    public function getPrincipals(){
         $array = array();
-
-        $sql = "SELECT * FROM categories ORDER BY id_principal DESC";
-        $sql = $this->db->query($sql);
-
-        if($sql->rowCount() > 0){
-            foreach ($sql->fetchAll() as $item){
-                $item['subs'] = array();
-                $array[$item['id']] = $item;
-            }
-
-            while($this->stillNeed($array)){
-                $this->organizeCategory($array);
-            }
+        $sql = "SELECT cats.*, (SELECT name FROM areas WHERE id = cats.id_area) as area_name FROM categories cats WHERE cats.id_principal is null ORDER BY cats.name ASC";
+        $sql = $this->db->prepare($sql);
+        $sql->execute(array());
+        $categories = $sql->fetchAll();
+        if($categories && count($categories)){
+            $array = $categories;
         }
-
         return $array;
     }
 
     /**
-     * This function takes all data from the categories where is visible for user
-     * (for_user = 1) and rearranges each category with its subcategories.
+     * This return all subcategories
      *
-     * @return  array containing all returned and rearranges data.
+     * @return  array containing all data.
      */
-    public function getUserList(){
+    public function getSubcategoriesList(){
         $array = array();
-
-        $sql = "SELECT * FROM categories WHERE for_user = 1 ORDER BY id_principal DESC";
-        $sql = $this->db->query($sql);
-
-        if($sql->rowCount() > 0){
-            foreach ($sql->fetchAll() as $item){
-                $item['subs'] = array();
-                $array[$item['id']] = $item;
-            }
-
-            while($this->stillNeed($array)){
-                $this->organizeCategory($array);
-            }
+        $sql = "SELECT cats.*, (SELECT name FROM categories WHERE id = cats.id_principal) as principal_name FROM categories cats WHERE id_principal is not null ORDER BY cats.name ASC";
+        $sql = $this->db->prepare($sql);
+        $sql->execute(array());
+        $categories = $sql->fetchAll();
+        if($categories && count($categories)){
+            $array = $categories;
         }
-
         return $array;
     }
 
     /**
-     * This function takes all data from the categories database
-     * if the category have ads and rearranges each category with its subcategories.
+     * This return all categories area list by area id.
      *
-     * @return  array containing all returned and rearranges data.
+     * @param   $id     int for the area id.
+     *
+     * @return  array containing all data.
      */
-    public function getActiveList(){
-        $a = new Advertisements();
+    public function getCategoriesByAreaId($id){
         $array = array();
-
-        $sql = "SELECT * FROM categories ORDER BY id_principal DESC";
-        $sql = $this->db->query($sql);
-
-        if($sql->rowCount() > 0){
-            foreach ($sql->fetchAll() as $item){
-                if(empty($item['id_principal'])){
-                    $ads = $a->getList(array('id_category' => $item['id']));
-                }else{
-                    $ads = $a->getList(array('id_subcategory' => $item['id']));
-                }
-
-                if(!empty($ads)){
-                    $item['count_ads'] = count($ads);
-                    $item['subs'] = array();
-                    $array[$item['id']] = $item;
-                }
+        $sql = "SELECT * FROM categories WHERE id_area = ? ORDER BY name ASC";
+        $sql = $this->db->prepare($sql);
+        $sql->execute(array($id));
+        $categories = $sql->fetchAll();
+        if($categories && count($categories)){
+            foreach ($categories as $key => $cats){
+                $categories[$key]['subs'] = self::getSubcategoriesByPrincipalId($cats['id']);
             }
-
-            while($this->stillNeed($array)){
-                $this->organizeCategory($array);
-            }
+            $array = $categories;
         }
-
         return $array;
     }
 
     /**
-     * This function takes all data from a category in database and rearranges with its subcategories.
+     * This return all subcategories list by principal category id.
+     *
+     * @param   $id     int for the principal category id.
+     *
+     * @return  array containing all returned and rearranges data.
+     */
+    public function getSubcategoriesByPrincipalId($id){
+        $array = array();
+        $sql = "SELECT * FROM categories WHERE id_principal = ? ORDER BY name ASC";
+        $sql = $this->db->prepare($sql);
+        $sql->execute(array($id));
+        $categories = $sql->fetchAll();
+        if($categories && count($categories)){
+            $array = $categories;
+        }
+        return $array;
+    }
+
+    /**
+     * This return category data by this id.
      *
      * @param   $id     int for the category id.
      *
-     * @return  array containing all returned data.
+     * @return  array containing all retrieved data.
      */
-    public function getCategoryTree($id){
+    public function getDataById($id){
         $array = array();
-
-        $haveChild = True;
-
-        while($haveChild){
-            $sql = 'SELECT * FROM categories WHERE id = :id';
-            $sql = $this->db->prepare($sql);
-            $sql->bindValue(':id', $id);
-            $sql->execute();
-            if($sql->rowCount() > 0){
-                $sql = $sql->fetch();
-                $array[] = $sql;
-
-                if(!empty($sql['id_principal'])){
-                    $id = $sql['id_principal'];
-                }else{
-                    $haveChild = False;
-                }
-            }
+        $sql = "SELECT * FROM categories WHERE id = ?";
+        $sql = $this->db->prepare($sql);
+        $sql->execute(array($id));
+        $category = $sql->fetch();
+        if($category && count($category)){
+            $array = $category;
         }
-
-        $array = array_reverse($array);
-
         return $array;
     }
 
     /**
-     * This function takes all data from a category in database and rearranges with its subcategories.
+     * This return category data by this slug.
      *
      * @param   $slug     string for the category slug.
      *
-     * @return  array containing all returned data.
+     * @return  array containing all retrieved data.
      */
-    public function getCategoryTreeBySlug($slug){
+    public function getDataBySlug($slug){
         $array = array();
-
-        $haveChild = True;
-
-        $sql = 'SELECT * FROM categories WHERE slug = :slug';
+        $sql = "SELECT * FROM categories WHERE slug = ?";
         $sql = $this->db->prepare($sql);
-        $sql->bindValue(':slug', $slug);
-        $sql->execute();
-        if($sql->rowCount() > 0){
-            $id = $sql->fetch()['id'];
-
-            while($haveChild){
-                $sql = 'SELECT * FROM categories WHERE id = :id';
-                $sql = $this->db->prepare($sql);
-                $sql->bindValue(':id', $id);
-                $sql->execute();
-                if($sql->rowCount() > 0){
-                    $sql = $sql->fetch();
-                    $array[] = $sql;
-
-                    if(!empty($sql['id_principal'])){
-                        $id = $sql['id_principal'];
-                    }else{
-                        $haveChild = False;
-                    }
-                }
-            }
-
-            $array = array_reverse($array);
-
+        $sql->execute(array($slug));
+        $category = $sql->fetch();
+        if($category && count($category)){
+            $array = $category;
         }
-
         return $array;
-    }
-
-    /**
-     * This function checks if there are still subcategories in the existing categories in the array.
-     *
-     * @param   $array  array with categories.
-     *
-     * @return  boolean true if needs or false if not.
-     */
-    private function stillNeed($array){
-        foreach ($array as $item){
-            if(!empty($item['id_principal'])){
-                return True;
-            }
-        }
-        return False;
-    }
-
-    /**
-     * This function organizes an array of categories, creating subarrays with subcategories.
-     *
-     * @param   $array  array with categories.
-     */
-    private function organizeCategory(&$array){
-        foreach ($array as $id => $item){
-            if(isset($array[$item['id_principal']])){
-                $array[$item['id_principal']]['subs'][$item['id']] = $item;
-                unset($array[$id]);
-                break;
-            }
-        }
-    }
-
-    /**
-     * This function takes the category name from database.
-     *
-     * @param   $id     int for the category id.
-     *
-     * @return  string with the category name.
-     */
-    public function getNameById($id){
-        $sql = "SELECT name FROM categories WHERE id = :id";
-        $sql = $this->db->prepare($sql);
-        $sql->bindValue(":id", $id);
-        $sql->execute();
-
-        if($sql->rowCount() > 0){
-            $data = $sql->fetch()['name'];
-        }else{
-            $data = '';
-        }
-
-        return $data;
     }
 
     /**
@@ -232,12 +142,12 @@ class Categories extends Model {
      *
      * @param   $name           string for the category name.
      * @param   $id_principal   int for the principal category if exists.
+     * @param   $id_area        int for the area if exists
      *
-     * @return  boolean     boolean false for email already registered, or instead True.
+     * @return  boolean     boolean false for category already registered, or instead True.
      */
-    public function register($name, $id_principal = Null){
-        $s = new Store();
-        $slug = $s->createSlug($name);
+    public function register($name, $id_principal = Null, $id_area = Null){
+        $slug = $this->s->createSlug($name);
         $sql = "SELECT * FROM categories WHERE slug = ?";
         $sql = $this->db->prepare($sql);
         $sql->execute(array($slug));
@@ -245,9 +155,9 @@ class Categories extends Model {
         if($sql && count($sql)){
             return false;
         }else{
-            $sql = "INSERT INTO categories (name, id_principal, slug) VALUES (?, ?, ?)";
+            $sql = "INSERT INTO categories (name, id_principal, slug, id_area) VALUES (?, ?, ?, ?)";
             $sql = $this->db->prepare($sql);
-            $sql->execute(array($name, $id_principal, $slug));
+            $sql->execute(array($name, $id_principal, $slug, $id_area));
             return true;
         }
     }
@@ -258,12 +168,12 @@ class Categories extends Model {
      *
      * @param   $name           string for the category name.
      * @param   $id_principal   int for the principal category if exists.
+     * @param   $id_area        int for the area if exists
      *
-     * @return  boolean     boolean false for email already registered, or instead True.
+     * @return  boolean     boolean false for category already registered, or instead True.
      */
-    public function edit($id, $name, $id_principal = Null){
-        $s = new Store();
-        $slug = $s->createSlug($name);
+    public function edit($id, $name, $id_principal = Null, $id_area = Null){
+        $slug = $this->s->createSlug($name);
         $sql = "SELECT * FROM categories WHERE slug = ? AND id != ?";
         $sql = $this->db->prepare($sql);
         $sql->execute(array($slug, $id));
@@ -271,9 +181,9 @@ class Categories extends Model {
         if($sql && count($sql)){
             return false;
         }else{
-            $sql = "UPDATE categories SET name = ?, id_principal = ?, slug = ? WHERE id = ?";
+            $sql = "UPDATE categories SET name = ?, id_principal = ?, slug = ?, id_area = ? WHERE id = ?";
             $sql = $this->db->prepare($sql);
-            $sql->execute(array($name, $id_principal, $slug, $id));
+            $sql->execute(array($name, $id_principal, $slug, $id_area, $id));
             return true;
         }
     }
@@ -282,23 +192,38 @@ class Categories extends Model {
      * This function delete a category and all its subcategories.
      *
      * @param   $id       int for the category id.
-     * @param   $type     string for the type, id_category or id_subcategory.
      */
-    public function delete($id, $type){
-        // Delete Ads
-        $a = new Advertisements();
-        $list = $a->getList(array($type => $id));
-        foreach ($list as $ad){
-            $a->delete($ad['id']);
+    public function delete($id){
+        // Get data
+        $cData = self::getDataById($id);
+        // Checks if its a principal category
+        if(empty($cData['id_principal'])){
+            $type = "id_category";
+            // Delete ads
+            $ads = $this->a->getAdsByCategoryId($id, $type);
+            foreach ($ads as $ad){
+                $this->a->delete($ad['id']);
+            }
+            // Delete subcategories
+            $sql = "DELETE FROM categories WHERE id_principal = ?";
+            $sql = $this->db->prepare($sql);
+            $sql->execute(array($id));
+            // Delete
+            $sql = "DELETE FROM categories WHERE id = ?";
+            $sql = $this->db->prepare($sql);
+            $sql->execute(array($id));
+        }else{
+            $type = "id_subcategory";
+            // Delete ads
+            $ads = $this->a->getAdsByCategoryId($id, $type);
+            foreach ($ads as $ad){
+                $this->a->delete($ad['id']);
+            }
+            // Delete
+            $sql = "DELETE FROM categories WHERE id = ?";
+            $sql = $this->db->prepare($sql);
+            $sql->execute(array($id));
         }
-        $sql = "DELETE FROM categories WHERE id = ?";
-        $sql = $this->db->prepare($sql);
-        $sql->execute(array($id));
-
-        //Delete subs
-        $sql = "DELETE FROM categories WHERE id_principal = ?";
-        $sql = $this->db->prepare($sql);
-        $sql->execute(array($id));
     }
 
 }

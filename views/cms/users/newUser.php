@@ -51,6 +51,9 @@
                         <label><input type="checkbox" name="menuContacts" id="menuContacts" value="True">&nbsp;Contatos</label>
                     </div>
                     <div class="checkbox">
+                        <label><input type="checkbox" name="menuAreas" id="menuAreas" value="True">&nbsp;Áreas</label>
+                    </div>
+                    <div class="checkbox">
                         <label><input type="checkbox" name="menuCategories" id="menuCategories" value="True">&nbsp;Categorias</label>
                     </div>
                     <div class="checkbox">

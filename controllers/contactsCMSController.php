@@ -9,26 +9,33 @@
 
 class contactsCMSController extends Controller{
 
+    // Models instances
+    private $u;
+    private $c;
+    private $s;
+
     /**
      * Class constructor
      */
     public function __construct(){
         parent::__construct();
+        // Initialize instances
+        $this->u = new Administrators();
+        $this->c = new Contacts();
+        $this->s = new Store();
     }
 
     /**
      * This function shows the Contacts List page.
      */
     public function index(){
-        $u = new Administrators();
-        $c = new Contacts();
         $data = array();
 
-        if($u->isLogged() && $u->havePermission('contacts')){
+        if($this->u->isLogged() && $this->u->havePermission('contacts')){
             $data['title'] = 'ADM - Contatos';
             $data['link'] = 'contactsCMS/index';
-            $data['userData'] = $u->getData(1, $_SESSION['adminLogin']);
-            $data['contactsData'] = $c->getList();
+            $data['userData'] = $this->u->getData(1, $_SESSION['adminLogin']);
+            $data['contactsData'] = $this->c->getList();
 
             $this->loadTemplateCMS('cms/contacts/index', $data);
         }else{
@@ -41,16 +48,14 @@ class contactsCMSController extends Controller{
      * This function shows the contact details page.
      */
     public function viewContact($id){
-        $u = new Administrators();
-        $c = new Contacts();
         $data = array();
 
-        if($u->isLogged() && $u->havePermission('contacts')){
+        if($this->u->isLogged() && $this->u->havePermission('contacts')){
             $id = addslashes(base64_decode(base64_decode($id)));
             $data['title'] = 'ADM - Visualizar Contato';
             $data['link'] = 'contactsCMS/index';
-            $data['userData'] = $u->getData(1, $_SESSION['adminLogin']);
-            $data['contactData'] = $c->getDataById($id);
+            $data['userData'] = $this->u->getData(1, $_SESSION['adminLogin']);
+            $data['contactData'] = $this->c->getDataById($id);
             if(!empty($data['contactData'])){
                 $this->loadTemplateCMS('cms/contacts/viewContact', $data);
             }else{
@@ -68,21 +73,18 @@ class contactsCMSController extends Controller{
      * This function edit the contact status by POST request.
      */
     public function editStatus(){
-        $u = new Administrators();
-        if($u->isLogged() && $u->havePermission('contacts')){
+        if($this->u->isLogged() && $this->u->havePermission('contacts')){
             if(!empty($_POST)){
-                $s = new Store();
-                $c = new Contacts();
                 // Array for check the keys
                 $keys = array('id', 'status');
-                if($s->array_keys_check($keys, $_POST)){
+                if($this->s->array_keys_check($keys, $_POST)){
                     // Check if the array is completed
-                    if($s->array_check_completed_keys($keys, $_POST)){
+                    if($this->s->array_check_completed_keys($keys, $_POST)){
                         $id = addslashes($_POST['id']);
                         $status = addslashes($_POST['status']);
                         // Check if status its a true value
                         if($status == "1" || $status == "2"){
-                            if($c->setStatus($id, $status)){
+                            if($this->c->setStatus($id, $status)){
                                 // Returns true
                                 echo json_encode(true);
                             }else{
@@ -105,31 +107,28 @@ class contactsCMSController extends Controller{
      * This function sends a email to contact
      */
     public function sendAnswer(){
-        $u = new Administrators();
-        if($u->isLogged() && $u->havePermission('contacts')){
+        if($this->u->isLogged() && $this->u->havePermission('contacts')){
             if(!empty($_POST)){
-                $s = new Store();
-                $c = new Contacts();
                 // Array for check the keys
                 $keys = array('id', 'subject', 'message');
-                if($s->array_keys_check($keys, $_POST)){
+                if($this->s->array_keys_check($keys, $_POST)){
                     // Check if the array is completed
-                    if($s->array_check_completed_keys($keys, $_POST)){
+                    if($this->s->array_check_completed_keys($keys, $_POST)){
                         $id = addslashes($_POST['id']);
                         $subject = addslashes($_POST['subject']);
                         $message = addslashes($_POST['message']);
                         // get contact data
-                        $contactData = $c->getDataById($id);
+                        $contactData = $this->c->getDataById($id);
                         if(!empty($contactData)){
                             // Change status if its equals 1
                             if($contactData['status'] == "1"){
-                                $c->setStatus($id, "2");
+                                $this->c->setStatus($id, "2");
                             }
                             // Sends the message
                             $template = file_get_contents(BASE_URL."assets/templates/mail_template.htm");
                             $msg = str_replace("#EMAIL_TEXT#", $message, $template);
                             $recipient = array("name" => $contactData['name'], "email" => $contactData['email']);
-                            if($s->sendMail(array($recipient), $subject, $msg)){
+                            if($this->s->sendMail(array($recipient), $subject, $msg)){
                                 echo json_encode(true);
                             }else{
                                 echo json_encode("Erro no envio do e-mail.");
@@ -152,13 +151,10 @@ class contactsCMSController extends Controller{
      * execute delete function and headers to index page (contactsCMS/index)
      */
     public function delete($id){
-        $u = new Administrators();
-        $c = new Contacts();
-
-        if($u->isLogged() && $u->havePermission('contacts')){
+        if($this->u->isLogged() && $this->u->havePermission('contacts')){
             $id = addslashes(base64_decode(base64_decode($id)));
             // try to delete
-            if($c->delete($id)){
+            if($this->c->delete($id)){
                 $msg = urlencode('Contato excluído com sucesso!');
                 header("Location: ".BASE_URL."contactsCMS?notification=".$msg."&status=alert-info");
                 exit;

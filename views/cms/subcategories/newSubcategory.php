@@ -15,7 +15,7 @@
                 <select class="form-control" name="id_principal" id="id_principal" data-validation="required" data-validation-error-msg="Selecione uma categoria principal" style="max-width: 400px">
                     <option></option>
                     <?php foreach ($categoryData as $category): ?>
-                        <option <?php echo (isset($id_principal) && $id_principal == $category['id'])?'selected="selected"':''; ?> value="<?php echo $category['id'] ?>" data-presential="<?php echo $category['presential'] ?>" data-for_user="<?php echo $category['for_user'] ?>"><?php echo $category['name'] ?></option>
+                        <option <?php echo (isset($id_principal) && $id_principal == $category['id'])?'selected="selected"':''; ?> value="<?php echo $category['id'] ?>"><?php echo $category['name'] ?></option>
                     <?php endforeach; ?>
                 </select>
             </div>

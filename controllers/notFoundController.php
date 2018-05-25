@@ -8,11 +8,16 @@
  */
 class notFoundController extends Controller {
 
+    // Models instances
+    private $a;
+
     /**
      * Class constructor
      */
     public function __construct() {
         parent::__construct();
+        // Initialize instances
+        $this->a = new Areas();
     }
 
     /**
@@ -20,10 +25,9 @@ class notFoundController extends Controller {
      */
     public function index() {
         $data = array();
-        $c = new Categories();
 
         $data['title'] = 'Página não encontrada';
-        $data['categoryMenuData'] = $c->getActiveList();
+        $data['categoryMenuData'] = $this->a->getCompleteList();
 
         $this->loadTemplate('notFound/404', $data);
     }

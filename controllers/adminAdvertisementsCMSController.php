@@ -3,16 +3,29 @@
  * This class is the Controller of the Admin Advertisement panel.
  *
  * @author  samuelrcosta
- * @version 1.0.1, 01/17/2017
+ * @version 1.2.1, 05/24/2018
  * @since   1.0, 01/15/2017
  */
 
 class adminAdvertisementsCMSController extends Controller{
 
+    // Models instances
+    private $u;
+    private $c;
+    private $a;
+    private $s;
+    private $medias_ads;
+
     /**
      * Class constructor
      */
     public function __construct(){
+        // Initialize instances
+        $this->u = new Administrators();
+        $this->c = new Categories();
+        $this->a = new Advertisements();
+        $this->s = new Store();
+        $this->medias_ads = new Medias_ads();
         parent::__construct();
     }
 
@@ -21,15 +34,13 @@ class adminAdvertisementsCMSController extends Controller{
      * Shows a List of Advertisements of Admin User
      */
     public function index(){
-        $u = new Administrators();
-        $a = new Advertisements();
         $data = array();
 
-        if($u->isLogged() && $u->havePermission('ads')){
+        if($this->u->isLogged() && $this->u->havePermission('ads')){
             $data['title'] = 'ADM - Meus Anúncios';
             $data['link'] = 'adminAdvertisementsCMS/index';
-            $data['userData'] = $u->getData(1, $_SESSION['adminLogin']);
-            $data['advertisementsData'] = $a->getAdminAds();
+            $data['userData'] = $this->u->getData(1, $_SESSION['adminLogin']);
+            $data['advertisementsData'] = $this->a->getAdminAds();
 
             $this->loadTemplateCMS('cms/adminAdvertisements/index', $data);
         }else{
@@ -42,15 +53,13 @@ class adminAdvertisementsCMSController extends Controller{
      * This function shows the Admin Advertisement register page.
      */
     public function newAdvertisementPage(){
-        $u = new Administrators();
-        $c = new Categories();
         $data = array();
 
-        if($u->isLogged() && $u->havePermission('ads')){
+        if($this->u->isLogged() && $this->u->havePermission('ads')){
             $data['title'] = 'ADM - Cadastrar Anúncio';
             $data['link'] = 'adminAdvertisementsCMS/index';
-            $data['userData'] = $u->getData(1, $_SESSION['adminLogin']);
-            $data['categoryData'] = $c->getList();
+            $data['userData'] = $this->u->getData(1, $_SESSION['adminLogin']);
+            $data['categoryData'] = $this->c->getPrincipals();
 
             $this->loadTemplateCMS('cms/adminAdvertisements/new', $data);
         }else{
@@ -63,17 +72,13 @@ class adminAdvertisementsCMSController extends Controller{
      * This function receive POST data to save a new Advertisement.
      */
     public function saveNewAdvertisement(){
-        $a = new Advertisements();
-        $u = new Administrators();
-        $medias_ads = new Medias_ads();
-        $s = new Store();
         // Check if user is logged
-        if($u->isLogged() && $u->havePermission('ads')) {
+        if($this->u->isLogged() && $this->u->havePermission('ads')) {
             // Array for check the keys
             $keys = array('title', 'id_category', 'id_subcategory', 'abstract', 'description', 'rating', 'highlight', 'new', 'bestseller', 'sale', 'medias');
-            if ($s->array_keys_check($keys, $_POST)) {
+            if ($this->s->array_keys_check($keys, $_POST)) {
                 // Check if the array is completed
-                if ($s->array_check_completed_keys($keys, $_POST)) {
+                if ($this->s->array_check_completed_keys($keys, $_POST)) {
                     $title = addslashes($_POST['title']);
                     $id_category = intval($_POST['id_category']);
                     $id_subcategory = intval($_POST['id_subcategory']);
@@ -91,11 +96,11 @@ class adminAdvertisementsCMSController extends Controller{
                     $check = false;
                     if (count($medias) > 0) {
                         for ($i = 0; $i < count($medias); $i++) {
-                            if ($s->array_keys_check($keys, $medias[$i])) {
-                                if ($s->array_check_completed_keys($keys, $medias[$i])) {
+                            if ($this->s->array_keys_check($keys, $medias[$i])) {
+                                if ($this->s->array_check_completed_keys($keys, $medias[$i])) {
                                     $check = true;
                                     if ($medias[$i]['media_type'] == 1) {
-                                        $youtubeID= $s->getYoutubeId($medias[$i]['media_link']);
+                                        $youtubeID= $this->s->getYoutubeId($medias[$i]['media_link']);
                                         if (!empty($youtubeID)) {
                                             $medias[$i]['media'] = $youtubeID;
                                         } else {
@@ -108,11 +113,11 @@ class adminAdvertisementsCMSController extends Controller{
                                         $video_url = $medias[$i]['media_link'];
                                         // Create the URLs
                                         $xml_url = $oembed_endpoint . '.xml?url=' . rawurlencode($video_url);
-                                        if($s->curl_get($xml_url) == '404 Not Found') {
+                                        if($this->s->curl_get($xml_url) == '404 Not Found') {
                                             echo "Link do Vimeo inválido.";
                                             exit;
                                         } else {
-                                            $oembed = simplexml_load_string($s->curl_get($xml_url));
+                                            $oembed = simplexml_load_string($this->s->curl_get($xml_url));
                                             $medias[$i]['media'] = $oembed->video_id;
                                         }
                                     } elseif ($medias[$i]['media_type'] == 3) {
@@ -132,10 +137,10 @@ class adminAdvertisementsCMSController extends Controller{
                         }
                         if ($check == true) {
                             // First: Save the Ad
-                            $idAdvertisement = $a->register($id_category, $id_subcategory, $title, $abstract, $description, 1, $rating, $highlight, $new, $bestseller, $sale);
+                            $idAdvertisement = $this->a->register($id_category, $id_subcategory, $title, $abstract, $description, 1, $rating, $highlight, $new, $bestseller, $sale);
                             if ($idAdvertisement != false) {
                                 for ($i = 0; $i < count($medias); $i++) {
-                                    $medias_ads->register($idAdvertisement, $medias[$i]['media'], $medias[$i]['media_type'], $medias[$i]['media_link']);
+                                    $this->medias_ads->register($idAdvertisement, $medias[$i]['media'], $medias[$i]['media_type'], $medias[$i]['media_link']);
                                 }
                                 // Returns true
                                 echo 'true';
@@ -165,19 +170,17 @@ class adminAdvertisementsCMSController extends Controller{
      * This function shows the Admin Advertisement edit page.
      */
     public function editAdvertisementPage($id){
-        $u = new Administrators();
-        $c = new Categories();
         $data = array();
         // Checks if user is logged in
-        if($u->isLogged() && $u->havePermission('ads')){
+        if($this->u->isLogged() && $this->u->havePermission('ads')){
             $data['title'] = 'ADM - Editar Anúncio';
             $data['link'] = 'adminAdvertisementsCMS/index';
             // Get user data
-            $data['userData'] = $u->getData(1, $_SESSION['adminLogin']);
+            $data['userData'] = $this->u->getData(1, $_SESSION['adminLogin']);
             // Sends the Received ID
             $data['advertisementId'] = $id;
             // Get Categories
-            $data['categoryData'] = $c->getList();
+            $data['categoryData'] = $this->c->getPrincipals();
             $this->loadTemplateCMS('cms/adminAdvertisements/edit', $data);
         }else{
             header("Location: ".BASE_URL);

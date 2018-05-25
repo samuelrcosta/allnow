@@ -3,13 +3,26 @@
  * This class retrieves and saves data of the users advertisements.
  *
  * @author  samuelrcosta
- * @version 1.2.0, 05/02/2018
+ * @version 1.3.0, 05/24/2018
  * @since   1.0, 01/11/2017
  */
 
 
 class Advertisements extends Model{
 
+    // Models instances
+    private $medias_ads;
+    private $s;
+
+    /**
+     * Class constructor
+     */
+    public function __construct(){
+        parent::__construct();
+        // Initialize instances
+        $this->medias_ads = new Medias_ads();
+        $this->s = new Store();
+    }
 
     /**
      * This function get the Admin advertisements from database.
@@ -17,47 +30,13 @@ class Advertisements extends Model{
      * @return  array with the retrieved data.
      */
     public function getAdminAds(){
-        //$c = new Categories();
-        $m = new Medias_ads();
-
         $sql = 'SELECT advertisements.*, (SELECT name FROM categories WHERE advertisements.id_category = id) as category_name,
 (SELECT name FROM categories WHERE advertisements.id_subcategory = id) as subcategory_name FROM advertisements WHERE status = 1';
         $sql = $this->db->query($sql);
         $array = $sql->fetchAll();
 
         foreach ($array as &$ad){
-            //$ad['category_name'] = $c->getNameById($ad['id_category']);
-            //$ad['subcategory_name'] =  $c->getNameById($ad['id_subcategory']);
-            $ad['medias'] = $m->getMedias($ad['id']);
-        }
-
-        return $array;
-    }
-
-    public function getList($categories = array(), $filters = array()){
-        //$c = new Categories();
-        $m = new Medias_ads();
-        $array = array();
-
-        $where = 'WHERE status = 1';
-
-        if(isset($categories['id_subcategory'])){
-            $where = 'WHERE id_subcategory = '.$categories['id_subcategory'].' AND status = 1';
-        }
-        if(isset($categories['id_category'])){
-            $where = 'WHERE id_category = '.$categories['id_category'].' AND status = 1';
-        }
-
-        $sql = 'SELECT advertisements.*, advertisements.id as id_ad, (SELECT name FROM categories WHERE advertisements.id_category = id) as category_name, (SELECT name FROM categories WHERE advertisements.id_subcategory = id) as subcategory_name FROM advertisements '.$where;
-        $sql = $this->db->query($sql);
-
-        if($sql->rowCount() > 0){
-            $array = $sql->fetchAll();
-            foreach ($array as $key => $item){
-                //$array[$key]['category_name'] = $c->getNameById($item['id_category']);
-                //$array[$key]['subcategory_name'] = $c->getNameById($item['id_subcategory']);
-                $array[$key]['medias'] = $m->getMedias($item['id']);
-            }
+            $ad['medias'] = $this->medias_ads->getMedias($ad['id']);
         }
 
         return $array;
@@ -69,16 +48,14 @@ class Advertisements extends Model{
      * @return  array with the retrieved data.
      */
     public function getHighlightsAds(){
-        $m = new Medias_ads();
         $sql = 'SELECT advertisements.*, (SELECT name FROM categories WHERE advertisements.id_category = id) as category_name,
 (SELECT name FROM categories WHERE advertisements.id_subcategory = id) as subcategory_name
 FROM advertisements WHERE highlight = 1 AND status = 1';
         $sql = $this->db->query($sql);
         $array = $sql->fetchAll();
+
         foreach ($array as &$ad){
-            //$ad['category_name'] = $c->getNameById($ad['id_category']);
-            //$ad['subcategory_name'] =  $c->getNameById($ad['id_subcategory']);
-            $ad['medias'] = $m->getMedias($ad['id']);
+            $ad['medias'] = $this->medias_ads->getMedias($ad['id']);
         }
         return $array;
     }
@@ -86,24 +63,73 @@ FROM advertisements WHERE highlight = 1 AND status = 1';
     /**
      * This function search a advertisement in database by word.
      *
-     * @param   $word   string for the search worrd
+     * @param   $word   string for the search word
      * @return  array with the retrieved data.
      */
     public function getSearchAds($word){
-        $m = new Medias_ads();
         $array = array();
         $sql = "SELECT advertisements.*, (SELECT name FROM categories WHERE advertisements.id_category = id) as category_name,
 (SELECT name FROM categories WHERE advertisements.id_subcategory = id) as subcategory_name
 FROM advertisements WHERE (title LIKE '%".$word."%' OR abstract LIKE '%".$word."%') AND status = 1";
         $sql = $this->db->prepare($sql);
-        //$sql->execute(array($word, $word));
         $sql->execute(array());
+
         if($sql->rowCount() > 0) {
             $array = $sql->fetchAll();
             foreach ($array as &$ad) {
-                //$ad['category_name'] = $c->getNameById($ad['id_category']);
-                //$ad['subcategory_name'] =  $c->getNameById($ad['id_subcategory']);
-                $ad['medias'] = $m->getMedias($ad['id']);
+                $ad['medias'] = $this->medias_ads->getMedias($ad['id']);
+            }
+        }
+        return $array;
+    }
+
+    /**
+     * This function returns all advertisements in a area.
+     *
+     * @param   $id   int for the area id
+     *
+     * @return  array with the retrieved data.
+     */
+    public function getAdsByAreaId($id){
+        $array = array();
+
+        $sql = "SELECT advertisements.*, advertisements.id as id_ad, (SELECT name FROM categories WHERE advertisements.id_category = id) as category_name, (SELECT name FROM categories WHERE advertisements.id_subcategory = id) as subcategory_name FROM advertisements WHERE advertisements.id_category IN(SELECT id FROM categories WHERE id_area = ?)";
+        $sql = $this->db->prepare($sql);
+        $sql->execute(array($id));
+
+        if($sql->rowCount() > 0){
+            $array = $sql->fetchAll();
+            foreach ($array as $key => $item){
+                $array[$key]['medias'] = $this->medias_ads->getMedias($item['id']);
+            }
+        }
+        return $array;
+    }
+
+    /**
+     * This function returns all advertisements in a category or subcategory.
+     *
+     * @param   $id     int for the category id
+     * @param   $type   string for the category type (id_category, id_subcategory)
+     *
+     * @return  array with the retrieved data.
+     */
+    public function getAdsByCategoryId($id, $type){
+        $array = array();
+
+        if($type == 'id_category'){
+            $sql = "SELECT advertisements.*, advertisements.id as id_ad, (SELECT name FROM categories WHERE advertisements.id_category = id) as category_name, (SELECT name FROM categories WHERE advertisements.id_subcategory = id) as subcategory_name FROM advertisements WHERE advertisements.id_category IN(SELECT id FROM categories WHERE id_category = ?)";
+        }else{
+            $sql = "SELECT advertisements.*, advertisements.id as id_ad, (SELECT name FROM categories WHERE advertisements.id_category = id) as category_name, (SELECT name FROM categories WHERE advertisements.id_subcategory = id) as subcategory_name FROM advertisements WHERE advertisements.id_category IN(SELECT id FROM categories WHERE id_subcategory = ?)";
+        }
+
+        $sql = $this->db->prepare($sql);
+        $sql->execute(array($id));
+
+        if($sql->rowCount() > 0){
+            $array = $sql->fetchAll();
+            foreach ($array as $key => $item){
+                $array[$key]['medias'] = $this->medias_ads->getMedias($item['id']);
             }
         }
         return $array;
@@ -117,8 +143,6 @@ FROM advertisements WHERE (title LIKE '%".$word."%' OR abstract LIKE '%".$word."
      * @return  array with the retrieved data.
      */
     public function getDataById($id){
-        //$c = new Categories();
-        $m = new Medias_ads();
         $array = array();
 
         $sql = 'SELECT advertisements.*, (SELECT name FROM categories WHERE advertisements.id_category = id) as name_category,
@@ -127,9 +151,7 @@ FROM advertisements WHERE (title LIKE '%".$word."%' OR abstract LIKE '%".$word."
         $sql->execute(array($id));
         if($sql->rowCount() > 0){
             $array = $sql->fetch();
-            //$array['category_name'] = $c->getNameById($array['id_category']);
-            //$array['subcategory_name'] =  $c->getNameById($array['id_subcategory']);
-            $array['medias'] = $m->getMedias($array['id']);
+            $array['medias'] = $this->medias_ads->getMedias($array['id']);
         }
 
         return $array;
@@ -143,8 +165,6 @@ FROM advertisements WHERE (title LIKE '%".$word."%' OR abstract LIKE '%".$word."
      * @return  array with the retrieved data.
      */
     public function getDataBySlug($slug){
-        //$c = new Categories();
-        $m = new Medias_ads();
         $array = array();
 
         $sql = 'SELECT advertisements.*, (SELECT name FROM categories WHERE advertisements.id_category = id) as category_name,
@@ -153,9 +173,7 @@ FROM advertisements WHERE (title LIKE '%".$word."%' OR abstract LIKE '%".$word."
         $sql->execute(array($slug));
         if($sql->rowCount() > 0){
             $array = $sql->fetch();
-            //$array['category_name'] = $c->getNameById($array['id_category']);
-            //$array['subcategory_name'] =  $c->getNameById($array['id_subcategory']);
-            $array['medias'] = $m->getMedias($array['id']);
+            $array['medias'] = $this->medias_ads->getMedias($array['id']);
         }
 
         return $array;
@@ -179,15 +197,14 @@ FROM advertisements WHERE (title LIKE '%".$word."%' OR abstract LIKE '%".$word."
      * @return boolean true if success or false if failed.
      */
     public function register($id_category, $id_subcategory, $title, $abstract, $description, $status, $rating, $highlight = null, $new = null, $bestseller = null, $sale = null){
-        $s = new Store();
-        $slug = $s->createSlug($title);
+        $slug = $this->s->createSlug($title);
         $sql = 'SELECT * FROM advertisements WHERE slug = ? AND status = 1';
         $sql = $this->db->prepare($sql);
         $sql->execute(array($slug));
         if($sql->rowCount() > 0){
             return false;
         }else{
-            $sql = 'INSERT INTO advertisements (id_category, id_subcategory, title, abstract, description, status, rating, highlight, new, bestseller, sale, slug) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+            $sql = 'INSERT INTO advertisements (id_category, id_subcategory, title, abstract, description, status, rating, highlight, new, bestseller, sale, slug) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
             $sql = $this->db->prepare($sql);
             $sql->execute(array($id_category, $id_subcategory, $title, $abstract, $description, $status, $rating, $highlight, $new, $bestseller, $sale, $slug));
             return $this->db->lastInsertId();
@@ -212,8 +229,7 @@ FROM advertisements WHERE (title LIKE '%".$word."%' OR abstract LIKE '%".$word."
      * @return boolean true if success or false if failed.
      */
     public function edit($id, $id_category, $id_subcategory, $title, $abstract, $description, $status, $rating = null, $highlight = null, $new = null, $bestseller = null, $sale = null){
-        $s = new Store();
-        $slug = $s->createSlug($title);
+        $slug = $this->s->createSlug($title);
         $sql = 'SELECT * FROM advertisements WHERE slug = ? AND status = 1 AND id != ?';
         $sql = $this->db->prepare($sql);
         $sql->execute(array($slug, $id));
@@ -234,8 +250,7 @@ FROM advertisements WHERE (title LIKE '%".$word."%' OR abstract LIKE '%".$word."
      */
     public function delete($id){
         // Delete Medias
-        $m = new Medias_ads();
-        $m->deleteAdvertisementMedias($id);
+        $this->medias_ads->deleteAdvertisementMedias($id);
         // Delete Advertisement
         $sql = 'DELETE FROM advertisements WHERE id = ?';
         $sql = $this->db->prepare($sql);

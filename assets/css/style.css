@@ -249,8 +249,12 @@ button.nav-search-btn:focus .fa-search {
 	margin-right: 10px;
 }
 
+.share-area{
+	margin-top: 40px;
+}
+
 footer {
-	margin-top: 50px;
+	margin-top: 40px;
 	padding-top: 45px;
 	background-color: #F9F9F9;
     border-top: 1px solid #e0e0e0;
@@ -423,7 +427,12 @@ footer h3 {
 }
 .tutorial-title h2{
 	text-align: center;
-	font-family: 'montserratlight', sans-serif;
+	color: #3D3D3D;
+	font-family: 'montserratbold', sans-serif;
+}
+.tutorial-text{
+	white-space: pre-wrap;
+	word-wrap: break-word;
 }
 
 .div-invisible{
@@ -452,7 +461,8 @@ footer h3 {
     margin-right: 35px;
 }
 .highlights h3{
-	font-family: 'montserratlight', sans-serif;
+	color: #3D3D3D;
+	font-family: 'montserratbold', sans-serif;
 }
 .highlights_container{
 	padding-left: 15px;
@@ -492,28 +502,50 @@ footer h3 {
 .media-type-2 img {
 }
 .media-type-1 img{
-	margin-top: -9.5%;
+	margin-top: -9.4%;
 }
 .play-button.play-sm{
 	width: 50px;
 	height: 35px;
 	border-radius: 5px;
 }
+.principal-play-button.play-sm{
+	width: 50px;
+	height: 50px;
+	border-radius: 50%;
+}
 .play-button.play-md{
 	width: 70px;
 	height: 45px;
 	border-radius: 5px;
+}
+.principal-play-button.play-md{
+	width: 70px;
+	height: 70px;
+	border-radius: 50%;
 }
 .play-button.play-big {
 	width: 90px;
 	height: 60px;
 	border-radius: 6px;
 }
+.principal-play-button.play-big{
+	width: 90px;
+	height: 90px;
+	border-radius: 50%;
+}
 .play-button {
 	background-color: #333;
 	box-shadow: 0 0 30px rgba( 0,0,0,0.6 );
 	z-index: 1;
 	opacity: 0.9;
+	cursor: pointer;
+}
+.principal-play-button{
+	background-color: rgba(255, 255, 255, 0.8);
+	box-shadow: 0 0 30px rgba( 0,0,0,0.6 );
+	z-index: 1;
+	opacity: 1;
 	cursor: pointer;
 }
 .play-button:hover{
@@ -533,6 +565,13 @@ footer h3 {
 .play-button:before{
 	content: "";
 	border-style: solid;
+	border-color: transparent transparent transparent #fff;
+}
+.principal-play-button:before{
+	margin-left: 4px;
+	border-color: transparent transparent transparent #3D3D3D;
+}
+.principal-play-button:hover::before{
 	border-color: transparent transparent transparent #fff;
 }
 .play-button,
@@ -702,6 +741,16 @@ footer h3 {
 }
 .about-quote i{
 	color: #F79321;
+}
+
+@media all and (max-width: 767px) {
+	.tutorial-video{
+		margin-left: 0;
+	}
+	.tutorial-text{
+		margin-top: 15px;
+		text-align: center;
+	}
 }
 
 @media all and (max-width: 575px) {

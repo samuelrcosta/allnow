@@ -44,7 +44,6 @@
                     <option value="4_0">4 Estrelas</option>
                     <option value="4_5">4,5 Estrelas</option>
                     <option value="5_0">5 Estrelas</option>
-                    <option value="5_5">5,5 Estrelas</option>
                 </select>
             </div>
             <div class="form-group" style="margin-bottom: 0">
