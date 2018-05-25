@@ -1,9 +1,30 @@
 <html lang="pt-br">
 	<head>
+        <!--=============================================================================================================
+Criado por : Samuel Rocha Costa | email: samu.rcosta@gmail.com
+=====================================================================================================================-->
 		<meta charset="utf-8" />
 		<title><?php echo $viewData['title']; ?></title>
         <link rel="shortcut icon" href="<?php echo BASE_URL;?>/assets/images/favicon.png" type="image/png" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta property="og:title" content="<?php echo $viewData['titulo']; ?>"/>
+        <meta property="og:site_name" content="Optium Tecnologia"/>
+        <meta name="keywords" content="">
+        <?php if(isset($viewData['shareData'])):?>
+            <meta property="og:description" content="<?php echo $viewData['shareData']['description'];?>"/>
+            <meta property="og:image" content=""/>
+        <?php else: ?>
+            <meta property="og:description" content="<?php echo $viewData['titulo']; ?>"/>
+            <meta property="og:image" content="<?php echo BASE_URL;?>/assets/images/og_logo.png"/>
+        <?php endif;?>
+        <?php if(isset($viewData['shareDescription'])):?>
+            <meta name="description" content="<?php echo $viewData['shareDescription']; ?>">
+            <meta name="Distribution" content="Global">
+            <meta name="Rating" content="General">
+            <meta name="author" content="Samuel R. Costa">
+            <meta name="robots" content="index, follow">
+            <meta name="robots" content="all">
+        <?php endif;?>
 		<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel="stylesheet" type="text/css">
         <!--!>BASE URL</!-->
         <script type="text/javascript">var BASE_URL = '<?php echo BASE_URL; ?>';</script>
