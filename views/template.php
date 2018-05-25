@@ -10,13 +10,8 @@ Criado por : Samuel Rocha Costa | email: samu.rcosta@gmail.com
         <meta property="og:title" content="<?php echo $viewData['title']; ?>"/>
         <meta property="og:site_name" content="Optium Tecnologia"/>
         <meta name="keywords" content="">
-        <?php if(isset($viewData['shareData'])):?>
-            <meta property="og:description" content="<?php echo $viewData['shareData']['description'];?>"/>
-            <meta property="og:image" content=""/>
-        <?php else: ?>
-            <meta property="og:description" content="<?php echo $viewData['title']; ?>"/>
-            <meta property="og:image" content="<?php echo BASE_URL;?>assets/images/og_logo.png"/>
-        <?php endif;?>
+        <meta property="og:description" content="<?php echo $viewData['title']; ?>"/>
+        <meta property="og:image" content="<?php echo BASE_URL;?>assets/images/og_logo.jpg"/>
         <?php if(isset($viewData['shareDescription'])):?>
             <meta name="description" content="<?php echo $viewData['shareDescription']; ?>">
             <meta name="Distribution" content="Global">

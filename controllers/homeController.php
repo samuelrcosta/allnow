@@ -38,6 +38,7 @@ class homeController extends Controller {
         $data['categoryMenuData'] = $this->areas->getCompleteList();
         $data['menuUrlActive'] = 'home';
         $data['advertisementsData'] = $this->s->normalizeBadgesName($this->a->getHighlightsAds());
+        $data['shareDescription'] = "Optium - A maior plataforma de produtos digitais do país: idiomas, finanças, negócios, e muito mais";
 
         // Get tutorial data
         $data['tutorialData'] = json_decode(strval($this->conf->getConfig("tutorial_advertisement")), true);

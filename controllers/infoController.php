@@ -42,6 +42,7 @@ class infoController extends Controller{
         $data['title'] = 'Optium - Sobre a empresa';
         $data['menuUrlActive'] = 'sobre';
         $data['categoryMenuData'] = $this->a->getCompleteList();
+
         $this->loadTemplate('info/about', $data);
     }
 
