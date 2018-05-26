@@ -15,7 +15,11 @@ Criado por : Samuel Rocha Costa | email: samu.rcosta@gmail.com
             <meta property="og:image" content="<?php echo $viewData['shareData']['image'];?>"/>
             <meta name="description" content="<?php echo $viewData['shareData']['description']; ?>">
         <?php else: ?>
-            <meta property="og:description" content="<?php echo $viewData['title']; ?>"/>
+            <?php if(isset($viewData['shareDescription'])):?>
+                <meta property="og:description" content="<?php echo $viewData['shareDescription']; ?>"/>
+            <?php else: ?>
+                <meta property="og:description" content="<?php echo $viewData['title']; ?>"/>
+            <?php endif;?>
             <meta property="og:image" content="<?php echo BASE_URL;?>assets/images/share_image.png"/>
         <?php endif;?>
         <?php if(isset($viewData['shareDescription'])):?>
