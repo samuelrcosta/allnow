@@ -11,6 +11,7 @@ class advertisementsController extends Controller{
     // Models instances
     private $a;
     private $c;
+    private $s;
     private $areas;
 
     /**
@@ -21,6 +22,7 @@ class advertisementsController extends Controller{
         // Initialize instances
         $this->a = new Advertisements();
         $this->c = new Categories();
+        $this->s = new Store();
         $this->areas = new Areas();
     }
 
@@ -57,6 +59,7 @@ class advertisementsController extends Controller{
             $data['menuUrlActive'] = $areaData['id'];
             $data['title'] = 'Optium - '.$adData['title'];
             $data['advertisementData'] = $adData;
+            $data['shareData'] = $this->s->getShareData('ad', $adData);
 
             $this->loadTemplate('advertisements/open', $data);
         }else{

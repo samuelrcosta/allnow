@@ -82,8 +82,6 @@ const PageController = {
         }else{
             let msg = "<tr><td colspan='6' style='text-align: center; font-weight: bold'>Nenhum contato encontrado.</td></tr>";
             $(PageController.CONTAINER_LIST_CONTACTS).html(msg);
-            // Block input search
-            $(PageController.INPUT_SEARCH).attr('disabled', true);
         }
     },
 

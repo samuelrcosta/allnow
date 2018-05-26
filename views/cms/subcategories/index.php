@@ -11,7 +11,7 @@
         <?php endif; ?>
         <a href="<?php echo BASE_URL ?>subcategoriesCMS/newSubCategory" class="btn btn-success" style="margin-bottom: 20px;">Nova Sub-Categoria</a>
         <div class="input-group" style="margin-bottom: 20px">
-            <input type="text" class="form-control" id="search" placeholder="Digite o nome de uma Sub-Categoria ou Categoria" onkeyup="search()">
+            <input type="text" class="form-control" id="search" placeholder="Digite o nome de uma Sub-Categoria ou Categoria">
             <span class="input-group-btn">
                 <button type="button" class="btn btn-default" style="background-color: #CCCCCC;"><i class="fa fa-search"></i> Pesquisar</button>
             </span>
@@ -21,12 +21,13 @@
                 <thead>
                 <tr>
                     <th>Nome</th>
+                    <th>Descrição</th>
                     <th>Categoria Principal</th>
                     <th>Editar</th>
                     <th>Excluir</th>
                 </tr>
                 </thead>
-                <tbody id="categories_result">
+                <tbody id="subcategories_result">
                 </tbody>
             </table>
         </div>
@@ -35,63 +36,27 @@
 <div id="background-dark" style="display: none"></div>
 <div id="confirm-delete" style="display: none">
     <p>Tem certeza que deseja excluir a Sub-Categoria <strong>e todos os seus anúncios</strong>?</p>
-    <button class="btn btn-danger" onclick="yesDelete()">Sim</button>&nbsp;
-    <button class="btn btn-success" onclick="notDelete()">Não</button>
+    <button id="btn-confirm-delete" class="btn btn-danger">Sim</button>
+    <button id="btn-not-delete" class="btn btn-success" >Não</button>
 </div>
-<script>
-    window.onload = function (){
-        insertSubcategories();
-    };
-
-    var idSubcategory;
-    function deleteSubcategory(id){
-        $("#background-dark").show();
-        $("#confirm-delete").show('fast');
-        idSubcategory = id;
-    }
-    function notDelete(){
-        $("#confirm-delete").hide('fast');
-        $("#background-dark").hide();
-    }
-
-    function yesDelete(){
-        window.location.href = '<?php echo BASE_URL ?>subcategoriesCMS/deleteSubCategory/' + idSubcategory;
-    }
-
-    var subcategoryList = <?php echo json_encode($subcategoriesData) ?>;
-
-    function insertSubcategories(){
-        for(let id in subcategoryList){
-            $("#categories_result").append(
-                "<tr>" +
-                    "<td>" + subcategoryList[id].name +"</td>" +
-                    "<td>" + subcategoryList[id].principal_name +"</td>" +
-                    "<td><a href='" + BASE_URL + "subcategoriesCMS/editSubCategory/" +  btoa(btoa(subcategoryList[id].id)) + "' class='btn btn-info'><i class='icon icon-pencil'></i></a></td>" +
-                    "<td><button class='btn btn-danger' onclick=" + 'deleteSubcategory("' + btoa(btoa(subcategoryList[id].id)) + '")' + "><i class='icon icon-trash'></i></button></td>" +
-                "</tr>"
-            );
-        }
-    }
-
-    function search(){
-        if($("#search").val() == ''){
-            $("#categories_result").html('');
-            insertSubcategories();
-        }else{
-            $("#categories_result").html('');
-            let word = $("#search").val().toLowerCase();
-            for(let id in subcategoryList){
-                if((subcategoryList[id].name.toLowerCase().search(word) !== -1) || (subcategoryList[id].principal_name.toLowerCase().search(word) !== -1)){
-                    $("#categories_result").append(
-                        "<tr>" +
-                        "<td>" + subcategoryList[id].name +"</td>" +
-                        "<td>" + subcategoryList[id].principal_name +"</td>" +
-                        "<td><a href='" + BASE_URL + "subcategoriesCMS/editSubCategory/" +  btoa(btoa(subcategoryList[id].id)) + "' class='btn btn-info'><i class='icon icon-pencil'></i></a></td>" +
-                        "<td><button class='btn btn-danger' onclick=" + 'deleteSubcategory("' + btoa(btoa(subcategoryList[id].id)) + '")' + "><i class='icon icon-trash'></i></button></td>" +
-                        "</tr>"
-                    );
-                }
-            }
-        }
-    }
+<script src="<?php echo BASE_URL ?>assets/js/controllers/subcategoriesCMSController.js"></script>
+<script type="text/template" id="template-table-subcategories">
+    {{#.}}
+    <tr>
+        <td>{{name}}</td>
+        <td>{{description}}</td>
+        <td>{{principal_name}}</TD>
+        <td data-id="{{id}}">
+            <button class='btn btn-info edit-subcategory' data-toggle="tooltip" data-placement="bottom" title="Editar a Sub-Categoria"><i class='icon icon-pencil'></i></button>
+        </td>
+        <td data-id="{{id}}">
+            <button class='btn btn-danger delete-subcategory' data-toggle="tooltip" data-placement="bottom" title="Excluir a Sub-Categoria"><i class='icon icon-trash'></i></button>
+        </td>
+    </tr>
+    {{/.}}
+</script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        PageController.start(<?php echo json_encode($subcategoriesData) ?>);
+    });
 </script>

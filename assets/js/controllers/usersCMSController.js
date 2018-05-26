@@ -5,40 +5,40 @@ const PageController = {
     BACKGROUND_DARK: "#background-dark",
 
     // buttons
-    BUTTON_EDIT_AREA: '.edit-area',
-    BUTTON_DELETE_AREA: '.delete-area',
+    BUTTON_EDIT_USER: '.edit-user',
+    BUTTON_DELETE_USER: '.delete-user',
     BUTTON_CONFIRM_DELETE: '#btn-confirm-delete',
     BUTTON_NOT_DELETE: "#btn-not-delete",
 
     // containers
-    CONTAINER_LIST_AREAS: "#areas_result",
+    CONTAINER_LIST_USERS: "#users_result",
 
     // Templates
-    TEMPLATE_TABLE_AREAS: "template-table-areas",
+    TEMPLATE_TABLE_USERS: "template-table-users",
 
     // Variables for control and storage
-    _areasList: null,
-    _areaId: null,
+    _usersList: null,
+    _userId: null,
 
     // Variables to storage templates
-    _templateTableAreas: '',
+    _templateTableUsers: '',
 
     // ---------------------------------------------- LoadTemplates --------------------------------------------------//
     _loadTemplates: function _loadTemplates(){
-        this._templateTableAreas = document.getElementById(PageController.TEMPLATE_TABLE_AREAS).innerHTML;
+        this._templateTableUsers = document.getElementById(PageController.TEMPLATE_TABLE_USERS).innerHTML;
     },
 
     _listeners: function _listeners(){
         // On search input change
         $(PageController.INPUT_SEARCH).keyup(function(){
-            PageController._searchAreas($(this).val());
+            PageController._searchUsers($(this).val());
         });
 
         // On confirm to delete
         $(PageController.BUTTON_CONFIRM_DELETE).click(function(){
             // Redirects to delete page
             let id = btoa(btoa(PageController._areaId));
-            window.location.replace(BASE_URL + 'areasCMS/delete/' + id);
+            window.location.replace(BASE_URL + 'usersCMS/deleteUser/' + id);
         });
 
         // On not confirm to delete
@@ -50,18 +50,18 @@ const PageController = {
     },
 
     _listenersTableButtons: function _listenersTableButtons(){
-        $(PageController.BUTTON_DELETE_AREA).click(function(){
+        $(PageController.BUTTON_DELETE_USER).click(function(){
             PageController._areaId = $(this).parent().attr('data-id');
             // Shows dark background and alert
             $(PageController.BACKGROUND_DARK).show();
             $(PageController.CONFIRM_DELETE).show();
         });
 
-        $(PageController.BUTTON_EDIT_AREA).click(function(){
+        $(PageController.BUTTON_EDIT_USER).click(function(){
             // Redirects to view page
             let id = $(this).parent().attr('data-id');
             id = btoa(btoa(id));
-            window.location.replace(BASE_URL + 'areasCMS/editArea/'+id);
+            window.location.replace(BASE_URL + 'usersCMS/editUserPage/'+id);
         });
     },
 
@@ -70,50 +70,49 @@ const PageController = {
         return Mustache.render(template, data);
     },
 
-    _renderAreasList: function _renderAreasList(list){
-        // Checks if the list have areas
+    _renderUsersList: function _renderUsersList(list){
+        // Checks if the list have users
         if(list.length > 0){
-            let render = PageController._render(PageController._templateTableAreas, list);
-            $(PageController.CONTAINER_LIST_AREAS).html(render);
+            let render = PageController._render(PageController._templateTableUsers, list);
+            $(PageController.CONTAINER_LIST_USERS).html(render);
             // Activate boostrap tooltip
             $('[data-toggle="tooltip"]').tooltip();
             // Activate buttons listeners
             PageController._listenersTableButtons();
         }else{
-            let msg = "<tr><td colspan='6' style='text-align: center; font-weight: bold'>Nenhuma área encontrada.</td></tr>";
-            $(PageController.CONTAINER_LIST_AREAS).html(msg);
+            let msg = "<tr><td colspan='6' style='text-align: center; font-weight: bold'>Nenhum usuário encontrado.</td></tr>";
+            $(PageController.CONTAINER_LIST_USERS).html(msg);
         }
     },
 
     // ---------------------------------------------- Utils --------------------------------------------------//
-    _saveAreasList: function _saveAreasList(areasList){
-        PageController._areasList = areasList;
+    _saveUsersList: function _saveUsersList(usersList){
+        PageController._usersList = usersList;
     },
 
-    _searchAreas: function _searchAreas(term){
+    _searchUsers: function _searchUsers(term){
         term = term.toLowerCase();
         list = [];
-        for(let i = 0; i < PageController._areasList.length; i++){
-            let name = PageController._areasList[i].name.toLowerCase();
-            let description = (PageController._areasList[i].description != null) ? PageController._areasList[i].description.toLowerCase() : '';
-
-            if(name.search(term) !== -1 || description.search(term) !== -1){
-                list.push(PageController._areasList[i]);
+        for(let i = 0; i < PageController._usersList.length; i++){
+            let name = PageController._usersList[i].name.toLowerCase();
+            let email = PageController._usersList[i].email.toLowerCase();
+            if(name.search(term) !== -1 || email.search(term) !== -1){
+                list.push(PageController._usersList[i]);
             }
         }
 
-        PageController._renderAreasList(list);
+        PageController._renderUsersList(list);
     },
 
     // ---------------------------------------------- Start --------------------------------------------------//
 
-    start: function start(areasList){
+    start: function start(usersList){
         // Load all templates
         this._loadTemplates();
-        // Get areas list
-        this._saveAreasList(areasList);
-        // Render all areas
-        this._renderAreasList(PageController._areasList);
+        // Get users list
+        this._saveUsersList(usersList);
+        // Render all users
+        this._renderUsersList(PageController._usersList);
         // Activate page listeners
         this._listeners();
     }

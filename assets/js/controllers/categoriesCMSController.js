@@ -5,40 +5,40 @@ const PageController = {
     BACKGROUND_DARK: "#background-dark",
 
     // buttons
-    BUTTON_EDIT_AREA: '.edit-area',
-    BUTTON_DELETE_AREA: '.delete-area',
+    BUTTON_EDIT_CATEGORY: '.edit-category',
+    BUTTON_DELETE_CATEGORY: '.delete-category',
     BUTTON_CONFIRM_DELETE: '#btn-confirm-delete',
     BUTTON_NOT_DELETE: "#btn-not-delete",
 
     // containers
-    CONTAINER_LIST_AREAS: "#areas_result",
+    CONTAINER_LIST_CATEGORIES: "#categories_result",
 
     // Templates
-    TEMPLATE_TABLE_AREAS: "template-table-areas",
+    TEMPLATE_TABLE_CATEGORIES: "template-table-categories",
 
     // Variables for control and storage
-    _areasList: null,
-    _areaId: null,
+    _categoriesList: null,
+    _categoryId: null,
 
     // Variables to storage templates
-    _templateTableAreas: '',
+    _templateTableCategories: '',
 
     // ---------------------------------------------- LoadTemplates --------------------------------------------------//
     _loadTemplates: function _loadTemplates(){
-        this._templateTableAreas = document.getElementById(PageController.TEMPLATE_TABLE_AREAS).innerHTML;
+        this._templateTableCategories = document.getElementById(PageController.TEMPLATE_TABLE_CATEGORIES).innerHTML;
     },
 
     _listeners: function _listeners(){
         // On search input change
         $(PageController.INPUT_SEARCH).keyup(function(){
-            PageController._searchAreas($(this).val());
+            PageController._search($(this).val());
         });
 
         // On confirm to delete
         $(PageController.BUTTON_CONFIRM_DELETE).click(function(){
             // Redirects to delete page
-            let id = btoa(btoa(PageController._areaId));
-            window.location.replace(BASE_URL + 'areasCMS/delete/' + id);
+            let id = btoa(btoa(PageController._categoryId));
+            window.location.replace(BASE_URL + 'categoriesCMS/deleteCategory/' + id);
         });
 
         // On not confirm to delete
@@ -50,18 +50,18 @@ const PageController = {
     },
 
     _listenersTableButtons: function _listenersTableButtons(){
-        $(PageController.BUTTON_DELETE_AREA).click(function(){
-            PageController._areaId = $(this).parent().attr('data-id');
+        $(PageController.BUTTON_DELETE_CATEGORY).click(function(){
+            PageController._categoryId = $(this).parent().attr('data-id');
             // Shows dark background and alert
             $(PageController.BACKGROUND_DARK).show();
             $(PageController.CONFIRM_DELETE).show();
         });
 
-        $(PageController.BUTTON_EDIT_AREA).click(function(){
+        $(PageController.BUTTON_EDIT_CATEGORY).click(function(){
             // Redirects to view page
             let id = $(this).parent().attr('data-id');
             id = btoa(btoa(id));
-            window.location.replace(BASE_URL + 'areasCMS/editArea/'+id);
+            window.location.replace(BASE_URL + 'categoriesCMS/editCategory/'+id);
         });
     },
 
@@ -70,50 +70,51 @@ const PageController = {
         return Mustache.render(template, data);
     },
 
-    _renderAreasList: function _renderAreasList(list){
-        // Checks if the list have areas
+    _renderList: function _renderList(list){
+        // Checks if the list have itens
         if(list.length > 0){
-            let render = PageController._render(PageController._templateTableAreas, list);
-            $(PageController.CONTAINER_LIST_AREAS).html(render);
+            let render = PageController._render(PageController._templateTableCategories, list);
+            $(PageController.CONTAINER_LIST_CATEGORIES).html(render);
             // Activate boostrap tooltip
             $('[data-toggle="tooltip"]').tooltip();
             // Activate buttons listeners
             PageController._listenersTableButtons();
         }else{
-            let msg = "<tr><td colspan='6' style='text-align: center; font-weight: bold'>Nenhuma área encontrada.</td></tr>";
-            $(PageController.CONTAINER_LIST_AREAS).html(msg);
+            let msg = "<tr><td colspan='6' style='text-align: center; font-weight: bold'>Nenhuma categoria encontrada.</td></tr>";
+            $(PageController.CONTAINER_LIST_CATEGORIES).html(msg);
         }
     },
 
     // ---------------------------------------------- Utils --------------------------------------------------//
-    _saveAreasList: function _saveAreasList(areasList){
-        PageController._areasList = areasList;
+    _saveList: function _saveList(list){
+        PageController._categoriesList = list;
     },
 
-    _searchAreas: function _searchAreas(term){
+    _search: function _search(term){
         term = term.toLowerCase();
         list = [];
-        for(let i = 0; i < PageController._areasList.length; i++){
-            let name = PageController._areasList[i].name.toLowerCase();
-            let description = (PageController._areasList[i].description != null) ? PageController._areasList[i].description.toLowerCase() : '';
+        for(let i = 0; i < PageController._categoriesList.length; i++){
+            let name = PageController._categoriesList[i].name.toLowerCase();
+            let description = (PageController._categoriesList[i].description != null) ? PageController._categoriesList[i].description.toLowerCase() : '';
+            let area_name = PageController._categoriesList[i].area_name.toLowerCase();
 
-            if(name.search(term) !== -1 || description.search(term) !== -1){
-                list.push(PageController._areasList[i]);
+            if(name.search(term) !== -1 || description.search(term) !== -1 || area_name.search(term) !== -1){
+                list.push(PageController._categoriesList[i]);
             }
         }
 
-        PageController._renderAreasList(list);
+        PageController._renderList(list);
     },
 
     // ---------------------------------------------- Start --------------------------------------------------//
 
-    start: function start(areasList){
+    start: function start(categoriesList){
         // Load all templates
         this._loadTemplates();
-        // Get areas list
-        this._saveAreasList(areasList);
-        // Render all areas
-        this._renderAreasList(PageController._areasList);
+        // Get categories list
+        this._saveList(categoriesList);
+        // Render all categories
+        this._renderList(PageController._categoriesList);
         // Activate page listeners
         this._listeners();
     }

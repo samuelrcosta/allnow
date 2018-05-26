@@ -24,7 +24,7 @@ const SlidesController = {
     
     _ajustAdsContainerHeight: function _ajustAdsContainerHeight(){
         let width = $(SlidesController.MEDIAS_CONTAINER).first().width();
-        let height = (width * 9) / 16;
+        let height = Math.floor((width * 9) / 16);
         $(SlidesController.MEDIAS_CONTAINER).height(height);
         $(SlidesController.AD_MEDIA_CONTAINER).height(height);
         // Ajust PlayButton size

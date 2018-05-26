@@ -12,6 +12,7 @@ class categoriesCMSController extends Controller{
     // Models instances
     private $u;
     private $c;
+    private $configs;
     private $areas;
 
     /**
@@ -21,6 +22,7 @@ class categoriesCMSController extends Controller{
         // Initialize instances
         $this->u = new Administrators();
         $this->c = new Categories();
+        $this->configs = new Configs();
         $this->areas = new Areas();
         parent::__construct();
     }
@@ -56,22 +58,32 @@ class categoriesCMSController extends Controller{
             if((isset($_POST['name']) && !empty($_POST['name'])) && (isset($_POST['id_area']) && !empty($_POST['id_area']))){
                 $name = addslashes($_POST['name']);
                 $id_area = addslashes($_POST['id_area']);
+                $description = addslashes($_POST['description']);
+                $image = null;
+
+                // Check if has send a image
+                if(isset($_FILES) && !empty($_FILES['image']['tmp_name'])){
+                    $image = $_FILES['image'];
+                }
 
                 if(!empty($name) && !empty($id_area)){
-                    if($this->c->register($name, null, $id_area)){
+                    if($this->c->register($name, $description, $image, null, $id_area)){
                         $msg = urlencode('Categoria registrada com sucesso!');
                         header("Location: ".BASE_URL."categoriesCMS?notification=".$msg."&status=alert-info");
                         exit;
                     }else{
                         $data['name'] = $name;
-                        $data['notice'] = '<div class="alert alert-warning">Essa categoria já está cadastrada.</div>';
+                        $data['description'] = $description;
+                        $data['notice'] = '<div class="alert alert-warning">Ocorreu um erro ao salvar a imagem ou esta categoria já está cadastrada.</div>';
                     }
                 }else{
                     $data['name'] = $name;
+                    $data['description'] = $description;
                     $data['notice'] = '<div class="alert alert-warning">Preencha todos os campos.</div>';
                 }
             }
 
+            $data['pattern_image'] = $this->configs->getConfig('pattern_category_image');
             $data['title'] = 'ADM - Nova Categoria';
             $data['link'] = 'categoriesCMS/index';
             $data['areasData'] = $this->areas->getAreasList();
@@ -101,20 +113,30 @@ class categoriesCMSController extends Controller{
             if((isset($_POST['name']) && !empty($_POST['name'])) && (isset($_POST['id_area']) && !empty($_POST['id_area']))){
                 $name = addslashes($_POST['name']);
                 $id_area = addslashes($_POST['id_area']);
+                $description = addslashes($_POST['description']);
+
+                $image = null;
+
+                // Check if has send a image
+                if(isset($_FILES) && !empty($_FILES['image']['tmp_name'])){
+                    $image = $_FILES['image'];
+                }
 
                 if(!empty($name) && !empty($id_area)){
-                    if($this->c->edit($id, $name, null, $id_area)){
+                    if($this->c->edit($id, $name, $description, $image, null, $id_area)){
                         $msg = urlencode('Categoria editada com sucesso!');
                         header("Location: ".BASE_URL."categoriesCMS?notification=".$msg."&status=alert-info");
                         exit;
                     }else{
                         $data['categoryData']['name'] = $name;
                         $data['categoryData']['id_area'] = $id_area;
-                        $data['notice'] = '<div class="alert alert-warning">Já existe categoria com esse mesmo nome.</div>';
+                        $data['categoryData']['description'] = $description;
+                        $data['notice'] = '<div class="alert alert-warning">Ocorreu um erro ao salvar a imagem ou já existe uma categoria cadastrada com este nome.</div>';
                     }
                 }else{
                     $data['categoryData']['name'] = $name;
                     $data['categoryData']['id_area'] = $id_area;
+                    $data['categoryData']['description'] = $description;
                     $data['notice'] = '<div class="alert alert-warning">Preencha todos os campos.</div>';
                 }
             }else{
@@ -122,6 +144,7 @@ class categoriesCMSController extends Controller{
                 $data['categoryData'] = $this->c->getDataById($id);
             }
 
+            $data['pattern_image'] = $this->configs->getConfig('pattern_category_image');
             $data['title'] = 'ADM - Editar Categoria';
             $data['link'] = 'categoriesCMS/index';
             $data['areasData'] = $this->areas->getAreasList();

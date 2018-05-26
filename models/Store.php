@@ -3,7 +3,7 @@
  * This class controls auxiliary methods of the system.
  *
  * @author  samuelrcosta
- * @version 1.0.1, 01/16/2017
+ * @version 1.3.0, 05/25/2018
  * @since   1.0, 01/11/2017
  */
 
@@ -11,6 +11,18 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
 class Store extends Model{
+
+    // Models instances
+    private $c;
+
+    /**
+     * Class constructor
+     */
+    public function __construct() {
+        parent::__construct();
+        // Initialize instances
+        $this->c = new Configs();
+    }
 
     /**
      * This function sends a email to recipient.
@@ -252,5 +264,57 @@ class Store extends Model{
             $adsData[$i]['badges'] = $badges;
         }
         return $adsData;
+    }
+
+    /**
+     * This function return a description and url image for share.
+     *
+     * @param   $type      string for the type of data, allows "ad", "category" and "area"
+     * @param   $data    array with data
+     *
+     * @return array with description and image
+     */
+    public function getShareData($type, $data){
+        $array = array("description" => "", "image" => "");
+
+        // Check the type
+        if($type == "ad"){
+            // Remove break lines
+            $description = str_replace("\n", ' ', $data['abstract']);
+            $description = str_replace("\r", ' ', $description);
+            $description = str_replace("  ", ' ', $description);
+            $array['description'] = $description;
+
+            foreach ($data['medias'] as $ad){
+                if($ad['media_type'] == 1){
+                    $array['image'] = "https://img.youtube.com/vi/".$ad['media']."/hqdefault.jpg";
+                    break;
+                }else if($ad['media_type'] == 2){
+                    $data = json_decode(self::curl_get("https://vimeo.com/api/v2/video/".$ad['media'].".json"), true);
+                    $array['image'] = $data[0]['thumbnail_large'];
+                    break;
+                }
+            }
+        }else if($type == "category" || $type == "area"){
+            // Get description
+            if(empty($data['description'])){
+                $array['description'] = $data['name'];
+            }else{
+                // Remove break lines
+                $description = str_replace("\n", ' ', $data['description']);
+                $description = str_replace("\r", ' ', $description);
+                $description = str_replace("  ", ' ', $description);
+                $array['description'] = $description;
+            }
+            // Get image
+            if(empty($data['share_image'])){
+                $pattern_image = $this->c->getConfig('pattern_category_image');
+                $array['image'] = BASE_URL."assets/images/categories/".$pattern_image;
+            }else{
+                $array['image'] = BASE_URL."assets/images/categories/".$data['share_image'];
+            }
+        }
+
+        return $array;
     }
 }

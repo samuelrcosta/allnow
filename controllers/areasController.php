@@ -52,6 +52,7 @@ class areasController extends Controller{
             $data['activeArea'] = $areaData;
             $data['site_map'] = "<a href='".BASE_URL."'>Home</a> <span> > </span> <a href='".BASE_URL."areas/open/".$areaData['slug']."'> ".$areaData['name']." </a>";
 
+            $data['shareData'] = $this->s->getShareData('area', $areaData);
             $data['title'] = 'Optium - '.$areaData['name'];
             $data['advertisementsData'] = $this->s->normalizeBadgesName($this->a->getAdsByAreaId($areaData['id']));
 

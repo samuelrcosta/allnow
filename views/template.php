@@ -10,19 +10,25 @@ Criado por : Samuel Rocha Costa | email: samu.rcosta@gmail.com
         <meta property="og:title" content="<?php echo $viewData['title']; ?>"/>
         <meta property="og:site_name" content="Optium Tecnologia"/>
         <meta name="keywords" content="">
-        <meta property="og:description" content="<?php echo $viewData['title']; ?>"/>
-        <meta property="og:image" content="<?php echo BASE_URL;?>assets/images/og_logo.jpg"/>
+        <?php if(isset($viewData['shareData'])):?>
+            <meta property="og:description" content="<?php echo $viewData['shareData']['description'];?>"/>
+            <meta property="og:image" content="<?php echo $viewData['shareData']['image'];?>"/>
+            <meta name="description" content="<?php echo $viewData['shareData']['description']; ?>">
+        <?php else: ?>
+            <meta property="og:description" content="<?php echo $viewData['title']; ?>"/>
+            <meta property="og:image" content="<?php echo BASE_URL;?>assets/images/share_image.png"/>
+        <?php endif;?>
         <?php if(isset($viewData['shareDescription'])):?>
             <meta name="description" content="<?php echo $viewData['shareDescription']; ?>">
-            <meta name="Distribution" content="Global">
-            <meta name="Rating" content="General">
-            <meta name="author" content="Samuel R. Costa">
-            <meta name="robots" content="index, follow">
-            <meta name="robots" content="all">
         <?php endif;?>
+        <meta name="Distribution" content="Global">
+        <meta name="Rating" content="General">
+        <meta name="author" content="Samuel R. Costa">
+        <meta name="robots" content="index, follow">
+        <meta name="robots" content="all">
 		<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel="stylesheet" type="text/css">
         <!--!>BASE URL</!-->
-        <script type="text/javascript">var BASE_URL = '<?php echo BASE_URL; ?>';</script>
+        <script type="text/javascript">const BASE_URL = '<?php echo BASE_URL; ?>';</script>
 		<!--!>Jquery</!-->
         <script type="text/javascript" src="<?php echo BASE_URL; ?>vendor/components/jquery/jquery.min.js"></script>
         <!--!>Fonts</!-->
@@ -104,7 +110,7 @@ Criado por : Samuel Rocha Costa | email: samu.rcosta@gmail.com
                                         <?php endif; ?>
                                         <?php endforeach; ?>
                                         <li class="<?= ($viewData['menuUrlActive'] == 'sobre') ? 'active' : '' ?>">
-                                            <a href="<?= BASE_URL ?>info/about">Sobre</a>
+                                            <a href="<?= BASE_URL ?>info/about">A Empresa</a>
                                         </li>
                                     </ul>
                                 </div>

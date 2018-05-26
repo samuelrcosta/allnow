@@ -71,6 +71,7 @@ class categoriesController extends Controller{
             $data['advertisementsData'] = $this->s->normalizeBadgesName($adsData);
             $data['activeCategory'] = $categoryData;
             $data['site_map'] = $siteMap;
+            $data['shareData'] = $this->s->getShareData('category', $categoryData);
 
             $this->loadTemplate('categories/open', $data);
         }else{

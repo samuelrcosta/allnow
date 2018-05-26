@@ -46,16 +46,5 @@
 <script>
     $(document).ready(function(){
         SlidesController.start();
-        $('.responsive-categories-title').click(function(){
-            if($('.filterarea-categories-container').hasClass('opened')){
-                $(this).find('i').removeClass('fa-angle-up').addClass('fa-angle-down');
-                $('.filterarea-categories-container').removeClass('opened');
-                $('.filterarea-categories-container').slideUp();
-            }else{
-                $(this).find('i').removeClass('fa-angle-down').addClass('fa-angle-up');
-                $('.filterarea-categories-container').addClass('opened');
-                $('.filterarea-categories-container').slideDown();
-            }
-        });
     });
 </script>

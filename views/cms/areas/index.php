@@ -21,7 +21,9 @@
                 <thead>
                 <tr style="text-align: center">
                     <th>Nome</th>
-                    <th style="text-align: center">Ações</th>
+                    <th>Descrição</th>
+                    <th style="text-align: center">Editar</th>
+                    <th style="text-align: center">Excluir</th>
                 </tr>
                 </thead>
                 <tbody id="areas_result">
@@ -41,8 +43,11 @@
     {{#.}}
     <tr style="text-align: center">
         <td>{{name}}</td>
+        <td>{{description}}</td>
         <td data-id="{{id}}">
-            <button class='btn btn-info edit-area' data-toggle="tooltip" data-placement="bottom" title="Editar área"><i class='icon icon-pencil'></i></button>&nbsp;
+            <button class='btn btn-info edit-area' data-toggle="tooltip" data-placement="bottom" title="Editar área"><i class='icon icon-pencil'></i></button>
+        </td>
+        <td data-id="{{id}}">
             <button class='btn btn-danger delete-area' data-toggle="tooltip" data-placement="bottom" title="Excluir área"><i class='icon icon-trash'></i></button>
         </td>
     </tr>

@@ -11,7 +11,7 @@
         <?php endif; ?>
         <a href="<?php echo BASE_URL ?>adminAdvertisementsCMS/newAdvertisementPage" class="btn btn-success" style="margin-bottom: 20px">Novo Anúncio</a>
         <div class="input-group" style="margin-bottom: 20px">
-            <input type="text" class="form-control" id="search" placeholder="Busque por título, categoria, subcategoria ou resumo" onkeyup="search()">
+            <input type="text" class="form-control" id="search" placeholder="Busque por título, categoria, subcategoria ou resumo">
             <span class="input-group-btn">
                 <button type="button" class="btn btn-default" style="background-color: #CCCCCC;"><i class="fa fa-search"></i> Pesquisar</button>
             </span>
@@ -37,67 +37,28 @@
 <div id="background-dark" style="display: none"></div>
 <div id="confirm-delete" style="display: none">
     <p>Tem certeza que deseja excluir o anúncio?</p>
-    <button class="btn btn-danger" onclick="yesDelete()">Sim</button>
-    <button class="btn btn-success" onclick="notDelete()">Não</button>
+    <button id="btn-confirm-delete" class="btn btn-danger">Sim</button>
+    <button id="btn-not-delete" class="btn btn-success" >Não</button>
 </div>
-<script>
-    window.onload = function (){
-        insertAdvertisements();
-    };
-
-    var idAdvertisement;
-    function deleteAdvertisement(id){
-        $("#background-dark").show();
-        $("#confirm-delete").show('fast');
-        idAdvertisement = id;
-    }
-    function notDelete(){
-        $("#confirm-delete").hide('fast');
-        $("#background-dark").hide();
-    }
-
-    function yesDelete(){
-        window.location.href = '<?php echo BASE_URL ?>adminAdvertisementsCMS/deleteAdvertisement/' + idAdvertisement;
-    }
-
-    var advertisementsList = <?php echo json_encode($advertisementsData) ?>;
-
-    function insertAdvertisements(){
-        for(var id in advertisementsList){
-            $("#advertisements_result").append(
-                "<tr>" +
-                    "<td>" + advertisementsList[id].title +"</td>" +
-                    "<td>" + advertisementsList[id].category_name +"</td>" +
-                    "<td>" + advertisementsList[id].subcategory_name +"</td>" +
-                    "<td style='white-space: pre;'>" + advertisementsList[id].abstract +"</td>" +
-                    "<td><a href='" + BASE_URL + "adminAdvertisementsCMS/editAdvertisementPage/" +  btoa(btoa(advertisementsList[id].id)) + "' class='btn btn-info'><i class='icon icon-pencil'></i></a></td>" +
-                    "<td><button class='btn btn-danger' onclick=" + 'deleteAdvertisement("' + btoa(btoa(advertisementsList[id].id)) + '")' + "><i class='icon icon-trash'></i></button></td>" +
-                "</tr>"
-            );
-        }
-    }
-
-    function search(){
-        if($("#search").val() == ''){
-            $("#advertisements_result").html('');
-            insertAdvertisements();
-        }else{
-            $("#advertisements_result").html('');
-            var word = $("#search").val().toLowerCase();
-            for(var id in advertisementsList){
-                if((advertisementsList[id].title.toLowerCase().search(word) !== -1) || (advertisementsList[id].category_name.toLowerCase().search(word) !== -1) || (advertisementsList[id].subcategory_name.toLowerCase().search(word) !== -1) || (advertisementsList[id].abstract.toLowerCase().search(word) !== -1)){
-                    $("#advertisements_result").append(
-                        "<tr>" +
-                        "<td>" + advertisementsList[id].title +"</td>" +
-                        "<td>" + advertisementsList[id].category_name +"</td>" +
-                        "<td>" + advertisementsList[id].subcategory_name +"</td>" +
-                        "<td style='white-space: pre;'>" + advertisementsList[id].abstract +"</td>" +
-                        "<td><a href='" + BASE_URL + "adminAdvertisementsCMS/editAdvertisementPage/" +  btoa(btoa(advertisementsList[id].id)) + "' class='btn btn-info'><i class='icon icon-pencil'></i></a></td>" +
-                        "<td><button class='btn btn-danger' onclick=" + 'deleteAdvertisement("' + btoa(btoa(advertisementsList[id].id)) + '")' + "><i class='icon icon-trash'></i></button></td>" +
-                        "</tr>"
-                    );
-                }
-            }
-        }
-    }
+<script src="<?php echo BASE_URL ?>assets/js/controllers/adsCMSController.js"></script>
+<script type="text/template" id="template-table-advertisements">
+    {{#.}}
+    <tr>
+        <td>{{title}}</td>
+        <td>{{category_name}}</td>
+        <td>{{subcategory_name}}</td>
+        <td style='white-space: pre;'>{{abstract}}</td>
+        <td data-id="{{id}}">
+            <button class='btn btn-info edit-ad' data-toggle="tooltip" data-placement="bottom" title="Editar o anúncio"><i class='icon icon-pencil'></i></button>
+        </td>
+        <td data-id="{{id}}">
+            <button class='btn btn-danger delete-ad' data-toggle="tooltip" data-placement="bottom" title="Excluir o anúncio"><i class='icon icon-trash'></i></button>
+        </td>
+    </tr>
+    {{/.}}
+</script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        PageController.start(<?php echo json_encode($advertisementsData) ?>);
+    });
 </script>

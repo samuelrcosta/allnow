@@ -5,40 +5,40 @@ const PageController = {
     BACKGROUND_DARK: "#background-dark",
 
     // buttons
-    BUTTON_EDIT_AREA: '.edit-area',
-    BUTTON_DELETE_AREA: '.delete-area',
+    BUTTON_EDIT_SUBCATEGORY: '.edit-subcategory',
+    BUTTON_DELETE_SUBCATEGORY: '.delete-subcategory',
     BUTTON_CONFIRM_DELETE: '#btn-confirm-delete',
     BUTTON_NOT_DELETE: "#btn-not-delete",
 
     // containers
-    CONTAINER_LIST_AREAS: "#areas_result",
+    CONTAINER_LIST_SUBCATEGORIES: "#subcategories_result",
 
     // Templates
-    TEMPLATE_TABLE_AREAS: "template-table-areas",
+    TEMPLATE_TABLE_SUBCATEGORIES: "template-table-subcategories",
 
     // Variables for control and storage
-    _areasList: null,
-    _areaId: null,
+    _subcategoriesList: null,
+    _subcategoryId: null,
 
     // Variables to storage templates
-    _templateTableAreas: '',
+    _templateTableSubcategories: '',
 
     // ---------------------------------------------- LoadTemplates --------------------------------------------------//
     _loadTemplates: function _loadTemplates(){
-        this._templateTableAreas = document.getElementById(PageController.TEMPLATE_TABLE_AREAS).innerHTML;
+        this._templateTableSubcategories = document.getElementById(PageController.TEMPLATE_TABLE_SUBCATEGORIES).innerHTML;
     },
 
     _listeners: function _listeners(){
         // On search input change
         $(PageController.INPUT_SEARCH).keyup(function(){
-            PageController._searchAreas($(this).val());
+            PageController._search($(this).val());
         });
 
         // On confirm to delete
         $(PageController.BUTTON_CONFIRM_DELETE).click(function(){
             // Redirects to delete page
-            let id = btoa(btoa(PageController._areaId));
-            window.location.replace(BASE_URL + 'areasCMS/delete/' + id);
+            let id = btoa(btoa(PageController._subcategoryId));
+            window.location.replace(BASE_URL + 'subcategoriesCMS/deleteSubCategory/' + id);
         });
 
         // On not confirm to delete
@@ -50,18 +50,18 @@ const PageController = {
     },
 
     _listenersTableButtons: function _listenersTableButtons(){
-        $(PageController.BUTTON_DELETE_AREA).click(function(){
-            PageController._areaId = $(this).parent().attr('data-id');
+        $(PageController.BUTTON_DELETE_SUBCATEGORY).click(function(){
+            PageController._subcategoryId = $(this).parent().attr('data-id');
             // Shows dark background and alert
             $(PageController.BACKGROUND_DARK).show();
             $(PageController.CONFIRM_DELETE).show();
         });
 
-        $(PageController.BUTTON_EDIT_AREA).click(function(){
+        $(PageController.BUTTON_EDIT_SUBCATEGORY).click(function(){
             // Redirects to view page
             let id = $(this).parent().attr('data-id');
             id = btoa(btoa(id));
-            window.location.replace(BASE_URL + 'areasCMS/editArea/'+id);
+            window.location.replace(BASE_URL + 'subcategoriesCMS/editSubCategory/'+id);
         });
     },
 
@@ -70,50 +70,51 @@ const PageController = {
         return Mustache.render(template, data);
     },
 
-    _renderAreasList: function _renderAreasList(list){
-        // Checks if the list have areas
+    _renderList: function _renderList(list){
+        // Checks if the list have itens
         if(list.length > 0){
-            let render = PageController._render(PageController._templateTableAreas, list);
-            $(PageController.CONTAINER_LIST_AREAS).html(render);
+            let render = PageController._render(PageController._templateTableSubcategories, list);
+            $(PageController.CONTAINER_LIST_SUBCATEGORIES).html(render);
             // Activate boostrap tooltip
             $('[data-toggle="tooltip"]').tooltip();
             // Activate buttons listeners
             PageController._listenersTableButtons();
         }else{
-            let msg = "<tr><td colspan='6' style='text-align: center; font-weight: bold'>Nenhuma área encontrada.</td></tr>";
-            $(PageController.CONTAINER_LIST_AREAS).html(msg);
+            let msg = "<tr><td colspan='6' style='text-align: center; font-weight: bold'>Nenhuma subcategoria encontrada.</td></tr>";
+            $(PageController.CONTAINER_LIST_SUBCATEGORIES).html(msg);
         }
     },
 
     // ---------------------------------------------- Utils --------------------------------------------------//
-    _saveAreasList: function _saveAreasList(areasList){
-        PageController._areasList = areasList;
+    _saveList: function _saveList(list){
+        PageController._subcategoriesList = list;
     },
 
-    _searchAreas: function _searchAreas(term){
+    _search: function _search(term){
         term = term.toLowerCase();
         list = [];
-        for(let i = 0; i < PageController._areasList.length; i++){
-            let name = PageController._areasList[i].name.toLowerCase();
-            let description = (PageController._areasList[i].description != null) ? PageController._areasList[i].description.toLowerCase() : '';
+        for(let i = 0; i < PageController._subcategoriesList.length; i++){
+            let name = PageController._subcategoriesList[i].name.toLowerCase();
+            let description = (PageController._subcategoriesList[i].description != null) ? PageController._subcategoriesList[i].description.toLowerCase() : '';
+            let principal_name = PageController._subcategoriesList[i].principal_name.toLowerCase();
 
-            if(name.search(term) !== -1 || description.search(term) !== -1){
-                list.push(PageController._areasList[i]);
+            if(name.search(term) !== -1 || description.search(term) !== -1 || principal_name.search(term) !== -1){
+                list.push(PageController._subcategoriesList[i]);
             }
         }
 
-        PageController._renderAreasList(list);
+        PageController._renderList(list);
     },
 
     // ---------------------------------------------- Start --------------------------------------------------//
 
-    start: function start(areasList){
+    start: function start(subcategoriesList){
         // Load all templates
         this._loadTemplates();
-        // Get areas list
-        this._saveAreasList(areasList);
-        // Render all areas
-        this._renderAreasList(PageController._areasList);
+        // Get categories list
+        this._saveList(subcategoriesList);
+        // Render all categories
+        this._renderList(PageController._subcategoriesList);
         // Activate page listeners
         this._listeners();
     }

@@ -141,12 +141,14 @@ class Categories extends Model {
      * If this category already registered returns False, else returns True.
      *
      * @param   $name           string for the category name.
+     * @param   $description    string for the category description
+     * @param   $image          array or null for the category image
      * @param   $id_principal   int for the principal category if exists.
      * @param   $id_area        int for the area if exists
      *
      * @return  boolean     boolean false for category already registered, or instead True.
      */
-    public function register($name, $id_principal = Null, $id_area = Null){
+    public function register($name, $description, $image, $id_principal = Null, $id_area = Null){
         $slug = $this->s->createSlug($name);
         $sql = "SELECT * FROM categories WHERE slug = ?";
         $sql = $this->db->prepare($sql);
@@ -155,9 +157,17 @@ class Categories extends Model {
         if($sql && count($sql)){
             return false;
         }else{
-            $sql = "INSERT INTO categories (name, id_principal, slug, id_area) VALUES (?, ?, ?, ?)";
+            if(!empty($image)){
+                $imageName = self::saveCategoryImage($slug, '', $image);
+                if($imageName == false){
+                    return false;
+                }
+            }else{
+                $imageName = '';
+            }
+            $sql = "INSERT INTO categories (name, description, share_image, id_principal, slug, id_area) VALUES (?, ?, ?, ?, ?, ?)";
             $sql = $this->db->prepare($sql);
-            $sql->execute(array($name, $id_principal, $slug, $id_area));
+            $sql->execute(array($name, $description, $imageName, $id_principal, $slug, $id_area));
             return true;
         }
     }
@@ -167,12 +177,14 @@ class Categories extends Model {
      * If this category already registered returns False, else returns True.
      *
      * @param   $name           string for the category name.
+     * @param   $description    string for the category description.
+     * @param   $image          array or null for the category image.
      * @param   $id_principal   int for the principal category if exists.
      * @param   $id_area        int for the area if exists
      *
      * @return  boolean     boolean false for category already registered, or instead True.
      */
-    public function edit($id, $name, $id_principal = Null, $id_area = Null){
+    public function edit($id, $name, $description, $image, $id_principal = Null, $id_area = Null){
         $slug = $this->s->createSlug($name);
         $sql = "SELECT * FROM categories WHERE slug = ? AND id != ?";
         $sql = $this->db->prepare($sql);
@@ -181,11 +193,64 @@ class Categories extends Model {
         if($sql && count($sql)){
             return false;
         }else{
-            $sql = "UPDATE categories SET name = ?, id_principal = ?, slug = ?, id_area = ? WHERE id = ?";
+            // get category data
+            $sql = "SELECT * FROM categories WHERE id = ?";
             $sql = $this->db->prepare($sql);
-            $sql->execute(array($name, $id_principal, $slug, $id_area, $id));
+            $sql->execute(array($id));
+            $sql = $sql->fetch();
+            $share_image = $sql['share_image'];
+            if(!empty($image)){
+                $imageName = self::saveCategoryImage($slug, $share_image, $image);
+                if($imageName == false){
+                    return false;
+                }
+            }else{
+                $imageName = $share_image;
+            }
+            $sql = "UPDATE categories SET name = ?, description = ?, share_image = ?,id_principal = ?, slug = ?, id_area = ? WHERE id = ?";
+            $sql = $this->db->prepare($sql);
+            $sql->execute(array($name, $description, $imageName, $id_principal, $slug, $id_area, $id));
             return true;
         }
+    }
+
+    /**
+     * This function save a category image on disk.
+     *
+     * @param   $slug           string for the category slug.
+     * @param   $oldImage       string for the category old url if exists
+     * @param   $file           array with image category.
+     *
+     * @return  boolean or string     boolean false if has a error or $new_name if has success.
+     */
+    public function saveCategoryImage($slug, $oldImage, $file){
+        $exts_checks = array('jpg', 'png', 'jpeg');
+        $ext = explode(".", $file['name']);
+        $ext = strtolower(end($ext));
+        if(array_search($ext, $exts_checks) === false) {
+            return false;
+        }else{
+            $new_name = "category_".$slug.".".$ext;
+            $dir = $_SERVER['DOCUMENT_ROOT'] . SERVER_URL . "assets/images/categories/";
+            if(move_uploaded_file($file['tmp_name'], $dir.$new_name)){
+                if(!empty($oldImage)){
+                    // Remove old avatar
+                    unlink($_SERVER['DOCUMENT_ROOT'] . SERVER_URL . "assets/images/categories/".$oldImage);
+                }
+                return $new_name;
+            }else{
+                return false;
+            }
+        }
+    }
+
+    /**
+     * This function delete a category image on disk.
+     *
+     * @param   $share_image       string for the category image url
+     */
+    public function deleteCategoryImage($share_image){
+        unlink($_SERVER['DOCUMENT_ROOT'] . SERVER_URL . "assets/images/categories/".$share_image);
     }
 
     /**
@@ -204,10 +269,18 @@ class Categories extends Model {
             foreach ($ads as $ad){
                 $this->a->delete($ad['id']);
             }
+            // Get subcategories
+            $subcats = self::getSubcategoriesByPrincipalId($id);
             // Delete subcategories
-            $sql = "DELETE FROM categories WHERE id_principal = ?";
-            $sql = $this->db->prepare($sql);
-            $sql->execute(array($id));
+            foreach ($subcats as $sub){
+                self::delete($sub['id']);
+            }
+            // Get category data
+            $catData = self::getDataById($id);
+            // Check category image
+            if(!empty($catData['share_image'])){
+                self::deleteCategoryImage($catData['share_image']);
+            }
             // Delete
             $sql = "DELETE FROM categories WHERE id = ?";
             $sql = $this->db->prepare($sql);
@@ -218,6 +291,12 @@ class Categories extends Model {
             $ads = $this->a->getAdsByCategoryId($id, $type);
             foreach ($ads as $ad){
                 $this->a->delete($ad['id']);
+            }
+            // Get category data
+            $catData = self::getDataById($id);
+            // Check category image
+            if(!empty($catData['share_image'])){
+                self::deleteCategoryImage($catData['share_image']);
             }
             // Delete
             $sql = "DELETE FROM categories WHERE id = ?";

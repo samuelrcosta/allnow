@@ -13,6 +13,7 @@ class areasCMSController extends Controller{
     private $u;
     private $c;
     private $a;
+    private $configs;
 
     /**
      * Class constructor
@@ -22,6 +23,7 @@ class areasCMSController extends Controller{
         $this->u = new Administrators();
         $this->c = new Categories();
         $this->a = new Areas();
+        $this->configs = new Configs();
         parent::__construct();
     }
 
@@ -55,22 +57,32 @@ class areasCMSController extends Controller{
 
             if(isset($_POST['name']) && !empty($_POST['name'])){
                 $name = addslashes($_POST['name']);
+                $description = addslashes($_POST['description']);
+                $image = null;
+
+                // Check if has send a image
+                if(isset($_FILES) && !empty($_FILES['image']['tmp_name'])){
+                    $image = $_FILES['image'];
+                }
 
                 if(!empty($name)){
-                    if($this->a->register($name)){
+                    if($this->a->register($name, $description, $image)){
                         $msg = urlencode('Área registrada com sucesso!');
                         header("Location: ".BASE_URL."areasCMS?notification=".$msg."&status=alert-info");
                         exit;
                     }else{
                         $data['name'] = $name;
-                        $data['notice'] = '<div class="alert alert-warning">Essa área já está cadastrada.</div>';
+                        $data['description'] = $description;
+                        $data['notice'] = '<div class="alert alert-warning">Ocorreu um erro ao cadastrar a imagem da área ou esta área já está cadastrada.</div>';
                     }
                 }else{
                     $data['name'] = $name;
+                    $data['description'] = $description;
                     $data['notice'] = '<div class="alert alert-warning">Preencha todos os campos.</div>';
                 }
             }
 
+            $data['pattern_image'] = $this->configs->getConfig('pattern_category_image');
             $data['title'] = 'ADM - Nova Área';
             $data['link'] = 'areasCMS/index';
             $data['userData'] = $this->u->getData(1, $_SESSION['adminLogin']);
@@ -99,18 +111,27 @@ class areasCMSController extends Controller{
 
             if(isset($_POST['name']) && !empty($_POST['name'])){
                 $name = addslashes($_POST['name']);
+                $description = addslashes($_POST['description']);
+                $image = null;
+
+                // Check if has send a image
+                if(isset($_FILES) && !empty($_FILES['image']['tmp_name'])){
+                    $image = $_FILES['image'];
+                }
 
                 if(!empty($name)){
-                    if($this->a->edit($id, $name)){
+                    if($this->a->edit($id, $name, $description, $image)){
                         $msg = urlencode('Área editada com sucesso!');
                         header("Location: ".BASE_URL."areasCMS?notification=".$msg."&status=alert-info");
                         exit;
                     }else{
                         $data['areaData']['name'] = $name;
-                        $data['notice'] = '<div class="alert alert-warning">Já existe área com esse mesmo nome.</div>';
+                        $data['areaData']['description'] = $description;
+                        $data['notice'] = '<div class="alert alert-warning">Ocorreu um erro ao cadastrar a imagem ou esta área já está cadastrada.</div>';
                     }
                 }else{
                     $data['areaData']['name'] = $name;
+                    $data['areaData']['description'] = $description;
                     $data['notice'] = '<div class="alert alert-warning">Preencha todos os campos.</div>';
                 }
             }else{
@@ -118,6 +139,7 @@ class areasCMSController extends Controller{
                 $data['areaData'] = $this->a->getArea($id);
             }
 
+            $data['pattern_image'] = $this->configs->getConfig('pattern_category_image');
             $data['title'] = 'ADM - Editar Área';
             $data['link'] = 'areasCMS/index';
             $data['userData'] = $this->u->getData(1, $_SESSION['adminLogin']);

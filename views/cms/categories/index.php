@@ -11,7 +11,7 @@
         <?php endif; ?>
         <a href="<?php echo BASE_URL ?>categoriesCMS/newCategory" class="btn btn-success" style="margin-bottom: 20px;">Nova Categoria</a>
         <div class="input-group" style="margin-bottom: 20px">
-            <input type="text" class="form-control" id="search" placeholder="Digite uma categoria" onkeyup="search()">
+            <input type="text" class="form-control" id="search" placeholder="Digite uma categoria">
             <span class="input-group-btn">
                 <button type="button" class="btn btn-default" style="background-color: #CCCCCC;"><i class="fa fa-search"></i> Pesquisar</button>
             </span>
@@ -21,6 +21,7 @@
                 <thead>
                     <tr>
                         <th>Nome</th>
+                        <th>Descrição</th>
                         <th>Área</th>
                         <th>Editar</th>
                         <th>Excluir</th>
@@ -35,63 +36,27 @@
 <div id="background-dark" style="display: none"></div>
 <div id="confirm-delete" style="display: none">
     <p>Tem certeza que deseja excluir a Categoria, <strong>todas as suas Subcategorias e todos os seus anúncios?</strong>?</p>
-    <button class="btn btn-danger" onclick="yesDelete()">Sim</button>&nbsp;
-    <button class="btn btn-success" onclick="notDelete()">Não</button>
+    <button id="btn-confirm-delete" class="btn btn-danger">Sim</button>
+    <button id="btn-not-delete" class="btn btn-success" >Não</button>
 </div>
-<script>
-    window.onload = function (){
-        insertCategories();
-    };
-
-    var idCategory;
-    function deleteCategory(id){
-        $("#background-dark").show();
-        $("#confirm-delete").show('fast');
-        idCategory = id;
-    }
-    function notDelete(){
-        $("#confirm-delete").hide('fast');
-        $("#background-dark").hide();
-    }
-
-    function yesDelete(){
-        window.location.href = '<?php echo BASE_URL ?>categoriesCMS/deleteCategory/' + idCategory;
-    }
-
-    var categoryList = <?php echo json_encode($categoriesData) ?>;
-
-    function insertCategories(){
-        for(var id in categoryList){
-            $("#categories_result").append(
-                "<tr>" +
-                    "<td>" + categoryList[id].name +"</td>" +
-                    "<td>" + categoryList[id].area_name +"</td>" +
-                    "<td><a href='" + BASE_URL + "categoriesCMS/editCategory/" +  btoa(btoa(categoryList[id].id)) + "' class='btn btn-info'><i class='icon icon-pencil'></i></a></td>" +
-                    "<td><button class='btn btn-danger' onclick=" + 'deleteCategory("' + btoa(btoa(categoryList[id].id)) + '")' + "><i class='icon icon-trash'></i></button></td>" +
-                "</tr>"
-            );
-        }
-    }
-
-    function search(){
-        if($("#search").val() == ''){
-            $("#categories_result").html('');
-            insertCategories();
-        }else{
-            $("#categories_result").html('');
-            var word = $("#search").val().toLowerCase();
-            for(var id in categoryList){
-                if(categoryList[id].name.toLowerCase().search(word) !== -1 || categoryList[id].area_name.toLowerCase().search(word) !== -1){
-                    $("#categories_result").append(
-                        "<tr>" +
-                            "<td>" + categoryList[id].name +"</td>" +
-                            "<td>" + categoryList[id].area_name +"</td>" +
-                            "<td><a href='" + BASE_URL + "categoriesCMS/editCategory/" +  btoa(btoa(categoryList[id].id)) + "' class='btn btn-info'><i class='icon icon-pencil'></i></a></td>" +
-                            "<td><button class='btn btn-danger' onclick=" + 'deleteCategory("' + btoa(btoa(categoryList[id].id)) + '")' + "><i class='icon icon-trash'></i></button></td>" +
-                        "</tr>"
-                    );
-                }
-            }
-        }
-    }
+<script src="<?php echo BASE_URL ?>assets/js/controllers/categoriesCMSController.js"></script>
+<script type="text/template" id="template-table-categories">
+    {{#.}}
+    <tr>
+        <td>{{name}}</td>
+        <td>{{description}}</td>
+        <td>{{area_name}}</TD>
+        <td data-id="{{id}}">
+            <button class='btn btn-info edit-category' data-toggle="tooltip" data-placement="bottom" title="Editar a Categoria"><i class='icon icon-pencil'></i></button>
+        </td>
+        <td data-id="{{id}}">
+            <button class='btn btn-danger delete-category' data-toggle="tooltip" data-placement="bottom" title="Excluir a Categoria"><i class='icon icon-trash'></i></button>
+        </td>
+    </tr>
+    {{/.}}
+</script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        PageController.start(<?php echo json_encode($categoriesData) ?>);
+    });
 </script>

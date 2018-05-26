@@ -502,7 +502,7 @@ footer h3 {
 .media-type-2 img {
 }
 .media-type-1 img{
-	margin-top: -9.4%;
+	margin-top: -9.5%;
 }
 .play-button.play-sm{
 	width: 50px;
@@ -745,6 +745,9 @@ footer h3 {
 
 @media all and (max-width: 767px) {
 	.tutorial-video{
+		margin-left: 0;
+	}
+	.offset-media{
 		margin-left: 0;
 	}
 	.tutorial-text{
