@@ -50,7 +50,7 @@ Criado por : Samuel Rocha Costa | email: samu.rcosta@gmail.com
 		<link rel="stylesheet" href="<?php echo BASE_URL; ?>vendor/twbs/bootstrap/dist/css/bootstrap.min.css" type="text/css" />
 		<script type="text/javascript" src="<?php echo BASE_URL; ?>vendor/twbs/bootstrap/dist/js/bootstrap.min.js"></script>
         <!--!>Menu Maker</!-->
-        <script type="text/javascript" src="https://s3.amazonaws.com/menumaker/menumaker.min.js"></script>
+        <!--<script type="text/javascript" src="https://s3.amazonaws.com/menumaker/menumaker.min.js"></script>-->
         <!--!>Styles</!-->
         <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/style.css" type="text/css" />
         <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/style_menu.css" type="text/css" />

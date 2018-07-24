@@ -17,7 +17,6 @@
     list-style: none;
     line-height: 1;
     display: block;
-    position: relative;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
@@ -100,7 +99,7 @@
 #cssmenu > ul > li.has-sub > a::after {
     position: absolute;
     top: 21px;
-    right: 10px;
+    margin-left: 5px;
     width: 4px;
     height: 4px;
     border-bottom: 1px solid #000000;
@@ -121,11 +120,20 @@
     border-color: #F79321;
 }
 #cssmenu ul ul {
-    width: 100%;
+    width: fit-content;
     position: absolute;
+    background-color: #FFFFFF;
+    display: flex;
+    justify-content: center;
     left: -9999px;
-    border-bottom: 1px solid #F79321;
+    padding: 20px;
+    border-bottom-left-radius: 2px;
+    border-bottom-right-radius: 2px;
     border-left: 1px solid #F79321;
+    -webkit-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
 }
 #cssmenu li:hover > ul {
     left: auto;
@@ -134,15 +142,31 @@
     right: 0;
 }
 #cssmenu ul ul ul {
-    margin-left: 100%;
     top: 0;
+    left: 0;
+    width: 100%;
+    position: relative;
+    display: block;
+    padding: 0;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    border: 0;
+    border-radius: 0;
+}
+#cssmenu ul li ul li {
+    margin-right: 10px;
+}
+#cssmenu ul li ul li:last-child {
+    margin-right: 0;
+}
+#cssmenu ul li ul li ul li {
+    margin-right: 0;
 }
 #cssmenu.align-right ul ul ul {
     margin-left: 0;
     margin-right: 100%;
 }
 #cssmenu ul ul li {
-    height: 0;
     -webkit-transition: height .2s ease;
     -moz-transition: height .2s ease;
     -ms-transition: height .2s ease;
@@ -150,13 +174,12 @@
     transition: height .2s ease;
 }
 #cssmenu ul li:hover > ul > li {
-    height: 32px;
+    height: auto;
 }
 #cssmenu ul ul li a {
-    width: 100%;
-    padding: 10px 20px;
-    /*width: 160px;*/
+    padding: 10px 20px 10px 5px;
     font-size: 12px;
+    font-weight: bold;
     background: #FFFFFF;
     text-decoration: none;
     color: #000000;
@@ -166,14 +189,18 @@
     -o-transition: color .2s ease;
     transition: color .2s ease;
 }
+#cssmenu ul ul ul li a {
+    font-weight: normal;
+    padding: 10px 20px;
+}
 #cssmenu ul ul li:hover > a,
 #cssmenu ul ul li a:hover {
     color: #F79321;
 }
-#cssmenu ul ul li.has-sub > a::after {
+#cssmenu ul ul ul li > a::after {
     position: absolute;
-    top: 13px;
-    right: 10px;
+    margin-top: 4px;
+    left: 8px;
     width: 4px;
     height: 4px;
     border-bottom: 1px solid #F79321;
@@ -277,7 +304,7 @@
         display: block;
     }
     #cssmenu ul ul li a {
-        padding: 20px 20px 20px 30px;
+        padding: 15px 10px 15px 30px;
         font-size: 12px;
         color: #000000;
         background: none;
@@ -296,6 +323,8 @@
         right: auto;
         width: 100%;
         margin: 0;
+        padding: 0;
+        display: none;
     }
     #cssmenu > ul > li.has-sub > a {
         padding-right: 25px;
@@ -334,5 +363,10 @@
         display: flex;
         align-items: center;
         justify-content: center;
+    }
+    #cssmenu ul ul .submenu-button {
+        height: 42px;
+        line-height: 42px;
+        min-width: 42px;
     }
 }
