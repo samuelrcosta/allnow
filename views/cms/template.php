@@ -1,39 +1,41 @@
 <!doctype html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title><?php echo $viewData['title']; ?></title>
-    <link rel="shortcut icon" href="<?php echo BASE_URL;?>/assets/images/favicon.png" type="image/png" />
-    <link rel="stylesheet" href="<?php echo BASE_URL; ?>vendor/simple-line-icons/css/simple-line-icons.css">
-    <link rel="stylesheet" href="<?php echo BASE_URL; ?>vendor/font-awesome/css/fontawesome-all.min.css">
-    <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/styleCMS.css">
-    <script src="<?php echo BASE_URL; ?>vendor/chart.js/chart.min.js"></script>
-    <!--!>BASE URL</!-->
-    <script type="text/javascript">var BASE_URL = '<?php echo BASE_URL; ?>';</script>
-    <!--!>Jquery</!-->
-    <script type="text/javascript" src="<?php echo BASE_URL; ?>vendor/components/jquery/jquery.min.js"></script>
-    <!--!>Popper</!-->
-    <script src="<?php echo BASE_URL; ?>vendor/popper.js/popper.min.js"></script>
-    <!--!>Bootstrap 4</!-->
-    <script type="text/javascript" src="<?php echo BASE_URL; ?>vendor/twbs/bootstrap/dist/js/bootstrap.min.js"></script>
-    <!--!>Jquery Mask</!-->
-    <script type="text/javascript" src="<?php echo BASE_URL; ?>vendor/igorescobar/jquery-mask-plugin/src/jquery.mask.js"></script>
-    <!--!>FormValidator</!-->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/jquery.form-validator.min.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/theme-default.min.css" rel="stylesheet" type="text/css" />
-    <!--!>FormValidation</!-->
-    <link rel="stylesheet" type="text/css" href="<?php echo BASE_URL; ?>vendor/formValidation/formValidation.min.css"/>
-    <script type="text/javascript" src="<?php echo BASE_URL; ?>vendor/formValidation/formValidation.min.js"></script>
-    <script type="text/javascript" src="<?php echo BASE_URL; ?>vendor/formValidation/bootstrap.js"></script>
-    <!--!>Mustache</!-->
-    <script type="text/javascript" src="<?php echo BASE_URL; ?>vendor/mustache/mustache.min.js"></script>
-    <!--!>Jquery DataTable</!-->
-    <link rel="stylesheet" href="//cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
-    <link rel="stylesheet" href="//cdn.datatables.net/1.10.16/css/dataTables.bootstrap4.min.css">
-    <script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap4.min.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title><?php echo $viewData['title']; ?></title>
+  <link rel="shortcut icon" href="<?php echo BASE_URL;?>/assets/images/favicon.png" type="image/png" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.4.1/css/simple-line-icons.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+  <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/styleCMS.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
+  <!--!>BASE URL</!-->
+  <script type="text/javascript">const BASE_URL = '<?php echo BASE_URL; ?>';</script>
+  <!--!>Jquery</!-->
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+          integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+  <!--!>Fonts</!-->
+  <!--!>Popper</!-->
+  <script src="<?php echo BASE_URL; ?>vendor/popper.js/popper.min.js"></script>
+  <!--!>Bootstrap 4</!-->
+  <script type="text/javascript" src="<?php echo BASE_URL; ?>vendor/twbs/bootstrap/dist/js/bootstrap.min.js"></script>
+  <!--!>Jquery Mask</!-->
+  <script type="text/javascript" src="<?php echo BASE_URL; ?>vendor/igorescobar/jquery-mask-plugin/src/jquery.mask.js"></script>
+  <!--!>FormValidator</!-->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/jquery.form-validator.min.js"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/theme-default.min.css" rel="stylesheet" type="text/css" />
+  <!--!>FormValidation</!-->
+  <link rel="stylesheet" type="text/css" href="<?php echo BASE_URL; ?>vendor/formValidation/formValidation.min.css"/>
+  <script type="text/javascript" src="<?php echo BASE_URL; ?>vendor/formValidation/formValidation.min.js"></script>
+  <script type="text/javascript" src="<?php echo BASE_URL; ?>vendor/formValidation/bootstrap.js"></script>
+  <!--!>Mustache</!-->
+  <script type="text/javascript" src="<?php echo BASE_URL; ?>vendor/mustache/mustache.min.js"></script>
+  <!--!>Jquery DataTable</!-->
+  <link rel="stylesheet" href="//cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
+  <link rel="stylesheet" href="//cdn.datatables.net/1.10.16/css/dataTables.bootstrap4.min.css">
+  <script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap4.min.js"></script>
 </head>
 <body class="sidebar-fixed header-fixed">
 <div class="page-wrapper">
