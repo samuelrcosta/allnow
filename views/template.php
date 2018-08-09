@@ -54,7 +54,7 @@
   <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/style_menu.css" type="text/css" />
   <!-- Global site tag (gtag.js) - Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=UA-116306177-1"></script>
-  <script type='text/javascript' src='//platform-api.sharethis.com/js/sharethis.js#property=5b075ecacbc3900011ee29ff&product=inline-share-buttons' async='async'></script>
+  <script async type='text/javascript' src='//platform-api.sharethis.com/js/sharethis.js#property=5b075ecacbc3900011ee29ff&product=inline-share-buttons'></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
