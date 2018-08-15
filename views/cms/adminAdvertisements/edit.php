@@ -101,7 +101,7 @@
 </div>
 <script src="<?php echo BASE_URL ?>vendor/ckeditor/ckeditor.js"></script>
 <script src="<?php echo BASE_URL ?>assets/js/resize_image.js"></script>
-<script src="<?php echo BASE_URL ?>assets/js/controllers/adsEditPageController.js"></script>
+<script src="<?php echo BASE_URL ?>assets/js/controllers/adsEditPageController.js?v=1.0.1"></script>
 <script type="text/template" id="template-new-media">
     <div class="media-container" data-id="" style="border: 1px solid;padding: 10px;margin-top: 15px">
         <div class="form-group">

@@ -743,6 +743,13 @@ footer h3 {
 	color: #F79321;
 }
 
+.card-block-description{
+	text-align: justify;
+}
+.card-block-description p{
+	text-align: justify;
+}
+
 @media all and (max-width: 767px) {
 	.tutorial-video{
 		margin-left: 0;

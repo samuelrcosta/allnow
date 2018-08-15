@@ -26,8 +26,9 @@
                 </div>
 
                 <br>
-
-                <?php echo $advertisementData['description'] ?>
+                <div class="card-block-description">
+                    <?php echo $advertisementData['description'] ?>
+                </div>
             </div>
         </div>
     </div>

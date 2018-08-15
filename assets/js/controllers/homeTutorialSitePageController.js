@@ -21,7 +21,7 @@ const PageController = {
         if(PageController._configData.status === 'on'){
             $('#active_radio').prop("checked", true);
             $("#title").attr("data-validation", "required");
-            $("#text").attr("data-validation", "required");
+            $("#text").attr("data-validation", "");
             $("#media_type").attr("data-validation", "required");
             $("#media_link").attr("data-validation", "required");
         }
@@ -35,7 +35,7 @@ const PageController = {
         if(value === true){
             // Activate validations
             $("#title").attr("data-validation", "required");
-            $("#text").attr("data-validation", "required");
+            $("#text").attr("data-validation", "");
             $("#media_type").attr("data-validation", "required");
             $("#media_link").attr("data-validation", "required");
         }else{

@@ -1,4 +1,4 @@
-var PageController = {
+const PageController = {
     // URLS
     URL_GET_ADVERTISEMENT: 'adminAdvertisementsCMS/getAdvertisementData/',
 
@@ -50,7 +50,7 @@ var PageController = {
     _renderAdvertisementData: function _renderAdvertisementData(){
         // Get data
         PageController.getAdvertisementData(PageController._adId);
-        var adData = PageController._data;
+        let adData = PageController._data;
         PageController._setFields(adData.advertisementData);
         PageController._setMidias(adData.advertisementData.medias);
     },
@@ -205,9 +205,9 @@ var PageController = {
     },
 
     _removeMedia: function _removeMedia(){
-        $element = $(this);
-        $container = $element.parent().parent();
-        $id = $container.attr('data-id');
+        let $element = $(this);
+        let $container = $element.parent().parent();
+        let id = $container.attr('data-id');
         // Checks if have id
         if(id != ''){
             PageController._deleteMedias.push(id);
@@ -283,7 +283,7 @@ var PageController = {
 
     // ---------------------------------------------- sendForm --------------------------------------------------//
     sendForm: function sendForm(formData){
-        var callback = false;
+        let callback = false;
         $.ajax({
             url: PageController._base_url + 'adminAdvertisementsCMS/editAdvertisement',
             data: formData,

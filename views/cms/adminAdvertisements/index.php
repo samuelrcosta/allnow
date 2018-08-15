@@ -47,7 +47,7 @@
         <td>{{title}}</td>
         <td>{{category_name}}</td>
         <td>{{subcategory_name}}</td>
-        <td style='white-space: pre;'>{{abstract}}</td>
+        <td style='white-space: pre-wrap; word-wrap: break-word;'>{{abstract}}</td>
         <td data-id="{{id}}">
             <button class='btn btn-info edit-ad' data-toggle="tooltip" data-placement="bottom" title="Editar o anúncio"><i class='icon icon-pencil'></i></button>
         </td>
