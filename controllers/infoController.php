@@ -12,6 +12,7 @@ class infoController extends Controller{
     // Models instances
     private $a;
     private $c;
+    private $configs;
     private $s;
 
     /**
@@ -22,6 +23,7 @@ class infoController extends Controller{
         // Initialize instances
         $this->a = new Areas();
         $this->c = new Contacts();
+        $this->configs = new Configs();
         $this->s = new Store();
     }
 
@@ -41,6 +43,7 @@ class infoController extends Controller{
 
         $data['title'] = 'Optium - Sobre a empresa';
         $data['menuUrlActive'] = 'sobre';
+        $data['about'] = $this->configs->getConfig('about');
         $data['categoryMenuData'] = $this->a->getCompleteList();
 
         $this->loadTemplate('info/about', $data);
@@ -53,6 +56,7 @@ class infoController extends Controller{
         $data = array();
 
         $data['title'] = 'Optium - Contato';
+        $data['menuUrlActive'] = '';
         $data['categoryMenuData'] = $this->a->getCompleteList();
         $this->loadTemplate('info/contact', $data);
     }
@@ -114,7 +118,9 @@ class infoController extends Controller{
         $data = array();
 
         $data['title'] = 'Optium - Termos de Uso';
+        $data['menuUrlActive'] = '';
         $data['categoryMenuData'] = $this->a->getCompleteList();
+        $data['useTerms'] = $this->configs->getConfig('use_terms');
         $this->loadTemplate('info/termsOfUse', $data);
     }
 
@@ -125,7 +131,9 @@ class infoController extends Controller{
         $data = array();
 
         $data['title'] = 'Optium - Política de Privacidade';
+        $data['menuUrlActive'] = '';
         $data['categoryMenuData'] = $this->a->getCompleteList();
+        $data['privacyPolicy'] = $this->configs->getConfig('privacy_policy');
         $this->loadTemplate('info/PrivacyPolicy', $data);
     }
 

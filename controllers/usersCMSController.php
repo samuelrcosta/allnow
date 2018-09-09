@@ -91,8 +91,14 @@ class usersCMSController extends Controller{
                                 $perms .= "categories;";
                             if(isset($_POST['menuSubcategories']))
                                 $perms .= "subcats;";
-                            if(isset($_POST['menuHomeTutorial']))
-                                $perms .= "homeTutorial;";
+                            if(isset($_POST['menuHomePage']))
+                                $perms .= "homePage;";
+                            if(isset($_POST['menuAbout']))
+                                $perms .= "about;";
+                            if(isset($_POST['menuUseTerm']))
+                                $perms .= "useTerms;";
+                            if(isset($_POST['menuPrivacyPolicy']))
+                                $perms .= "privacyPolicy;";
                             // Try to register
                             if($this->u->register($name, $email, $perms, $password)){
                                 echo json_encode(true);
@@ -163,8 +169,14 @@ class usersCMSController extends Controller{
                                 $perms .= "categories;";
                             if(isset($_POST['menuSubcategories']))
                                 $perms .= "subcats;";
-                            if(isset($_POST['menuHomeTutorial']))
-                                $perms .= "homeTutorial;";
+                            if(isset($_POST['menuHomePage']))
+                                $perms .= "homePage;";
+                            if(isset($_POST['menuAbout']))
+                                $perms .= "about;";
+                            if(isset($_POST['menuUseTerm']))
+                                $perms .= "useTerms;";
+                            if(isset($_POST['menuPrivacyPolicy']))
+                                $perms .= "privacyPolicy;";
                             // Try to register
                             if($this->u->edit($id, $name, $email, $perms, $password)){
                                 echo json_encode(true);

@@ -15,9 +15,9 @@
             <div class="container-fluid">
                 <div class="menu-container">
                     <div class="img-top-logo-big" style="align-items: center; justify-content: center; margin: 0;">
-                        <a href="http://localhost/php/optium/">
-                            <img src="http://localhost/php/optium/assets/images/rsz_fav.png">
-                            <img style="margin-top: 15px;height: 35px;" src="http://localhost/php/optium/assets/images/rsz_nome_logo.png">
+                        <a href="https://optium.com.br/" style="text-decoration: none;margin-top: 6px;">
+                            <img src="https://optium.com.br/assets/images/rsz_fav.png">
+                            <span>OPTIUM</span>
                         </a>
                     </div>
                 </div>

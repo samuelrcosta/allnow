@@ -42,8 +42,17 @@ const PageController = {
         if(perms.includes("subcats")){
             $("#menuSubcategories").prop("checked", true);
         }
-        if(perms.includes("homeTutorial")){
-            $("#menuHomeTutorial").prop("checked", true);
+        if(perms.includes("homePage")){
+            $("#menuHomePage").prop("checked", true);
+        }
+        if(perms.includes("about")){
+            $("#menuAbout").prop("checked", true);
+        }
+        if(perms.includes("useTerms")){
+            $("#menuUseTerm").prop("checked", true);
+        }
+        if(perms.includes("privacyPolicy")){
+            $("#menuPrivacyPolicy").prop("checked", true);
         }
     },
 

@@ -7,14 +7,17 @@ const PageController = {
     INPUT_SEARCH: '#search-input',
 
     // Variables for storage and controller
-    _phrases: ["idiomas", "finanças", "negócios", "e muito mais"],
+    //_phrases: ["idiomas", "finanças", "negócios", "e muito mais"],
+    _phrases: [],
     _nowPhrase: 0,
     _timeToShow: 250,
     _timeToHide: 100,
 
     _listeners: function _listeners(){
         // Letters repeat show
-        PageController._showLetters(PageController.PHRASE_REPEAT_CONTAINER, PageController._phrases[PageController._nowPhrase], 0, 250);
+        if(PageController._phrases.length > 0){
+          PageController._showLetters(PageController.PHRASE_REPEAT_CONTAINER, PageController._phrases[PageController._nowPhrase], 0, 250);
+        }
     },
 
     _showLetters: function _showLetters(target, message, index, interval) {
@@ -48,7 +51,9 @@ const PageController = {
         }
     },
 
-    start: function start(){
+    start: function start(repeat_words){
+        // Save words
+        this._phrases = JSON.parse(repeat_words);
         // Activate listeners functions
         this._listeners();
     }

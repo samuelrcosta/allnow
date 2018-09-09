@@ -34,11 +34,11 @@ class Advertisements extends Model{
 (SELECT name FROM categories WHERE advertisements.id_subcategory = id) as subcategory_name FROM advertisements WHERE status = 1';
         $sql = $this->db->query($sql);
         $array = $sql->fetchAll();
-
+        /*
         foreach ($array as &$ad){
             $ad['medias'] = $this->medias_ads->getMedias($ad['id']);
         }
-
+        */
         return $array;
     }
 

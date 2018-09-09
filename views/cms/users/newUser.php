@@ -60,7 +60,16 @@
                         <label><input type="checkbox" name="menuSubcategories" id="menuSubcategories" value="True">&nbsp;Subcategorias</label>
                     </div>
                     <div class="checkbox">
-                        <label><input type="checkbox" name="menuHomeTutorial" id="menuHomeTutorial" value="True">&nbsp;Home do Site</label>
+                        <label><input type="checkbox" name="menuHomePage" id="menuHomePage" value="True">&nbsp;Home do Site</label>
+                    </div>
+                    <div class="checkbox">
+                        <label><input type="checkbox" name="menuAbout" id="menuAbout" value="True">&nbsp;Sobre a Empresa</label>
+                    </div>
+                    <div class="checkbox">
+                        <label><input type="checkbox" name="menuPrivacyPolicy" id="menuPrivacyPolicy" value="True">&nbsp;Política de Privacidade</label>
+                    </div>
+                    <div class="checkbox">
+                        <label><input type="checkbox" name="menuUseTerm" id="menuUseTerm" value="True">&nbsp;Termos de Uso</label>
                     </div>
                 </div>
             </div>
@@ -100,7 +109,7 @@
         </div>
     </form>
 </div>
-<script src="<?php echo BASE_URL ?>assets/js/controllers/userRegisterController.js"></script>
+<script src="<?php echo BASE_URL ?>assets/js/controllers/userRegisterController.js?v=1.0.2"></script>
 <script>
     PageController.start();
 </script>

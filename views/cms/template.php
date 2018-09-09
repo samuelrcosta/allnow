@@ -109,7 +109,11 @@
                         </a>
                     </li>
                     <?php endif; ?>
-                    <?php if((strpos($viewData['userData']['perms'], 'categories') !== false) || (strpos($viewData['userData']['perms'], 'subcats') !== false)): ?>
+                  <?php if((strpos($viewData['userData']['perms'], 'categories') !== false) ||       (strpos($viewData['userData']['perms'], 'subcats') !== false) ||
+                      (strpos($viewData['userData']['perms'], 'homePage')) ||
+                      (strpos($viewData['userData']['perms'], 'about')) ||
+                      (strpos($viewData['userData']['perms'], 'privacyPolicy')) ||
+                      (strpos($viewData['userData']['perms'], 'useTerms'))): ?>
                     <li class="nav-item nav-dropdown">
                         <a href="#" class="nav-link nav-dropdown-toggle">
                             <i class="icon icon-settings"></i> Configurações <i class="fa fa-caret-left"></i>
@@ -137,10 +141,31 @@
                                 </a>
                             </li>
                             <?php endif; ?>
-                            <?php if(strpos($viewData['userData']['perms'], 'homeTutorial') !== false): ?>
+                            <?php if(strpos($viewData['userData']['perms'], 'homePage') !== false): ?>
                                 <li class="nav-item">
-                                    <a href="<?php echo BASE_URL; ?>homePageTutorialCMS" class="nav-link <?php echo ($viewData['link'] == 'homePageTutorialCMS/index')?'active':''; ?>">
+                                    <a href="<?php echo BASE_URL; ?>homePageCMS" class="nav-link <?php echo ($viewData['link'] == 'homePageCMS/index')?'active':''; ?>">
                                         <i class="fas fa-home"></i> Home do Site
+                                    </a>
+                                </li>
+                            <?php endif; ?>
+                            <?php if(strpos($viewData['userData']['perms'], 'about') !== false): ?>
+                                <li class="nav-item">
+                                    <a href="<?php echo BASE_URL; ?>aboutCMS" class="nav-link <?php echo ($viewData['link'] == 'aboutCMS/index')?'active':''; ?>">
+                                      <i class="fas fa-file-alt"></i> Sobre a empresa
+                                    </a>
+                                </li>
+                            <?php endif; ?>
+                            <?php if(strpos($viewData['userData']['perms'], 'privacyPolicy') !== false): ?>
+                                <li class="nav-item">
+                                    <a href="<?php echo BASE_URL; ?>privacyPolicyCMS" class="nav-link <?php echo ($viewData['link'] == 'privacyPolicyCMS/index')?'active':''; ?>">
+                                        <i class="fas fa-file-alt"></i> Política de Privacidade
+                                    </a>
+                                </li>
+                            <?php endif; ?>
+                            <?php if(strpos($viewData['userData']['perms'], 'useTerms') !== false): ?>
+                                <li class="nav-item">
+                                    <a href="<?php echo BASE_URL; ?>useTermsCMS" class="nav-link <?php echo ($viewData['link'] == 'useTermsCMS/index')?'active':''; ?>">
+                                        <i class="fas fa-file-alt"></i> Termos de Uso
                                     </a>
                                 </li>
                             <?php endif; ?>

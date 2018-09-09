@@ -50,8 +50,8 @@
   <!--!>Menu Maker</!-->
   <!--<script type="text/javascript" src="https://s3.amazonaws.com/menumaker/menumaker.min.js"></script>-->
   <!--!>Styles</!-->
-  <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/style.css?v=1.0.1" type="text/css" />
-  <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/style_menu.css?v=1.0.1" type="text/css" />
+  <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/style.css?v=1.0.3" type="text/css" />
+  <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/style_menu.css?v=1.1" type="text/css" />
   <!-- Global site tag (gtag.js) - Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=UA-116306177-1"></script>
   <script async type='text/javascript' src='//platform-api.sharethis.com/js/sharethis.js#property=5b075ecacbc3900011ee29ff&product=inline-share-buttons'></script>
@@ -70,7 +70,7 @@
           <div class='img-top-logo-big' style="flex: 1">
             <a href="<?php echo BASE_URL; ?>">
               <img src="<?php echo BASE_URL; ?>assets/images/rsz_fav.png">
-              <img style="margin-top: 15px;height: 35px;" src="<?php echo BASE_URL; ?>assets/images/rsz_nome_logo.png">
+              <span>OPTIUM</span>
             </a>
           </div>
           <div class="menu-container-int">
@@ -113,6 +113,9 @@
                   <?php endforeach; ?>
                   <li class="<?= ($viewData['menuUrlActive'] == 'sobre') ? 'active' : '' ?>">
                     <a href="<?= BASE_URL ?>info/about">A Empresa</a>
+                  </li>
+                  <li class="<?= ($viewData['menuUrlActive'] == 'blog') ? 'active' : '' ?>">
+                    <a target="_blank" href="<?= BLOG_URL ?>">Blog</a>
                   </li>
                 </ul>
               </div>

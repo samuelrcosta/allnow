@@ -38,10 +38,16 @@ class homeController extends Controller {
         $data['categoryMenuData'] = $this->areas->getCompleteList();
         $data['menuUrlActive'] = 'home';
         $data['advertisementsData'] = $this->s->normalizeBadgesName($this->a->getHighlightsAds());
-        $data['shareDescription'] = "Optium - A maior plataforma de produtos digitais do país: idiomas, finanças, negócios, e muito mais";
+        $data['configs'] = $this->conf->getConfigs(array('banner_image', 'banner_text', 'banner_array', 'tutorial_advertisement'));
 
         // Get tutorial data
-        $data['tutorialData'] = json_decode(strval($this->conf->getConfig("tutorial_advertisement")), true);
+        $data['tutorialData'] = json_decode(strval($data['configs']["tutorial_advertisement"]), true);
+
+        $data['shareDescription'] = "Optium - ".$data['configs']['banner_text'];
+        $banner_words = json_decode($data['configs']['banner_array']);
+        if(!empty($banner_words)){
+            $data['shareDescription'] .= " ".implode(", ", $banner_words);
+        }
 
         $this->loadTemplate('home/index', $data);
     }

@@ -1,6 +1,6 @@
 <div style="clear: both"></div>
-<div class="container-home-image">
-  <div id="init" class="effect-phrase"><h1>A maior plataforma de produtos digitais do país:&nbsp;<span id="phrase-repeat"> </span></h1><br>
+<div class="container-home-image" style="background-image: url('assets/images/banner/<?= $configs['banner_image']; ?>');">
+  <div id="init" class="effect-phrase"><h1><?= $configs['banner_text']; ?>&nbsp;<span id="phrase-repeat"> </span></h1><br>
   </div>
 </div>
 <div class="container-fluid container-content-homepage">
@@ -84,11 +84,11 @@
     </div>
   </section>
 </div>
-<script src="<?php echo BASE_URL; ?>assets/js/controllers/slidesController.js"></script>
-<script src="<?php echo BASE_URL; ?>assets/js/controllers/homePageController.js"></script>
+<script src="<?php echo BASE_URL; ?>assets/js/controllers/slidesController.js?v=1.0.1"></script>
+<script src="<?php echo BASE_URL; ?>assets/js/controllers/homePageController.js?v=1.0.1"></script>
 <script>
   $(document).ready(function(){
     SlidesController.start();
-    PageController.start();
+    PageController.start(<?= json_encode($configs['banner_array']); ?>);
   });
 </script>
